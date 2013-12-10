@@ -1,0 +1,12 @@
+<% include layout/head %>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <% for (var k in orders) { %>
+        <h2><%= k %></h2>
+        <ul class="marketorders">
+            <% for (var i=0, order; order=orders[k][i]; i++) { %>
+                <li><a href="" data-typeID="<%= order.typeID %>"><%= order.typeName %></a> - <%= order.bid %></li>
+            <% } %>
+        </ul>
+    <% } %>
+<% include layout/foot %>

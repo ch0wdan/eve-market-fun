@@ -1,0 +1,4 @@
+*.sqlite
+*.sw[po]
+tmp
+node_modules
