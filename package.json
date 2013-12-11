@@ -21,6 +21,8 @@
     "socket.io": "~0.9.16",
     "csv": "~0.3.6",
     "async": "~0.2.9",
-    "underscore": "~1.5.2"
+    "underscore": "~1.5.2",
+    "neow": "0.0.2",
+    "express-persona": "~0.1.1"
   }
 }
