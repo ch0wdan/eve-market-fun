@@ -2,11 +2,13 @@ var util = require('util');
 var _ = require('underscore');
 var async = require('async');
 var assert = require('chai').assert;
-var routes = require('../routes');
+var routes = require('../lib/routes');
 var Knex = require('knex');
 var Bookshelf = require('bookshelf');
 
-var config = require('../config');
+var logger = require('winston');
+
+var conf = require('../lib/config');
 
 suite('Routes', function() {
 
@@ -19,7 +21,7 @@ suite('Routes', function() {
         var evedb = Knex.initialize({
             client: 'sqlite3',
             connection: {
-                filename: 'eve.sqlite'
+                filename: conf.get('eve_sqlite')
             }
         });
 
@@ -85,7 +87,7 @@ suite('Routes', function() {
         var EVE = Bookshelf.initialize({
             client: 'sqlite3',
             connection: {
-                filename: 'eve.sqlite'
+                filename: conf.get('eve_sqlite')
             }
         });
 

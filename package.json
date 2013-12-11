@@ -1,10 +1,17 @@
 {
   "name": "eve-market-fun",
   "version": "0.0.1",
-  "private": true,
+  "directories": {
+    "test": "test"
+  },
+  "bin": {
+    "evemf": "bin/evemf"
+  },
   "scripts": {
-    "start": "./node_modules/.bin/supervisor app.js",
-    "test": "./node_modules/.bin/mocha -R spec -u tdd"
+    "start": "./node_modules/.bin/supervisor -- ./bin/evemf serve",
+    "test": "./node_modules/.bin/mocha -R spec -u tdd",
+    "migrate": "./node_modules/.bin/knex migrate:latest",
+    "rollback": "./node_modules/.bin/knex migrate:rollback"
   },
   "dependencies": {
     "express": "3.4.6",
@@ -23,6 +30,10 @@
     "async": "~0.2.9",
     "underscore": "~1.5.2",
     "neow": "0.0.2",
-    "express-persona": "~0.1.1"
+    "passport": "~0.1.17",
+    "winston": "~0.7.2",
+    "convict": "~0.4.1",
+    "bluebird": "~0.11.5-0",
+    "commander": "~2.1.0"
   }
 }

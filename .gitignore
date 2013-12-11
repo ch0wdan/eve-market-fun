@@ -1,5 +1,7 @@
+xfers
 *.sqlite
 *.sw[po]
 tmp
 node_modules
 marketlogs
+config/local.json

@@ -1,6 +1,8 @@
 <% include layout/head %>
+    <div class="container">
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
+    <% if (orders) { %>
     <% for (var k in orders) { %>
         <h2><%= k %></h2>
         <ul class="marketorders">
@@ -9,4 +11,7 @@
             <% } %>
         </ul>
     <% } %>
+    <% } %>
+    
+</div>
 <% include layout/foot %>
