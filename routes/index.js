@@ -45,11 +45,14 @@ exports.index = function(req, res) {
                 .filter(function (f) { return 0 === f.indexOf('My Orders') })
                 .sortBy().reverse()
                 .first().value();
-            importCSV(config.marketlogs_path + '/' + order_fn, next);
+            if (order_fn) {
+                importCSV(config.marketlogs_path + '/' + order_fn, next);
+            } else {
+                next([]);
+            }
         },
         function (orders, next) {
             async.each(orders, function (order, e_next) {
-                util.debug(util.inspect(order.typeID));
                 db_EVE('invTypes')
                     .select('typeName')
                     .where('typeID', order.typeID)
