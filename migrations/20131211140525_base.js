@@ -5,32 +5,31 @@ exports.up = function (knex) {
     var ks = knex.schema;
     return Promise.all([
         ks.createTable('Users', function (t) {
-            t.uuid('id').primary();
+            t.uuid('uuid').primary();
             t.timestamps();
             t.string('username').index().unique();
             t.string('password');
-            t.string('status');
         }),
         ks.createTable('ApiKeys', function (t) {
-            t.uuid('id').primary();
+            t.uuid('uuid').primary();
             t.timestamps();
-            t.string('userID').index();
+            t.uuid('userUuid').index();
             t.string('keyID').index().unique();
             t.string('vCode');
         }),
         ks.createTable('Characters', function (t) {
-            t.uuid('id').primary();
+            t.uuid('uuid').primary();
             t.timestamps();
-            t.integer('userID').index();
+            t.uuid('userUuid').index();
             t.string('name');
             t.string('characterID').index();
             t.string('corporationName');
             t.string('corporationID');
         }),
         ks.createTable('MarketOrders', function (t) {
-            t.uuid('id').primary();
+            t.uuid('uuid').primary();
             t.timestamps();
-            t.integer('userID').index();
+            t.uuid('userUuid').index();
             _.each(
                 // Copypasta from the CSV header of an EVE market log export
                 'orderID,typeID,charID,charName,regionID,regionName,stationID,stationName,range,bid,price,volEntered,volRemaining,issueDate,orderState,minVolume,accountID,duration,isCorp,solarSystemID,solarSystemName,escrow'.split(','),

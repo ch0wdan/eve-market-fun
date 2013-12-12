@@ -1,12 +1,12 @@
 
 exports.up = function(knex, Promise) {
     return knex.schema.table('Characters', function (t) {
-        t.string('keyID').index();
+        t.string('keyUuid').index();
     })
 };
 
 exports.down = function(knex, Promise) {
     return knex.schema.table('Characters', function (t) {
-        t.dropColumn('keyID')
+        t.dropColumn('keyUuid')
     })
 };
