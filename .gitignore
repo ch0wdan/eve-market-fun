@@ -5,3 +5,4 @@ tmp
 node_modules
 marketlogs
 config/local.json
+cache/neow/*
