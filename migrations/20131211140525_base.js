@@ -46,6 +46,7 @@ exports.down = function (knex) {
     return Promise.all([
         knex.schema.dropTable('Users'),
         knex.schema.dropTable('ApiKeys'),
+        knex.schema.dropTable('Characters'),
         knex.schema.dropTable('MarketOrders')
     ]);
 };

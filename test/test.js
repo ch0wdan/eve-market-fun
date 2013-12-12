@@ -16,6 +16,7 @@ suite('Routes', function() {
         assert.isDefined(routes.index);
     })
 
+    /*
     test("evedb play", function (done) {
 
         var evedb = Knex.initialize({
@@ -104,5 +105,6 @@ suite('Routes', function() {
             });
 
     });
+    */
 
 })
