@@ -5,19 +5,21 @@ exports.up = function (knex) {
     var ks = knex.schema;
     return Promise.all([
         ks.createTable('Users', function (t) {
-            t.increments('id').primary();
+            t.uuid('id').primary();
             t.timestamps();
             t.string('username').index().unique();
             t.string('password');
+            t.string('status');
         }),
         ks.createTable('ApiKeys', function (t) {
-            t.increments('id').primary();
+            t.uuid('id').primary();
             t.timestamps();
+            t.string('userID').index();
             t.string('keyID').index().unique();
-            t.string('vcode');
+            t.string('vCode');
         }),
         ks.createTable('Characters', function (t) {
-            t.increments('id').primary();
+            t.uuid('id').primary();
             t.timestamps();
             t.integer('userID').index();
             t.string('name');
@@ -26,7 +28,7 @@ exports.up = function (knex) {
             t.string('corporationID');
         }),
         ks.createTable('MarketOrders', function (t) {
-            t.increments('id').primary();
+            t.uuid('id').primary();
             t.timestamps();
             t.integer('userID').index();
             _.each(
