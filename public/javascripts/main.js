@@ -1,10 +1,15 @@
 $(document).ready(function () {
 
-    $('.marketorders').delegate('a', 'click', function () {
-        var target = $(this);
-        if (!target.data('typeid')) return;
-        CCPEVE.showMarketDetails(target.data('typeid'));
-        return false;
-    });
+    $(document)
+        .delegate('a.showMarketDetails', 'click', function () {
+            var el = $(this);
+            CCPEVE.showMarketDetails(el.data('typeid'));
+            return false;
+        })
+        .delegate('a.showInfo', 'click', function () {
+            var el = $(this);
+            CCPEVE.showInfo(el.data('typeid'), el.data('itemid'));
+            return false;
+        });
 
 });

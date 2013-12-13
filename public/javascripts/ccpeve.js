@@ -2,7 +2,8 @@ if (typeof CCPEVE == 'undefined') {
     var CCPEVE = window.CCPEVE = {};
 
     var stub_names = [
-        'showMarketDetails'
+        'showMarketDetails',
+        'showInfo'
     ];
 
     for (var i=0; i<stub_names.length; i++) {

@@ -14,8 +14,11 @@
         <ul class="marketorders">
             <% orders[type].forEach(function (order) { %>
                 <li>
-                    <a href="" data-typeID="<%=order.typeID%>"><%= order.typeName %></a>
-                    - <%= order.price %>
+                    <a class="showInfo" href=""
+                        data-typeID="3867" data-itemID="<%= order.stationID %>"><%= order.stationName %></a> - 
+                    <a class="showMarketDetails" href=""
+                        data-typeID="<%=order.typeID%>"><%= order.typeName %></a>
+                    <%= order.price %>
                 </li>
             <% }) %>
         </ul>
