@@ -1,9 +1,13 @@
 <% include layout/head %>
-    <div class="container">
+
+<div class="container">
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
     
     <p>Hi, <%=user.get('username')%> / <%=character.get('name')%></p>
+
+    <div id="gridplay">
+    </div>
 
     <% ['sell', 'buy'].forEach(function (type) { %>
         <% if ('sell' == type) { %>
@@ -25,4 +29,5 @@
     <% }) %>
 
 </div>
+
 <% include layout/foot %>
