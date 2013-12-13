@@ -29,10 +29,9 @@ exports.up = function (knex) {
         ks.createTable('MarketOrders', function (t) {
             t.uuid('uuid').primary();
             t.timestamps();
-            t.uuid('userUuid').index();
             _.each(
                 // Copypasta from the CSV header of an EVE market log export
-                'orderID,typeID,charID,charName,regionID,regionName,stationID,stationName,range,bid,price,volEntered,volRemaining,issueDate,orderState,minVolume,accountID,duration,isCorp,solarSystemID,solarSystemName,escrow'.split(','),
+                'orderID,typeID,charID,regionID,stationID,range,bid,price,volEntered,volRemaining,issueDate,orderState,minVolume,accountID,duration,isCorp,solarSystemID,escrow'.split(','),
                 function (name) {
                     var c = t.string(name);
                     if ('orderID' == name) { c.index().unique(); }

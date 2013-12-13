@@ -2,16 +2,24 @@
     <div class="container">
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
-    <% if (orders) { %>
-    <% for (var k in orders) { %>
-        <h2><%= k %></h2>
-        <ul class="marketorders">
-            <% for (var i=0, order; order=orders[k][i]; i++) { %>
-                <li><a href="" data-typeID="<%= order.typeID %>"><%= order.typeName %></a></li>
-            <% } %>
-        </ul>
-    <% } %>
-    <% } %>
     
+    <p>Hi, <%=user.get('username')%> / <%=character.get('name')%></p>
+
+    <% ['sell', 'buy'].forEach(function (type) { %>
+        <% if ('sell' == type) { %>
+            <h2>Sell</h2>
+        <% } else { %>
+            <h2>Buy</h2>
+        <% } %>
+        <ul class="marketorders">
+            <% orders[type].forEach(function (order) { %>
+                <li>
+                    <a href="" data-typeID="<%=order.typeID%>"><%= order.typeName %></a>
+                    - <%= order.price %>
+                </li>
+            <% }) %>
+        </ul>
+    <% }) %>
+
 </div>
 <% include layout/foot %>
