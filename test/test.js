@@ -2,7 +2,6 @@ var util = require('util');
 var _ = require('underscore');
 var async = require('async');
 var assert = require('chai').assert;
-var routes = require('../lib/routes');
 var Knex = require('knex');
 var Bookshelf = require('bookshelf');
 
@@ -12,9 +11,9 @@ var conf = require('../lib/config');
 
 suite('Routes', function() {
 
-    test("index route is defined", function() {
-        assert.isDefined(routes.index);
-    })
+    test("Test", function () {
+        logger.debug("I need to write more tests");
+    });
 
     /*
     test("evedb play", function (done) {

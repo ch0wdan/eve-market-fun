@@ -4,5 +4,7 @@ xfers
 tmp
 node_modules
 marketlogs
+eve-cache
 config/local.json
 cache/neow/*
+populate.sh

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
+  <title>{{title}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -42,3 +42,14 @@
       </div>
     </div>
 
+{% block content %}{% endblock %}
+
+    <script src="/vendor/jquery-1.10.2.min.js"></script>
+    <script src="/vendor/underscore-min.js"></script>
+    <script src="/vendor/backbone-min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/vendor/backgrid/lib/backgrid.min.js"></script>
+    <script src="/javascripts/ccpeve.js"></script>
+    <script src="/javascripts/main.js"></script>
+  </body>
+</html>

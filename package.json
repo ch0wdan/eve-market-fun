@@ -35,7 +35,8 @@
     "bluebird": "~0.11.5-0",
     "commander": "~2.1.0",
     "watch": "~0.8.0",
-    "node-uuid": "~1.4.1"
+    "node-uuid": "~1.4.1",
+    "nunjucks": "~1.0.0"
   },
   "optionalDependencies": {
     "zmq": "~2.5.1"

@@ -18,7 +18,7 @@ $(document).ready(function () {
         
         var MarketOrders = Backbone.Collection.extend({
             model: MarketOrder,
-            url: "/orders.json?type=sell"
+            url: "/data/orders.json?type=sell"
         });
 
         var orders = new MarketOrders();
