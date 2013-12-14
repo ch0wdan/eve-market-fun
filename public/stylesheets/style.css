@@ -1,0 +1,32 @@
+body {
+    margin-top: 50px;
+}
+a.showInfo img {
+  width: 24px;
+  height: 24px;
+  margin-right: 0.75em;
+}
+.backgrid {
+  font-size: 0.85em;
+}
+.backgrid thead th {
+    text-align: center;
+  background: #7a8288;
+}
+.backgrid th a {
+  display: block;
+  color: #ddd;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+}
+.backgrid td a {
+  text-decoration: none;
+}
+.backgrid td.showmarketdetails-cell a {
+  display: block;
+}
+.backgrid td.showmarketdetails-cell a:hover {
+  background: #5d6368;
+}
+.backgrid td.progressinteger-cell {
+  text-align: center;
+}

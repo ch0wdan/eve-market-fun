@@ -16,9 +16,12 @@ exports.up = function (knex) {
             t.uuid('userUuid').index();
             t.string('keyID').index().unique();
             t.string('vCode');
+            t.string('accessMask');
+            t.string('expires');
         }),
         ks.createTable('Characters', function (t) {
             t.uuid('uuid').primary();
+            t.string('keyUuid').index();
             t.timestamps();
             t.uuid('userUuid').index();
             t.string('name');
@@ -28,15 +31,27 @@ exports.up = function (knex) {
         }),
         ks.createTable('MarketOrders', function (t) {
             t.uuid('uuid').primary();
+            t.string('characterUuid');
             t.timestamps();
-            _.each(
-                // Copypasta from the CSV header of an EVE market log export
-                'orderID,typeID,charID,regionID,stationID,range,bid,price,volEntered,volRemaining,issueDate,orderState,minVolume,accountID,duration,isCorp,solarSystemID,escrow'.split(','),
-                function (name) {
-                    var c = t.string(name);
-                    if ('orderID' == name) { c.index().unique(); }
-                }
-            );
+            t.integer('orderID').unique();
+            t.integer('orderState');
+            t.integer('typeID');
+            t.integer('charID');
+            t.integer('regionID');
+            t.integer('stationID');
+            t.integer('solarSystemID');
+            t.string('accountKey');
+            t.string('accountID');
+            t.string('issueDate');
+            t.integer('duration');
+            t.decimal('price');
+            t.decimal('escrow');
+            t.integer('range');
+            t.integer('volEntered');
+            t.integer('volRemaining');
+            t.integer('minVolume');
+            t.boolean('isCorp');
+            t.boolean('bid');
         })
     ]);
 };
