@@ -135,9 +135,12 @@ $(document).ready(function () {
     $('#items').each(function () {
         var InvType = Backbone.Model.extend({});
         
-        var InvTypes = Backbone.Collection.extend({
+        //var InvTypes = Backbone.Collection.extend({
+        var InvTypes = Backbone.PageableCollection.extend({
             model: InvType,
-            url: "/data/invTypes?marketGroupID=77"
+            url: "/data/invTypes?marketGroupID=77",
+            state: { pageSize: 20 },
+            mode: 'client'
         });
 
         var items = new InvTypes();
@@ -145,7 +148,7 @@ $(document).ready(function () {
         var columns = [
             { name: 'typeName', label: 'Item', editable: false,
                 cell: ShowMarketDetailsCell.extend({typeIDAttr: 'typeID'}) },
-            //{ name: 'metaGroupName', label: 'Meta', editable: false, cell: 'string' },
+            { name: 'metaGroupName', label: 'Meta', editable: false, cell: 'string' },
             { name: 'categoryName', label: 'Category', editable: false, cell: 'string' },
             { name: 'groupName', label: 'Group', editable: false, cell: 'string' },
             { name: 'volume', label: 'Volume', editable: false, cell: 'number' }
@@ -157,6 +160,29 @@ $(document).ready(function () {
         });
 
         $('#items').append(grid.render().$el);
+
+        // Initialize the paginator
+        var paginator = new Backgrid.Extension.Paginator({
+          collection: items
+        });
+
+        // Render the paginator
+        $('#items').append(paginator.render().$el);
+
+        // Initialize a client-side filter to filter on the client
+        // mode pageable collection's cache.
+        /*
+        var filter = new Backgrid.Extension.ClientSideFilter({
+          collection: items.fullCollection,
+          fields: ['typeName']
+        });
+        */
+
+        // Render the filter
+        //$('$items').prepend(filter.render().$el);
+
+        // Add some space to the filter and move it to the right
+        //filter.$el.css({float: "right", margin: "20px"});
 
         items.fetch({reset: true});
 
