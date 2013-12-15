@@ -30,3 +30,12 @@ a.showMarketDetails img {
 .backgrid td.progressinteger-cell {
   text-align: center;
 }
+
+#tree {
+    float: left;
+    width: 33%;
+}
+#items {
+    float: right;
+    width: 64%;
+}
