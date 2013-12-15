@@ -1,6 +1,6 @@
 #!/bin/bash
-input_dir=$1
-output_dir=$2
+input_dir=eve-cache/387/CachedMethodCalls # $1
+output_dir=xfers/scraped # $2
 
 rm $output_dir/*;
 for cache_file in $input_dir/*.cache ; do

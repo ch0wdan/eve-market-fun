@@ -139,7 +139,7 @@ $(document).ready(function () {
         var InvTypes = Backbone.PageableCollection.extend({
             model: InvType,
             url: "/data/invTypes?marketGroupID=77",
-            state: { pageSize: 20 },
+            state: { pageSize: 15 },
             mode: 'client'
         });
 
@@ -171,18 +171,16 @@ $(document).ready(function () {
 
         // Initialize a client-side filter to filter on the client
         // mode pageable collection's cache.
-        /*
         var filter = new Backgrid.Extension.ClientSideFilter({
           collection: items.fullCollection,
           fields: ['typeName']
         });
-        */
 
         // Render the filter
-        //$('$items').prepend(filter.render().$el);
+        $('#items').prepend(filter.render().$el);
 
         // Add some space to the filter and move it to the right
-        //filter.$el.css({float: "right", margin: "20px"});
+        filter.$el.css({float: "right", margin: "20px"});
 
         items.fetch({reset: true});
 
