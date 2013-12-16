@@ -139,8 +139,8 @@ $(document).ready(function () {
         var InvTypes = Backbone.PageableCollection.extend({
             model: InvType,
             url: "/data/invTypes?marketGroupID=77",
-            state: { pageSize: 15 },
-            mode: 'client'
+            mode: 'client',
+            state: { pageSize: 15 }
         });
 
         var items = new InvTypes();
@@ -148,7 +148,8 @@ $(document).ready(function () {
         var columns = [
             { name: 'typeName', label: 'Item', editable: false,
                 cell: ShowMarketDetailsCell.extend({typeIDAttr: 'typeID'}) },
-            { name: 'metaGroupName', label: 'Meta', editable: false, cell: 'string' },
+            { name: 'metaLevel', label: 'Meta', editable: false, cell: 'integer' },
+            { name: 'metaGroupName', label: 'Meta Group', editable: false, cell: 'string' },
             { name: 'categoryName', label: 'Category', editable: false, cell: 'string' },
             { name: 'groupName', label: 'Group', editable: false, cell: 'string' },
             { name: 'volume', label: 'Volume', editable: false, cell: 'number' }
