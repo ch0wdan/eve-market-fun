@@ -138,7 +138,7 @@ $(document).ready(function () {
         //var InvTypes = Backbone.Collection.extend({
         var InvTypes = Backbone.PageableCollection.extend({
             model: InvType,
-            url: "/data/invTypes?marketGroupID=77",
+            url: "/data/invTypes?marketGroupID=4",
             mode: 'client',
             state: { pageSize: 15 }
         });
@@ -162,26 +162,30 @@ $(document).ready(function () {
 
         $('#items').append(grid.render().$el);
 
-        // Initialize the paginator
-        var paginator = new Backgrid.Extension.Paginator({
-          collection: items
-        });
+        if (true) {
+            // Initialize the paginator
+            var paginator = new Backgrid.Extension.Paginator({
+              collection: items
+            });
 
-        // Render the paginator
-        $('#items').append(paginator.render().$el);
+            // Render the paginator
+            $('#items').append(paginator.render().$el);
+        }
 
-        // Initialize a client-side filter to filter on the client
-        // mode pageable collection's cache.
-        var filter = new Backgrid.Extension.ClientSideFilter({
-          collection: items.fullCollection,
-          fields: ['typeName']
-        });
+        if (true) {
+            // Initialize a client-side filter to filter on the client
+            // mode pageable collection's cache.
+            var filter = new Backgrid.Extension.ClientSideFilter({
+              collection: items.fullCollection,
+              fields: ['typeName']
+            });
 
-        // Render the filter
-        $('#items').prepend(filter.render().$el);
+            // Render the filter
+            $('#items').prepend(filter.render().$el);
 
-        // Add some space to the filter and move it to the right
-        filter.$el.css({float: "right", margin: "20px"});
+            // Add some space to the filter and move it to the right
+            filter.$el.css({float: "right", margin: "20px"});
+        }
 
         items.fetch({reset: true});
 
@@ -214,18 +218,19 @@ $(document).ready(function () {
         });
     });
     
-    if (false) $('#gridplay').each(function () {
+    $('#marketorders').each(function () {
         
         var MarketOrder = Backbone.Model.extend({});
         
         var MarketOrders = Backbone.Collection.extend({
             model: MarketOrder,
-            url: "/data/orders.json?type=sell"
+            url: "/data/orders.json" //?type=sell"
         });
 
         var orders = new MarketOrders();
 
         var columns = [
+            { name: 'bidType', label: 'Sell/Buy', editable: false, cell: 'string' },
             { name: 'typeName', label: 'Item', editable: false,
                 cell: ShowMarketDetailsCell.extend({typeIDAttr: 'typeID'}) },
             { name: 'price', label: 'Price', cell: 'number', editable: false },
@@ -240,7 +245,7 @@ $(document).ready(function () {
             collection: orders
         });
 
-        $('#gridplay').append(grid.render().$el);
+        $('#marketorders').append(grid.render().$el);
 
         orders.fetch({reset: true});
     

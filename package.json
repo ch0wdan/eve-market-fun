@@ -40,5 +40,9 @@
   },
   "optionalDependencies": {
     "zmq": "~2.5.1"
+  },
+  "devDependencies": {
+    "bower": "~1.2.8",
+    "grunt": "~0.4.2"
   }
 }

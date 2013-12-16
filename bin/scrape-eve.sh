@@ -1,5 +1,5 @@
 #!/bin/bash
-input_dir=eve-cache/387/CachedMethodCalls # $1
+input_dir=xfers/eve-cache # $1
 output_dir=xfers/scraped # $2
 
 rm $output_dir/*;
