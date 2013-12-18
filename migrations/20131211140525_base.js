@@ -31,14 +31,14 @@ exports.up = function (knex) {
         }),
         ks.createTable('MarketOrders', function (t) {
             t.uuid('uuid').primary();
-            t.string('characterUuid');
+            t.string('characterUuid').index();
             t.timestamps();
             t.bigInteger('orderID').unique();
-            t.integer('orderState');
-            t.bigInteger('typeID');
+            t.integer('orderState').index();
+            t.bigInteger('typeID').index();
             t.bigInteger('charID');
-            t.bigInteger('regionID');
-            t.bigInteger('stationID');
+            t.bigInteger('regionID').index();
+            t.bigInteger('stationID').index();
             t.bigInteger('solarSystemID');
             t.string('accountKey');
             t.string('accountID');
@@ -51,7 +51,7 @@ exports.up = function (knex) {
             t.bigInteger('volRemaining');
             t.bigInteger('minVolume');
             t.boolean('isCorp');
-            t.boolean('bid');
+            t.boolean('bid').index();
         })
     ]);
 };
