@@ -1,69 +1,8 @@
 $(document).ready(function () {
 
+    console.log("HELLO WORLD");
+
     var EventHub = _.extend({}, Backbone.Events);
-
-    var ShowInfoCell = Backgrid.Cell.extend({
-        className: "showinfo-cell",
-        typeID: '3867',
-        itemIDAttr: 'itemID',
-        render: function () {
-            this.$el.empty();
-            var rawValue = this.model.get(this.column.get("name"));
-            var formattedValue = this.formatter.fromRaw(rawValue, this.model);
-            var itemID = this.model.get(this.itemIDAttr);
-            this.$el.append($("<a>", {
-                class: 'showInfo',
-                href: '',
-                "data-typeID": this.typeID,
-                "data-itemID": itemID
-            }).text(formattedValue));
-            this.delegateEvents();
-            return this;
-        }
-    });
-
-    var ShowMarketDetailsCell = Backgrid.Cell.extend({
-        className: "showmarketdetails-cell",
-        typeIDAttr: 'typeID',
-        render: function () {
-            this.$el.empty();
-            var rawValue = this.model.get(this.column.get("name"));
-            var formattedValue = this.formatter.fromRaw(rawValue, this.model);
-            var typeID = this.model.get(this.typeIDAttr);
-            this.$el.append(
-                $("<a>", {
-                    class: 'showMarketDetails',
-                    href: '',
-                    "data-typeID": typeID
-                })
-                .append($("<img>", {
-                    class: 'itemThumb',
-                    src: 'http://image.eveonline.com/Type/' + typeID + '_32.png',
-                    "data-itemID": typeID
-                }))
-                .append($("<span>").text(formattedValue))
-            );
-            this.delegateEvents();
-            return this;
-        }
-    });
-
-    var ProgressIntegerCell = Backgrid.Cell.extend({
-        className: "progressinteger-cell",
-        totalAttr: "volEntered",
-        render: function () {
-            this.$el.empty();
-            var rawValue = this.model.get(this.column.get("name"));
-            var formattedValue = this.formatter.fromRaw(rawValue, this.model);
-            var totalValue = this.model.get(this.totalAttr);
-            this.$el
-                .append($('<span>', {class: 'remaining'}).text(formattedValue))
-                .append($('<span>').text(' / '))
-                .append($('<span>', {class: 'total'}).text(totalValue))
-            this.delegateEvents();
-            return this;
-        }
-    });
 
     $(document)
         .delegate('a.showMarketDetails', 'click', function () {
@@ -132,7 +71,70 @@ $(document).ready(function () {
     
     });
 
-    $('#items').each(function () {
+    var ShowInfoCell = Backgrid.Cell.extend({
+        className: "showinfo-cell",
+        typeID: '3867',
+        itemIDAttr: 'itemID',
+        render: function () {
+            this.$el.empty();
+            var rawValue = this.model.get(this.column.get("name"));
+            var formattedValue = this.formatter.fromRaw(rawValue, this.model);
+            var itemID = this.model.get(this.itemIDAttr);
+            this.$el.append($("<a>", {
+                class: 'showInfo',
+                href: '',
+                "data-typeID": this.typeID,
+                "data-itemID": itemID
+            }).text(formattedValue));
+            this.delegateEvents();
+            return this;
+        }
+    });
+
+    var ShowMarketDetailsCell = Backgrid.Cell.extend({
+        className: "showmarketdetails-cell",
+        typeIDAttr: 'typeID',
+        render: function () {
+            this.$el.empty();
+            var rawValue = this.model.get(this.column.get("name"));
+            var formattedValue = this.formatter.fromRaw(rawValue, this.model);
+            var typeID = this.model.get(this.typeIDAttr);
+            this.$el.append(
+                $("<a>", {
+                    class: 'showMarketDetails',
+                    href: '',
+                    "data-typeID": typeID
+                })
+                .append($("<img>", {
+                    class: 'itemThumb',
+                    src: 'http://image.eveonline.com/Type/' + typeID + '_32.png',
+                    "data-itemID": typeID
+                }))
+                .append($("<span>").text(formattedValue))
+            );
+            this.delegateEvents();
+            return this;
+        }
+    });
+
+    var ProgressIntegerCell = Backgrid.Cell.extend({
+        className: "progressinteger-cell",
+        totalAttr: "volEntered",
+        render: function () {
+            this.$el.empty();
+            var rawValue = this.model.get(this.column.get("name"));
+            var formattedValue = this.formatter.fromRaw(rawValue, this.model);
+            var totalValue = this.model.get(this.totalAttr);
+            this.$el
+                .append($('<span>', {class: 'remaining'}).text(formattedValue))
+                .append($('<span>').text(' / '))
+                .append($('<span>', {class: 'total'}).text(totalValue))
+            this.delegateEvents();
+            return this;
+        }
+    });
+
+    if (true) $('#items').each(function () {
         var InvType = Backbone.Model.extend({});
         
         //var InvTypes = Backbone.Collection.extend({
@@ -148,6 +150,7 @@ $(document).ready(function () {
         var columns = [
             { name: 'typeName', label: 'Item', editable: false,
                 cell: ShowMarketDetailsCell.extend({typeIDAttr: 'typeID'}) },
+            { name: 'techLevel', label: 'Tech', editable: false, cell: 'integer' },
             { name: 'metaLevel', label: 'Meta', editable: false, cell: 'integer' },
             { name: 'metaGroupName', label: 'Meta Group', editable: false, cell: 'string' },
             { name: 'categoryName', label: 'Category', editable: false, cell: 'string' },
@@ -162,29 +165,18 @@ $(document).ready(function () {
 
         $('#items').append(grid.render().$el);
 
-        if (true) {
-            // Initialize the paginator
+        if (false) {
             var paginator = new Backgrid.Extension.Paginator({
-              collection: items
+                collection: items
             });
-
-            // Render the paginator
             $('#items').append(paginator.render().$el);
-        }
 
-        if (true) {
-            // Initialize a client-side filter to filter on the client
-            // mode pageable collection's cache.
             var filter = new Backgrid.Extension.ClientSideFilter({
-              collection: items.fullCollection,
-              fields: ['typeName']
+                collection: items.fullCollection,
+                fields: ['typeName']
             });
-
-            // Render the filter
             $('#items').prepend(filter.render().$el);
-
-            // Add some space to the filter and move it to the right
-            filter.$el.css({float: "right", margin: "20px"});
+            filter.$el.css({float: "left", margin: "20px"});
         }
 
         items.fetch({reset: true});
@@ -192,29 +184,6 @@ $(document).ready(function () {
         EventHub.on('marketGroupsSelected', function (selected_ids) {
             items.url = '/data/invTypes?marketGroupID=' + selected_ids.join('&marketGroupID=');
             items.fetch({reset: true});
-        });
-    });
-
-    if (false) $('#marketGroups').each(function () {
-        var root_el = $(this);
-        $.getJSON('/data/invMarketGroups', function (data) {
-            var render = function(root_el, root_groups) {
-                _.each(root_groups.children, function (group, id) {
-                    console.log(group);
-                    var el = $('<li>')
-                        .append($('<span>')
-                            .attr('title', group.description)
-                            .text(group.marketGroupName)
-                        );
-                    root_el.append(el);
-                    if (_.keys(group.children).length > 0) {
-                        var children_el = $('<ul>');
-                        el.append(children_el);
-                        render(children_el, group);
-                    }
-                });
-            };
-            render(root_el, data);
         });
     });
     

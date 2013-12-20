@@ -1,0 +1,29 @@
+{
+  "name": "eve-market-fun",
+  "version": "0.0.0",
+  "authors": [
+    "Les Orchard <me@lmorchard.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "backgrid": "~0.2.6",
+    "backgrid-filter": "*",
+    "backgrid-paginator": "*",
+    "backbone": "~1.1.0",
+    "backbone-pageable": "~1.4.3",
+    "underscore": "~1.5.2",
+    "jquery": "~2.0.3",
+    "jquery-ui": "~1.10.3",
+    "fancytree": "~2.0.0-4",
+    "bootstrap": "~3.0.3",
+    "lunr.js": "~0.4.3"
+  }
+}
