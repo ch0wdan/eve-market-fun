@@ -162,22 +162,19 @@ $(document).ready(function () {
             columns: columns,
             collection: items
         });
-
         $('#items').append(grid.render().$el);
 
-        if (false) {
-            var paginator = new Backgrid.Extension.Paginator({
-                collection: items
-            });
-            $('#items').append(paginator.render().$el);
+        var paginator = new Backgrid.Extension.Paginator({
+            collection: items
+        });
+        $('#items').append(paginator.render().$el);
 
-            var filter = new Backgrid.Extension.ClientSideFilter({
-                collection: items.fullCollection,
-                fields: ['typeName']
-            });
-            $('#items').prepend(filter.render().$el);
-            filter.$el.css({float: "left", margin: "20px"});
-        }
+        var filter = new Backgrid.Extension.ClientSideFilter({
+            collection: items.fullCollection,
+            fields: ['typeName']
+        });
+        $('#items').prepend(filter.render().$el);
+        //filter.$el.css({float: "left", margin: "20px"});
 
         items.fetch({reset: true});
 
