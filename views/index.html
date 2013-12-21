@@ -1,24 +1,35 @@
 {% extends "base.html" %}
+{% block js %}
+    <script src="/javascripts/marketbrowser.js"></script>
+{% endblock %}
 {% block content %}
 <div class="container">
 
-    <div id="market-filters" class="panel panel-default">
-        <div class="panel-heading">
-            <button id="apply-filters" type="button"
-                class="btn btn-primary btn-sm">Apply Filters &raquo;</button>
+    <div id="market-browser">
+
+        <div id="market-filters" class="panel panel-default">
+            <div class="panel-heading">
+                <button id="apply-filters" type="button"
+                    class="btn btn-primary btn-sm">Apply Filters &raquo;</button>
+            </div>
+            <div class="panel-body">
+
+                <h4>Categories</h4>
+                <div class="categories"></div>
+                
+                <h4>Meta Levels</h4>
+                <ul class="meta-levels clear"></ul>
+                
+                <h4>Meta Groups</h4>
+                <ul class="meta-groups clear"></ul>
+
+            </div>
         </div>
-        <div class="panel-body">
             
-            <h4>Meta Levels</h4>
-
-            <h4>Categories</h4>
-            <div class="tree"></div>
-
+        <div id="market-items" class="panel panel-default">
+            <div class="items"></div>
         </div>
-    </div>
-        
-    <div id="market-items" class="panel panel-default">
-        <div class="items"></div>
+
     </div>
 
 </div>

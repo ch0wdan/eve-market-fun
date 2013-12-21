@@ -1,6 +1,14 @@
 body {
     margin-top: 65px;
 }
+.clear:before,
+.clear:after {
+    content: " ";
+    display: table;
+}
+.clear:after {
+    clear: both;
+}
 a.showMarketDetails img {
   width: 24px;
   height: 24px;
@@ -70,8 +78,25 @@ ul.ui-fancytree {
     width: 33%;
     font-size: 0.8em;
 }
-#market-filters .tree ul {
+#market-filters .categories ul {
     overflow-x: hidden;
+}
+#market-filters ul.meta-groups, #market-filters ul.meta-levels {
+    list-style-type: none;
+    padding: 0;
+}
+#market-filters ul.meta-groups li { 
+    float: left;
+    width: 32%;
+}
+#market-filters ul.meta-levels li { 
+    float: left;
+    width: 32%;
+}
+#market-filters ul.meta-groups li label,
+#market-filters ul.meta-levels li label {
+    font-weight: normal;
+    margin: 0 0 0 0.25em;
 }
 #market-filters #apply-filters {
     display: block;
@@ -83,6 +108,4 @@ ul.ui-fancytree {
 }
 @media(min-width:910px){
     .container { width: 900px }
-    #market-filters .tree {
-    }
 }
