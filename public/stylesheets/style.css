@@ -6,11 +6,14 @@ a.showMarketDetails img {
   height: 24px;
   margin-right: 0.75em;
 }
+ul.ui-fancytree {
+    outline: 0;
+}
 .backgrid {
   font-size: 0.85em;
 }
 .backgrid thead th {
-    text-align: center;
+  /* text-align: center; */
   background: #7a8288;
 }
 .backgrid th a {
@@ -18,11 +21,34 @@ a.showMarketDetails img {
   color: #ddd;
   text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
 }
+.backgrid tbody tr:nth-child(odd) {
+   background-color: #373B40
+}
+.backgrid td {
+    border-bottom: none;
+}
 .backgrid td a {
   text-decoration: none;
 }
-.backgrid td.showmarketdetails-cell a {
+.backgrid td.showmarketdetails-cell a.showMarketDetails {
+  width: 37ex;
+  max-width: 37ex;
   display: block;
+  margin-left: 32px;
+  line-height: 32px;
+}
+.backgrid td.showmarketdetails-cell a.showInfo {
+    float: left;
+    margin-right: 0.75em;
+}
+.backgrid td.category-string-cell {
+  width: 15ex;
+}
+.backgrid td.group-string-cell {
+  width: 25ex;
+}
+.backgrid td.metalevel-cell {
+  width: 10ex;
 }
 .backgrid td.showmarketdetails-cell a:hover {
   background: #5d6368;
@@ -30,12 +56,35 @@ a.showMarketDetails img {
 .backgrid td.progressinteger-cell {
   text-align: center;
 }
-
-#tree {
+.backgrid-paginator ul > li > a {
+    font-size: 0.9em;
+    height: 4ex;
+    width: 3ex;
+}
+.backgrid-paginator ul {
+    padding: 0;
+    margin-top: 1em;
+}
+#market-filters {
     float: left;
     width: 33%;
+    font-size: 0.8em;
 }
-#items {
-    float: right;
-    width: 64%;
+#market-filters .tree ul {
+    overflow-x: hidden;
 }
+#market-filters #apply-filters {
+    display: block;
+    width: 100%;
+}
+#market-items {
+    margin-left: 34%;
+}
+/*
+@media(min-width:800px){
+    .container { width: 780px }
+    #market-filters .tree {
+        font-size: 0.9em;
+    }
+}
+*/

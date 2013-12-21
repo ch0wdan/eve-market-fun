@@ -1,8 +1,6 @@
 $(document).ready(function () {
 
-    console.log("HELLO WORLD");
-
-    var EventHub = _.extend({}, Backbone.Events);
+    var event_hub = _.extend({}, Backbone.Events);
 
     $(document)
         .delegate('a.showMarketDetails', 'click', function () {
@@ -16,7 +14,7 @@ $(document).ready(function () {
             return false;
         });
 
-    $('#tree').each(function () {
+    $('#market-filters .tree').each(function () {
         var tree = $(this);
         var base_url = '/data/invMarketGroups?shallow';
 
@@ -32,6 +30,7 @@ $(document).ready(function () {
         }
         tree.fancytree({
             checkbox: true,
+            icons: false,
             selectMode: 3,
             source: $.Deferred(function (dfd) {
                 $.getJSON(base_url, function (data) {
@@ -56,7 +55,7 @@ $(document).ready(function () {
                 var selected_ids = _.chain(data.tree.getSelectedNodes())
                     .map(function (node) { return node.key })
                     .value();
-                EventHub.trigger('marketGroupsSelected', selected_ids);
+                event_hub.trigger('marketGroupsSelectIds', selected_ids);
             },
             dblclick: function(e, data) {
                 data.node.toggleSelected();
@@ -69,6 +68,14 @@ $(document).ready(function () {
             }
         });
     
+    });
+
+    var selected_ids = null;
+    event_hub.on('marketGroupsSelectIds', function (ids) {
+        selected_ids = ids;
+    });
+    $('#apply-filters').click(function () {
+        event_hub.trigger('marketGroupsSelected', selected_ids);
     });
 
     var ShowInfoCell = Backgrid.Cell.extend({
@@ -101,17 +108,23 @@ $(document).ready(function () {
             var typeID = this.model.get(this.typeIDAttr);
             this.$el.append(
                 $("<a>", {
-                    class: 'showMarketDetails',
-                    href: '',
-                    "data-typeID": typeID
+                    class: 'showInfo',
+                    href: "",
+                    "data-typeID": this.model.get('typeID'),
+                    title: this.model.get('description')
                 })
                 .append($("<img>", {
                     class: 'itemThumb',
                     src: 'http://image.eveonline.com/Type/' + typeID + '_32.png',
-                    "data-itemID": typeID
-                }))
-                .append($("<span>").text(formattedValue))
-            );
+                    "data-typeID":  this.model.get('typeID')
+                })));
+            this.$el.append(
+                $("<a>", {
+                    class: 'showMarketDetails',
+                    href: '',
+                    "data-typeID": typeID
+                })
+                .append($("<span>").text(formattedValue)));
             this.delegateEvents();
             return this;
         }
@@ -134,10 +147,37 @@ $(document).ready(function () {
         }
     });
 
-    if (true) $('#items').each(function () {
+    var NamedIntegerCell = Backgrid.IntegerCell.extend({
+        className: "metalevel-cell",
+        nameAttr: "metaGroupName",
+        render: function () {
+            this.$el.empty();
+            var rawValue = this.model.get(this.column.get("name"));
+            var formattedValue = this.formatter.fromRaw(rawValue, this.model);
+            var nameValue = this.model.get(this.nameAttr) || rawValue;
+            this.$el.append($('<span>', {class: 'name', title: rawValue})
+                            .text(nameValue));
+            this.delegateEvents();
+            return this;
+        }
+    });
+
+    var M3VolumeCell = Backgrid.NumberCell.extend({
+        className: "m3volume-cell",
+        render: function () {
+            this.$el.empty();
+            var rawValue = this.model.get(this.column.get("name"));
+            var formattedValue = this.formatter.fromRaw(rawValue, this.model);
+            this.$el.append($('<span>', {class: 'm3'}).text(formattedValue));
+            this.delegateEvents();
+            return this;
+        }
+    });
+
+    $('#market-items .items').each(function () {
+        var items_el = $(this);
         var InvType = Backbone.Model.extend({});
         
-        //var InvTypes = Backbone.Collection.extend({
         var InvTypes = Backbone.PageableCollection.extend({
             model: InvType,
             url: "/data/invTypes?marketGroupID=4",
@@ -150,35 +190,33 @@ $(document).ready(function () {
         var columns = [
             { name: 'typeName', label: 'Item', editable: false,
                 cell: ShowMarketDetailsCell.extend({typeIDAttr: 'typeID'}) },
-            { name: 'techLevel', label: 'Tech', editable: false, cell: 'integer' },
-            { name: 'metaLevel', label: 'Meta', editable: false, cell: 'integer' },
-            { name: 'metaGroupName', label: 'Meta Group', editable: false, cell: 'string' },
-            { name: 'categoryName', label: 'Category', editable: false, cell: 'string' },
-            { name: 'groupName', label: 'Group', editable: false, cell: 'string' },
-            { name: 'volume', label: 'Volume', editable: false, cell: 'number' }
+            { name: 'groupName', label: 'Group', editable: false,
+                cell: Backgrid.StringCell.extend({className: 'group-string-cell'}) },
+            { name: 'metaLevel', label: 'Meta', editable: false,
+                cell: NamedIntegerCell.extend({nameAttr: 'metaGroupName'}) },
         ];
 
         var grid = new Backgrid.Grid({
             columns: columns,
             collection: items
         });
-        $('#items').append(grid.render().$el);
+        items_el.append(grid.render().$el);
 
         var paginator = new Backgrid.Extension.Paginator({
             collection: items
         });
-        $('#items').append(paginator.render().$el);
+        items_el.append(paginator.render().$el);
 
         var filter = new Backgrid.Extension.ClientSideFilter({
             collection: items.fullCollection,
             fields: ['typeName']
         });
-        $('#items').prepend(filter.render().$el);
+        //$('#market-filters .panel-body').prepend(filter.render().$el);
         //filter.$el.css({float: "left", margin: "20px"});
 
         items.fetch({reset: true});
 
-        EventHub.on('marketGroupsSelected', function (selected_ids) {
+        event_hub.on('marketGroupsSelected', function (selected_ids) {
             items.url = '/data/invTypes?marketGroupID=' + selected_ids.join('&marketGroupID=');
             items.fetch({reset: true});
         });

@@ -1,7 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container">
-    <div id="tree"></div>
-    <div id="items"></div>
+
+    <div id="market-filters" class="panel panel-default">
+        <div class="panel-heading">
+            <button id="apply-filters" type="button"
+                class="btn btn-primary btn-sm">Apply Filters &raquo;</button>
+        </div>
+        <div class="panel-body">
+            
+            <h4>Meta Levels</h4>
+
+            <h4>Categories</h4>
+            <div class="tree"></div>
+
+        </div>
+    </div>
+        
+    <div id="market-items" class="panel panel-default">
+        <div class="items"></div>
+    </div>
+
 </div>
 {% endblock %}
