@@ -78,13 +78,11 @@ ul.ui-fancytree {
     width: 100%;
 }
 #market-items {
-    margin-left: 34%;
+    margin-left: 35%;
+    padding: 0.75em;
 }
-/*
-@media(min-width:800px){
-    .container { width: 780px }
+@media(min-width:910px){
+    .container { width: 900px }
     #market-filters .tree {
-        font-size: 0.9em;
     }
 }
-*/
