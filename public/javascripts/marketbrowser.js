@@ -15,7 +15,7 @@ $(document).ready(function () {
                     value: r.metaLevel
                 })).append($('<label>', {
                     title: r.invTypesCount,
-                    for: 'metaLevel-' + r.metaLevel
+                    "for": 'metaLevel-' + r.metaLevel
                 }).text('Meta ' + r.metaLevel)))
         });
     });
@@ -30,7 +30,7 @@ $(document).ready(function () {
                     value: r.metaGroupID
                 })).append($('<label>', {
                     title: r.invTypesCount,
-                    for: 'metaGroup-' + r.metaGroupID
+                    "for": 'metaGroup-' + r.metaGroupID
                 }).text(r.metaGroupName)))
         });
     });

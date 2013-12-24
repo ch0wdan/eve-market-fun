@@ -1,67 +1,73 @@
 <!DOCTYPE html>
 <html>
-  <head>
-  <title>{{title}}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
-    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/vendor/bootstrap/slate-theme.min.css" rel="stylesheet">
-    <link href="/vendor/jquery-ui-1.10.3.custom/css/eggplant/jquery-ui-1.10.3.custom.min.css" rel="stylesheet">
-    <link href="/vendor/backgrid/lib/backgrid.css" rel="stylesheet">
-    <link rel="stylesheet" href="/vendor/backgrid/lib/extensions/filter/backgrid-filter.css" />
-    <link rel="stylesheet" href="/vendor/backgrid/lib/extensions/paginator/backgrid-paginator.css" />
-    <link href="/vendor/fancytree/skin-themeroller/ui.fancytree.css" rel="stylesheet">
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+<head>
+<title>{{title}}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Bootstrap -->
+<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="/vendor/bootstrap/slate-theme.min.css" rel="stylesheet">
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+<link href="/vendor/jquery-ui-1.10.3.custom/css/eggplant/jquery-ui-1.10.3.custom.min.css" rel="stylesheet">
+<link href="/vendor/backgrid/lib/backgrid.css" rel="stylesheet">
+<link rel="stylesheet" href="/vendor/backgrid/lib/extensions/filter/backgrid-filter.css" />
+<link rel="stylesheet" href="/vendor/backgrid/lib/extensions/paginator/backgrid-paginator.css" />
+<link href="/vendor/fancytree/skin-themeroller/ui.fancytree.css" rel="stylesheet">
+<link rel='stylesheet' href='/stylesheets/style.css' />
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
 
-    <script src="/vendor/jquery-1.10.2.min.js"></script>
-    <script src="/vendor/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js"></script>
-    <script src="/vendor/underscore-min.js"></script>
-    <script src="/vendor/backbone-min.js"></script>
-    <script src="/vendor/lunr.min.js"></script>
-    <script src="/vendor/bootstrap/js/bootstrap.js"></script>
-    <script src="/vendor/backgrid/lib/backgrid.js"></script>
-    <script src="/vendor/backbone-pageable.min.js"></script>
-    <script src="/vendor/backgrid/lib/extensions/paginator/backgrid-paginator.js"></script>
-    <script src="/vendor/backgrid/lib/extensions/filter/backgrid-filter.js"></script>
-    <script src="/vendor/fancytree/jquery.fancytree-all.min.js"></script>
-    <script src="/javascripts/ccpeve.js"></script>
-    <script src="/javascripts/main.js"></script>
-    {% block js %}{% endblock %}
+<script src="/vendor/jquery-1.10.2.min.js"></script>
+<script src="/vendor/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="/vendor/underscore-min.js"></script>
+<script src="/vendor/backbone-min.js"></script>
+<script src="/vendor/lunr.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.js"></script>
+<script src="/vendor/backgrid/lib/backgrid.js"></script>
+<script src="/vendor/backbone-pageable.min.js"></script>
+<script src="/vendor/backgrid/lib/extensions/paginator/backgrid-paginator.js"></script>
+<script src="/vendor/backgrid/lib/extensions/filter/backgrid-filter.js"></script>
+<script src="/vendor/fancytree/jquery.fancytree-all.min.js"></script>
+<script src="/javascripts/ccpeve.js"></script>
+<script src="/javascripts/main.js"></script>
+{% block js %}{% endblock %}
 
-  </head>
-  <body>
+</head>
+<body>
 
-      
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">EVE Market Fun</a>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">EVE Market Fun</a>
         </div>
         <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="/market/orders">Market</a></li>
-            <li><a href="/manufacturing">Manufacturing</a></li>
-          </ul>
-          <div class="navbar-right">
-          </div>
+            <ul class="nav navbar-nav">
+                <li><a href="/market/items">Items</a></li>
+                <li><a href="/market/orders">Market</a></li>
+                <li><a href="/manufacturing">Manufacturing</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if user %}
+                    <li><a href="/auth/profile"><span class="fa fa-user"></span> Profile</a></li>
+                    <li><a href="/auth/logout"><span class="fa fa-user"></span> Logout</a></li>
+                {% else %}
+                    <li><a href="/auth/signup"><span class="fa fa-user"></span> Sign up</a></li>
+                    <li><a href="/auth/login"><span class="fa fa-user"></span> Login</a></li>
+                {% endif %}
+            </ul>
         </div><!--/.nav-collapse -->
-      </div>
     </div>
-
+</div>
 {% block content %}{% endblock %}
-
-  </body>
+</body>
 </html>

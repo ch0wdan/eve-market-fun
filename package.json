@@ -36,7 +36,13 @@
     "commander": "~2.1.0",
     "watch": "~0.8.0",
     "node-uuid": "~1.4.1",
-    "nunjucks": "~1.0.0"
+    "nunjucks": "~1.0.0",
+    "connect-flash": "~0.1.1",
+    "bcrypt-nodejs": "0.0.3",
+    "passport-local": "~0.1.6",
+    "express-validator": "~1.0.1",
+    "node-validator": "~0.1.1",
+    "forms": "~0.3.0"
   },
   "optionalDependencies": {
     "zmq": "~2.5.1",

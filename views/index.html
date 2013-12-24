@@ -1,36 +1,8 @@
 {% extends "base.html" %}
-{% block js %}
-    <script src="/javascripts/marketbrowser.js"></script>
-{% endblock %}
 {% block content %}
-<div class="container">
-
-    <div id="market-browser">
-
-        <div id="market-filters" class="panel panel-default">
-            <div class="panel-heading">
-                <button id="apply-filters" type="button"
-                    class="btn btn-primary btn-sm">Apply Filters &raquo;</button>
-            </div>
-            <div class="panel-body">
-
-                <h4>Categories</h4>
-                <div class="categories"></div>
-                
-                <h4>Meta Levels</h4>
-                <ul class="meta-levels clear"></ul>
-                
-                <h4>Meta Groups</h4>
-                <ul class="meta-groups clear"></ul>
-
-            </div>
-        </div>
-            
-        <div id="market-items" class="panel panel-default">
-            <div class="items"></div>
-        </div>
-
+    <div class="jumbotron text-center">
+        <h1>EVE Market Fun</h1>
+        <a href="/auth/login" class="btn btn-default"><span class="fa fa-user"></span> Login</a>
+        <a href="/auth/signup" class="btn btn-default"><span class="fa fa-user"></span> Signup</a>
     </div>
-
-</div>
 {% endblock %}

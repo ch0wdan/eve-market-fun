@@ -9,6 +9,9 @@ body {
 .clear:after {
     clear: both;
 }
+form.wide {
+    width: 100%;
+}
 a.showMarketDetails img {
   width: 24px;
   height: 24px;
