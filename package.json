@@ -8,7 +8,7 @@
     "evemf": "bin/evemf"
   },
   "scripts": {
-    "start": "./node_modules/.bin/supervisor -- ./bin/evemf serve",
+    "start": "./node_modules/.bin/supervisor -e 'js|html|css' -- ./bin/evemf serve",
     "test": "./node_modules/.bin/mocha -R spec -u tdd",
     "testwatch": "./node_modules/.bin/mocha -w -R spec -u tdd"
   },
