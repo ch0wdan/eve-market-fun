@@ -20,6 +20,9 @@ a.showMarketDetails img {
 ul.ui-fancytree {
     outline: 0;
 }
+p.form-error-tooltip {
+    color: #EE5F5B;
+}
 .backgrid {
   font-size: 0.85em;
 }
@@ -109,6 +112,32 @@ ul.ui-fancytree {
     margin-left: 35%;
     padding: 0.75em;
 }
+table { width: 100% }
+table thead th { padding: 0.5em; text-align: center; }
+table tbody td { padding: 0.5em }
+table tbody tr.blankslate td { text-align: center; }
+table tbody tr:nth-child(odd) {
+   background-color: #373B40
+}
+table.apikeys tbody td { text-align: center; }
+
+dl { }
+dl dt {
+    float: left;
+    display: block;
+    text-align: right;
+    width: 15ex;
+    padding: 0.25em 0.5em;
+    background-color: #373B40;
+}
+dl dd {
+    padding: 0.25em 0.5em;
+    margin: 0.75em 0.25em 0.75em 16ex;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+	overflow: hidden;
+}
+
 @media(min-width:910px){
     .container { width: 900px }
 }

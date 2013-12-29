@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+
+    {% if message.length %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endif %}
+
+    <div>
+        <h2>
+            <span><span class="fa fa-key"></span> API Keys</span>
+            {% if apikeys %}
+                <a href="/u/{{ user.username }}/settings/apikey"
+                    type="button" class="btn btn-sm btn-primary">Add key</a>
+            {% endif %}
+        </h2>
+        <table class="apikeys">
+            <thead>
+                <tr>
+                    <th>Actions</th>
+                    <th>KeyID</th>
+                    <th>AccessMask</th>
+                    <th>Expires</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if apikeys %}
+                    {% for row in apikeys %}
+                        <tr>
+                            <td>
+                                <a href="/u/{{ user.username }}/settings/apikey/{{ row.keyID }}/delete"
+                                    class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                            <td>{{ row.keyID }}</td>
+                            <td>{{ row.accessMask }}</td>
+                            <td>{{ row.expires }}</td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr class="blankslate"><td colspan="6">
+                        <p>
+                            <a href="/u/{{ user.username }}/settings/apikey"
+                                type="button" class="btn btn-lg btn-primary">Add API key</a>
+                        </p>
+                    </td></tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{% endblock %}

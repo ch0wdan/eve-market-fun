@@ -62,7 +62,8 @@
                         <a href="#" class="dropdown-toggle" 
                             data-toggle="dropdown"><span class="fa fa-user"></span> {{ user.username }} <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="/auth/profile"><span class="fa fa-home"></span> Profile</li>
+                            <li><a href="/u/{{ user.username }}"><span class="fa fa-home"></span> Profile</a></li>
+                            <li><a href="/u/{{ user.username }}/settings"><span class="fa fa-gear"></span> Settings</a></li>
                             <li><a href="/auth/logout"><span class="fa fa-power-off"></span> Logout</a></li>
                         </ul>
                     </li>

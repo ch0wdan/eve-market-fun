@@ -2,7 +2,12 @@
 {% block content %}
     <div class="jumbotron text-center">
         <h1>EVE Market Fun</h1>
-        <a href="/auth/signup" class="btn btn-default"><span class="fa fa-user"></span> Signup</a>
-        <a href="/auth/login" class="btn btn-default"><span class="fa fa-user"></span> Login</a>
+        {% if request.isAuthenticated() %}
+            <a href="/auth/home" class="btn btn-default"><span class="fa fa-home"></span> {{ user.username }}</a>
+            <a href="/auth/logout" class="btn btn-default"><span class="fa fa-power-off"></span> Logout</a>
+        {% else %}
+            <a href="/auth/signup" class="btn btn-default"><span class="fa fa-user"></span> Sign up</a>
+            <a href="/auth/login" class="btn btn-default"><span class="fa fa-user"></span> Login</a>
+        {% endif %}
     </div>
 {% endblock %}
