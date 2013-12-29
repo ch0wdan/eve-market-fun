@@ -119,7 +119,9 @@ table tbody tr.blankslate td { text-align: center; }
 table tbody tr:nth-child(odd) {
    background-color: #373B40
 }
-table.apikeys tbody td { text-align: center; }
+table.apikeys tbody td, 
+table.characters tbody td 
+{ text-align: center; }
 
 dl { }
 dl dt {
