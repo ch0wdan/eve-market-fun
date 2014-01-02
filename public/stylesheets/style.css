@@ -12,6 +12,9 @@ body {
 form.wide {
     width: 100%;
 }
+form.right {
+    text-align: right;
+}
 a.showMarketDetails img {
   width: 24px;
   height: 24px;
@@ -116,12 +119,10 @@ table { width: 100% }
 table thead th { padding: 0.5em; text-align: center; }
 table tbody td { padding: 0.5em }
 table tbody tr.blankslate td { text-align: center; }
-table tbody tr:nth-child(odd) {
-   background-color: #373B40
-}
-table.apikeys tbody td, 
-table.characters tbody td 
-{ text-align: center; }
+table tbody tr:nth-child(odd) { background-color: #373B40 }
+table.characters { width: inherit; }
+table.characters tbody td { text-align: left; padding: 0.75em }
+table.characters tbody td img { width: 48px; height 48px; padding: 0.5em; }
 
 dl { }
 dl dt {
@@ -129,16 +130,18 @@ dl dt {
     display: block;
     text-align: right;
     width: 15ex;
-    padding: 0.25em 0.5em;
-    background-color: #373B40;
+    padding: 0.25em;
 }
 dl dd {
     padding: 0.25em 0.5em;
-    margin: 0.75em 0.25em 0.75em 16ex;
+    margin: 0.75em 0.25em 0.75em 15ex;
     text-overflow: ellipsis;
     white-space: nowrap;
 	overflow: hidden;
 }
+
+.apikey.panel { position: relative; padding: 0.5em 1em; }
+.apikey.panel .action-delete { position: absolute; right: 1em; top: 1em; }
 
 @media(min-width:910px){
     .container { width: 900px }

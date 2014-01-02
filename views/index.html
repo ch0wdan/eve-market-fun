@@ -2,12 +2,17 @@
 {% block content %}
     <div class="jumbotron text-center">
         <h1>EVE Market Fun</h1>
-        {% if request.isAuthenticated() %}
-            <a href="/auth/home" class="btn btn-default"><span class="fa fa-home"></span> {{ user.username }}</a>
-            <a href="/auth/logout" class="btn btn-default"><span class="fa fa-power-off"></span> Logout</a>
-        {% else %}
-            <a href="/auth/signup" class="btn btn-default"><span class="fa fa-user"></span> Sign up</a>
-            <a href="/auth/login" class="btn btn-default"><span class="fa fa-user"></span> Login</a>
+        {% if server_status %}
+            <h3>
+                Tranquility Status:
+                {% if server_status.serverOpen.content == 'True' %}
+                    <span class="label label-success">Open
+                {% else %}
+                    <span class="label label-danger">Closed
+                {% endif %}
+                <span class="badge">{{ server_status.onlinePlayers.content }}</span>
+                </span>
+            </h3>
         {% endif %}
     </div>
 {% endblock %}

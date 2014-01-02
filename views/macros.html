@@ -1,0 +1,32 @@
+{% macro apikey(key, user, actions=False) %}
+    <div class="apikey panel panel-default">
+        <dl class="apikey">
+            <dt>KeyID:</dt><dd>{{ key.keyID }}</dd> 
+            <dt>VCode:</dt><dd>{{ key.vCode }}</dd> 
+            <dt>Access Mask:</dt><dd>{{ key.accessMask }}</dd> 
+            <dt>Expires:</dt><dd>{{ key.expires }}</dd> 
+            <dt>Characters:</dt><dd>
+                <table class="characters">
+                    <tbody>
+                        {% for character in key.characters %}
+                            <tr>
+                                <td title="{{ character.characterID }}">
+                                    <img src="https://image.eveonline.com/Character/{{ character.characterID }}_64.jpg">
+                                    {{ character.name }}
+                                </td>
+                                <td>
+                                    <img src="https://image.eveonline.com/Corporation/{{ character.corporationID }}_64.png">
+                                    {{ character.corporationName }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </dd>
+        </dl>
+        {% if actions %}
+        <a class="action-delete btn btn-danger"
+            href="/u/{{ user.username }}/settings/apikey/{{ key.keyID }}/delete"><i class="fa fa-trash-o"></i> Delete</a>
+        {% endif %}
+    </div>
+{% endmacro %}

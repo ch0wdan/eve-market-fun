@@ -1,46 +1,16 @@
 {% extends "base.html" %}
+{% import "macros.html" as macros %}
 {% block content %}
 <div class="container">
-    <div class="row">
-        <div class="col-md-offset-2 col-md-8">
-            
-            <h1><i class="fa fa-key"></i> Delete API key</h1>
-            <dl class="apikey">
-                <dt>KeyID</dt><dd>{{ apikey.keyID }}</dd> 
-                <dt>VCode</dt><dd>{{ apikey.vCode }}</dd> 
-            </dl>
+        
+    <h2><i class="fa fa-key"></i> Delete API key</h2>
+    {{ macros.apikey(key=key, user=user, actions=false) }}
+    
+    <form class="wide right" action="" method="post" role="form">
+        <a href="/u/{{ user.username }}/settings"
+            class="btn btn-lg btn-success">Cancel</a>
+        <button type="submit" class="btn btn-danger btn-lg"><i class="fa fa-trash-o"></i> Delete</button>
+    </form>
 
-            <h3><i class="fa fa-people"></i> Characters</h3>
-            <table class="characters">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Corporation</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% if characters and characters.length %}
-                        {% for row in characters %}
-                            <tr>
-                                <td>{{ row.name }}</td>
-                                <td>{{ row.corporationName }}</td>
-                            </tr>
-                        {% endfor %}
-                    {% else %}
-                        <tr class="blankslate"><td colspan="2">
-                            <p>None, yet.</p>
-                        </td></tr>
-                    {% endif %}
-                </tbody>
-            </table>
-            
-            <form class="wide" action="" method="post" role="form">
-                <a href="/u/{{ user.username }}/settings"
-                    class="btn btn-lg btn-warning">Cancel</a>
-                <button type="submit" class="btn btn-danger btn-lg">Delete</button>
-            </form>
-
-        </div>
-    </div>
 </div>
 {% endblock %}

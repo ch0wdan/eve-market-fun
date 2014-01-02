@@ -1,0 +1,24 @@
+<dl class="apikey">
+    <dt>KeyID:</dt><dd>{{ key.keyID }}</dd> 
+    <dt>VCode:</dt><dd>{{ key.vCode }}</dd> 
+    <dt>Access Mask:</dt><dd>{{ key.accessMask }}</dd> 
+    <dt>Expires:</dt><dd>{{ key.expires }}</dd> 
+    <dt>Characters:</dt><dd>
+        <table class="characters">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Corporation</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for character in key.characters %}
+                    <tr>
+                        <td>{{ character.name }}</td>
+                        <td>{{ character.corporationName }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </dd>
+</dl>

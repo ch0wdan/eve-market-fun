@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+
+{% import "macros.html" as macros %}
+
 {% block content %}
 <div class="container">
 
@@ -9,71 +12,23 @@
     <div>
         <h2>
             <span><i class="fa fa-key"></i> API Keys</span>
-            {% if apikeys %}
+            {% if apikeys and apikeys.length %}
                 <a href="/u/{{ user.username }}/settings/apikey"
                     type="button" class="btn btn-sm btn-primary">Add key</a>
             {% endif %}
         </h2>
-        <table class="apikeys">
-            <thead>
-                <tr>
-                    <th>Actions</th>
-                    <th>KeyID</th>
-                    <th>AccessMask</th>
-                    <th>Expires</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% if apikeys and apikeys.length %}
-                    {% for row in apikeys %}
-                        <tr>
-                            <td>
-                                <a href="/u/{{ user.username }}/settings/apikey/{{ row.keyID }}/delete"
-                                    class="btn btn-sm btn-danger">Delete</a>
-                            </td>
-                            <td title="{{ row.uuid }}">{{ row.keyID }}</td>
-                            <td>{{ row.accessMask }}</td>
-                            <td>{{ row.expires }}</td>
-                        </tr>
-                    {% endfor %}
-                {% else %}
-                    <tr class="blankslate"><td colspan="6">
-                        <p>
-                            <a href="/u/{{ user.username }}/settings/apikey"
-                                type="button" class="btn btn-lg btn-primary">Add API key</a>
-                        </p>
-                    </td></tr>
-                {% endif %}
-            </tbody>
-        </table>
-    </div>
-
-    <div>
-        <h2>
-            <span><i class="fa fa-users"></i> Characters</span>
-        </h2>
-        <table class="characters">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Corporation</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% if characters and characters.length %}
-                    {% for row in characters %}
-                        <tr>
-                            <td>{{ row.name }}</td>
-                            <td>{{ row.corporationName }}</td>
-                        </tr>
-                    {% endfor %}
-                {% else %}
-                    <tr class="blankslate"><td colspan="2">
-                        <p>None, yet.</p>
-                    </td></tr>
-                {% endif %}
-            </tbody>
-        </table>
+        {% if apikeys and apikeys.length %}
+            {% for key in apikeys %}
+                {{ macros.apikey(key=key, user=user, actions=true) }}
+            {% endfor %}
+        {% else %}
+            <div class="apikey panel panel-default">
+                <p>
+                    <a href="/u/{{ user.username }}/settings/apikey"
+                        type="button" class="btn btn-lg btn-primary">Add API key</a>
+                </p>
+            </div>
+        {% endif %}
     </div>
 
 </div>
