@@ -1,6 +1,26 @@
 {% extends "base.html" %}
+{% block js %}
+    <script src="/javascripts/market/orders.js"></script>
+{% endblock %}
 {% block content %}
 <div class="container">
-    <div id="marketorders"></div>
+    <h3><span class="fa fa-shopping-cart"></span> Market: Orders</h3>
+   <select class="selectpicker">
+    <option data-content="<span class='label label-success'>Relish</span>">Relish</option>
+    
+    <optgroup label="Picnic" disabled>
+      <option>Mustard</option>
+      <option>Ketchup</option>
+      <option>Relish</option>
+    </optgroup>
+    <optgroup label="Camping">
+      <option>Tent</option>
+      <option>Flashlight</option>
+      <option>Toilet Paper</option>
+    </optgroup>
+  </select> 
+
+  <div id="marketorders"></div>
+
 </div>
 {% endblock %}
