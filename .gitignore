@@ -1,6 +1,6 @@
 xfers
 *.sqlite
-*.sw[po]
+*.sw[oplmn]
 tmp
 node_modules
 marketlogs
@@ -8,3 +8,4 @@ eve-cache
 config/local.json
 cache/neow/*
 populate.sh
+npm-debug.log
