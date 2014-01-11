@@ -1,6 +1,11 @@
 body {
     margin-top: 65px;
 }
+
+@media(min-width:910px){
+    .container { width: 900px }
+}
+
 .clear:before,
 .clear:after {
     content: " ";
@@ -143,6 +148,8 @@ dl dd {
 .apikey.panel { position: relative; padding: 0.5em 1em; }
 .apikey.panel .action-delete { position: absolute; right: 1em; top: 1em; }
 
-@media(min-width:910px){
-    .container { width: 900px }
+img.character-select {
+    margin-right: 0.5em;
+    width: 16px;
+    height: 16px;
 }
