@@ -2,31 +2,10 @@ $(document).ready(function () {
 
     var LAST_ORDER_CHAR = 'evemf_last_order_char';
 
-    var MarketOrder = Backbone.Model.extend({
-    });
-
-    var MarketOrders = Backbone.PageableCollection.extend({
-        model: MarketOrder,
-        mode: 'client',
-        state: { pageSize: 15 }
-    });
-
-    var orders = new MarketOrders();
-
-    var columns = [
-        { name: 'orderState', label: 'State', editable: false, cell: 'integer' },
-        { name: 'bidType', label: 'Sell/Buy', editable: false, cell: 'string' },
-        { name: 'typeName', label: 'Item', editable: false,
-            cell: ShowMarketDetailsCell.extend({typeIDAttr: 'typeID'}) },
-        { name: 'price', label: 'Price', cell: 'number', editable: false },
-        { name: 'volRemaining', label: 'Volume', editable: false,
-            cell: ProgressIntegerCell.extend({totalAttr: 'volEntered'}) },
-        { name: 'stationName', label: 'Station', editable: false,
-            cell: ShowInfoCell.extend({typeID: '3867', itemIDAttr: 'stationID'}) },
-    ];
+    var orders = new Market.MarketOrders();
 
     var grid = new Backgrid.Grid({
-        columns: columns,
+        columns: Market.MarketColumns,
         collection: orders
     });
 
@@ -46,7 +25,6 @@ $(document).ready(function () {
     var loadOrders = function (characterID) {
         if (!characterID) return;
         orders.url = "/data/market/orders?character=" + characterID;
-        //orders.url = "/data/market/orders?regionID=10000032&typeID=30834"
         orders.fetch({reset: true});
     }
 

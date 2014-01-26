@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block js %}
+    <script src="/javascripts/market.js"></script>
+    <script src="/javascripts/market/type.js"></script>
+{% endblock %}
+{% block content %}
+<div class="container">
+
+    <h3>
+        <i class="fa fa-shopping-cart"></i> Market: Orders {{ typeID }}
+    </h3>
+
+    <section class="marketorders" data-typeID="{{ typeID }}">
+        <section class="sell"></section>
+        <section class="buy"></section>
+    </section>
+
+</div>
+{% endblock %}

@@ -1,5 +1,10 @@
 if (typeof CCPEVE == 'undefined') {
+    
     var CCPEVE = window.CCPEVE = {};
+
+    CCPEVE.showMarketDetails = function (type_id) {
+        window.location.href = '/market/type/' + type_id;
+    };
 
     var stub_names = [
         'showMarketDetails',
@@ -8,6 +13,7 @@ if (typeof CCPEVE == 'undefined') {
 
     for (var i=0; i<stub_names.length; i++) {
         (function (name) {
+            if (name in CCPEVE) { return; }
             CCPEVE[name] = function () {
                 var args = JSON.stringify(Array.prototype.slice.apply(arguments));
                 console.log("CCPEVE."+name+" "+args);
