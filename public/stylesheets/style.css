@@ -35,7 +35,7 @@ p.form-error-tooltip {
   font-size: 0.85em;
 }
 .backgrid thead th {
-  /* text-align: center; */
+  text-align: center;
   background: #7a8288;
 }
 .backgrid th a {
