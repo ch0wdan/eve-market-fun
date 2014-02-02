@@ -1,24 +1,21 @@
 function loadSelectFromJSON (el, url, val_name, label_name, next_cb) {
     next_cb = next_cb || function () {};
     $.getJSON(url, function (items) {
+        var choices = {};
         el.empty();
         el.removeAttr('disabled');
         _(items).chain().sortBy(label_name).each(function (item) {
+            choices[item[val_name]] = item[label_name];
             el.append($('<option>', {
                 value: item[val_name],
             }).text(item[label_name]));
         });
         el.selectpicker('refresh');
-        next_cb(items);
+        next_cb(null, items, choices);
     });
 }
 
-var hub = _.extend({}, Backbone.Events);
-var state = {
-    regionID: [],
-    constellationID: [],
-    solarSystemID: []
-};
+var hub = window.hub = _.extend({}, Backbone.Events);
 
 $(document).ready(function () {
 
@@ -57,75 +54,120 @@ $(document).ready(function () {
             fields: ['typeName']
         });
 
-        hub.on('loadOrders', function () {
-            var params = $.param(_.extend({bid: bid_idx}, state));
-            orders.url = "/data/market/type/" + type_id + "?" + params;
+        hub.on('loadorders', function (location_state) {
+            var params = {bid: bid_idx}
+            _.each(location_state, function (val, name) {
+                if (val) { params[name] = val; }
+            });
+            orders.url = "/data/market/type/" + type_id +
+                "?" + $.param(params);
             orders.fetch({reset: true});
         });
 
     });
 
-    var regions_el = $('#regions');
-    regions_el.selectpicker().on('change', function (ev) {
-        updateState({regionID: $(this).val()});
+    $('.locationselector').each(function () {
+        var root_el = $(this);
+        var state = {
+            regionID: null,
+            constellationID: null,
+            solarSystemID: null
+        };
+        var choices = {};
+        var els = {};
+        _.each(state, function (ignore, name) {
+            choices[name] = {};
+            els[name] = root_el.find('.'+name)
+                .prop('disabled', true)
+                .selectpicker({
+                    liveSearch: true,
+                    showSubtext: true,
+                    selectedTextFormat: 'values' 
+                })
+                .on('change', function (ev) {
+                    var update = _.clone(state);
+                    update[name] = $(this).val();
+                    updateState(update);
+                    saveState();
+                });
+        });
+        var resetSelector = function (name) {
+            els[name].empty().prop('disabled', true).selectpicker('refresh');
+            choices[name] = {};
+        };
+        var updateSelector = function (name) {
+            if (state[name]) {
+                els[name].val(state[name]).selectpicker('refresh');
+            }
+        };
+        var updateState = function (update) {
+            var changed = {};
+            _.each(state, function (curr_val, name) {
+                var new_val = update[name];
+                changed[name] = (update[name] != curr_val);
+                state[name] = new_val;
+            });
+            async.waterfall([
+                function (next) {
+                    if (!changed.regionID) {
+                        return next(null, null, null);
+                    }
+                    updateSelector('regionID');
+                    resetSelector('constellationID');
+                    resetSelector('solarSystemID');
+                    loadSelectFromJSON(els.constellationID,
+                        '/data/mapConstellations?' + $.param({
+                            regionID: state.regionID
+                        }), 'constellationID', 'constellationName', next);
+                }, function (data, choices_in, next) {
+                    if (choices_in) { choices.constellationID = choices_in; }
+                    if (!changed.constellationID) {
+                        return next(null, null, null);
+                    }
+                    updateSelector('constellationID');
+                    resetSelector('solarSystemID');
+                    loadSelectFromJSON(els.solarSystemID,
+                        '/data/mapSolarSystems?' + $.param({
+                            constellationID: state.constellationID
+                        }), 'solarSystemID', 'solarSystemName', next);
+                }, function (data, choices_in, next) {
+                    if (choices_in) { choices.solarSystemID = choices_in; }
+                    if (!changed.solarSystemID) { return next(); }
+                    updateSelector('solarSystemID');
+                    next();
+                }
+            ], function (err) {
+                _.each(state, function (curr_val, name) {
+                    if (!choices[name] || !choices[name][state[name]]) {
+                        state[name] = null;
+                    }
+                });
+                hub.trigger('locationselector:change', state, changed);
+            });
+        };
+        var saveState = function () {
+            history.pushState(state, '',
+                '/market/type/' + type_id + '?' + $.param(state));
+        };
+        hub.on('locationselector:update', function (update) {
+            updateState(update);
+        });
+        loadSelectFromJSON(els.regionID, '/data/mapRegions',
+            'regionID', 'regionName',
+            function (err, data, choices_in) {
+                choices.regionID = choices_in;
+                window.onpopstate = function (ev) {
+                    hub.trigger('locationselector:update', ev.state);
+                };
+                if (window.location.search) {
+                    var search = window.location.search.substr(1);
+                    var params = $.parseParams(search);
+                    hub.trigger('locationselector:update', params);
+                }
+            });
     });
 
-    var constellations_el = $('#constellations');
-    constellations_el.selectpicker().on('change', function (ev) {
-        updateState({constellationID: $(this).val()});
+    hub.on('locationselector:change', function (state, changed) {
+        hub.trigger('loadorders', state);
     });
-    
-    var systems_el = $('#systems');
-    systems_el.selectpicker().on('change', function (ev) {
-        updateState({solarSystemID: $(this).val()});
-    });
-    
-    var updateRegions = function () {
-        loadSelectFromJSON(regions_el, '/data/mapRegions', 'regionID', 'regionName', function () {
-            regions_el.val(state.regionID);
-            regions_el.selectpicker('render');
-        });
-    }
-    var updateConstellations = function () {
-        var url = '/data/mapConstellations?' + $.param({regionID: state.regionID});
-        loadSelectFromJSON(constellations_el, url, 'constellationID', 'constellationName', function () {
-            constellations_el.val(state.constellationID);
-            constellations_el.selectpicker('render');
-        });
-    }
-    var updateSolarSystems = function () {
-        var url = '/data/mapSolarSystems?' + $.param({constellationID: state.constellationID});
-        loadSelectFromJSON(systems_el, url, 'solarSystemID', 'solarSystemName', function () {
-            systems_el.val(state.solarSystemID);
-            systems_el.selectpicker('render');
-        });
-    }
-
-    var updateState = function (data, skip_push_state) {
-        data = data || {};
-        state = _.extend(state, data);
-        if (regions_el.attr('disabled')) {
-            updateRegions();
-        }
-        if (data.constellationID && data.constellationID.length) {
-            updateSolarSystems();
-        }
-        if (data.regionID && data.regionID.length) {
-            updateConstellations();
-        }
-        if (!skip_push_state) {
-            history.pushState(state, "", "/market/type/" + type_id + "?" + $.param(state));
-        }
-        hub.trigger('loadOrders');
-    };
-
-    window.onpopstate = function (ev) {
-        updateState(ev.state, true);
-    };
-    if (window.location.search) {
-        var params = $.parseParams(window.location.search.substr(1));
-        updateState(params, true);
-    } else {
-        updateState({}, true);
-    }
 });

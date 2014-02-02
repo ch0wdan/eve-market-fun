@@ -3,7 +3,9 @@ $(document).ready(function () {
     $(document)
         .delegate('a.showMarketDetails', 'click', function () {
             var el = $(this);
+            var type_id = el.data('typeid');
             CCPEVE.showMarketDetails(el.data('typeid'));
+            window.location.href = '/market/type/' + type_id;
             return false;
         })
         .delegate('a.showInfo', 'click', function () {

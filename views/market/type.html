@@ -10,25 +10,10 @@
         {{ type.typeName }}
     </h3>
     
-    <section>
-        <select id="regions" title="Regions"
-            multiple disabled
-            data-show-subtext="true"
-            data-show-tick="true" data-show-subtext="true"
-            data-selected-text-format="values"
-            data-live-search="true"></select>
-        <select id="constellations" title="Constellations"
-            multiple disabled
-            data-show-subtext="true"
-            data-show-tick="true" data-show-subtext="true"
-            data-selected-text-format="values"
-            data-live-search="true"></select>
-        <select id="systems" title="Systems"
-            multiple disabled
-            data-show-subtext="true"
-            data-show-tick="true" data-show-subtext="true"
-            data-selected-text-format="values"
-            data-live-search="true"></select>
+    <section class="locationselector">
+        <select class="regionID" title="Regions"></select>
+        <select class="constellationID" title="Constellations"></select>
+        <select class="solarSystemID" title="Systems"></select>
     </section>
 
     <section class="marketorders" data-typeID="{{ typeID }}">
