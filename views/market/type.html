@@ -11,6 +11,19 @@
     </h3>
     
     <section class="locationselector">
+        <button type="button" class="action-here btn btn-default">
+            <i class="fa fa-crosshairs"></i>
+        </button>
+        <div class="favorites btn-group">
+          <button type="button" class="action-favorite btn btn-default">
+            <i class="fa fa-star"></i>
+          </button>
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu" role="menu"></ul>
+        </div>
         <select class="regionID" title="Regions"></select>
         <select class="constellationID" title="Constellations"></select>
         <select class="solarSystemID" title="Systems"></select>

@@ -31,9 +31,6 @@ ul.ui-fancytree {
 p.form-error-tooltip {
     color: #EE5F5B;
 }
-.locationselector .bootstrap-select {
-    width: 150px;
-}
 .backgrid {
   font-size: 0.85em;
 }
@@ -155,4 +152,8 @@ img.character-select {
     margin-right: 0.5em;
     width: 16px;
     height: 16px;
+}
+
+.locationselector .favorites, .locationselector .action-here {
+    margin-bottom: 10px;
 }

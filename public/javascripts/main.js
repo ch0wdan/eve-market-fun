@@ -14,9 +14,9 @@ $(document).ready(function () {
             return false;
         });
 
-    if ($('body').hasClass('eve-untrusted')) {
+    if ($('body').hasClass('eve-untrusted') && !CCPEVE.mock) {
         CCPEVE.requestTrust(location.href);
-        // location.reload();
+        location.reload();
     }
 });
 

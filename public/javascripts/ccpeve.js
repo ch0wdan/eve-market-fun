@@ -1,6 +1,8 @@
 if (typeof CCPEVE == 'undefined') {
     
-    var CCPEVE = window.CCPEVE = {};
+    var CCPEVE = window.CCPEVE = {
+        mock: true
+    };
 
     CCPEVE.showMarketDetails = function (type_id) {
         window.location.href = '/market/type/' + type_id;
