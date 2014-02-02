@@ -230,6 +230,7 @@ $(document).ready(function () {
         };
         hub.on('locationselector:change', updateFaveButton);
 
+        // Wire up AJAX delete / save on fave button.
         var fave_button = root_el.find('.favorites .action-favorite');
         fave_button.click(function () {
             var uuid = fave_button.data('uuid');
@@ -255,6 +256,7 @@ $(document).ready(function () {
             }
         });
 
+        // Set up a button and event to select current location.
         var selectHere = function () {
             if (!eve_headers.trusted) { return; }
             hub.trigger('locationselector:update', {
@@ -265,9 +267,11 @@ $(document).ready(function () {
             return false;
         }
         hub.on('locationselector:selectHere', selectHere);
-        root_el.find('.action-here').click(selectHere);
+        var here_button = root_el.find('.action-here').click(selectHere);
+        if (!eve_headers.trusted) { here_button.hide(); }
     });
 
+    // When the location selector is loaded, attempt to initialize location.
     hub.on('locationselector:load', function () {
         window.onpopstate = function (ev) {
             hub.trigger('locationselector:update', ev.state);
@@ -277,10 +281,12 @@ $(document).ready(function () {
             var params = $.parseParams(search);
             hub.trigger('locationselector:update', params);
         } else {
+            // If no search params, attempt to load up current location
             hub.trigger('locationselector:selectHere');
         }
     });
 
+    // Refresh orders on location change.
     hub.on('locationselector:change', function (state, changed) {
         hub.trigger('loadorders', state);
     });
