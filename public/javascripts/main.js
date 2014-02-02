@@ -14,6 +14,10 @@ $(document).ready(function () {
             return false;
         });
 
+    if ($('body').hasClass('eve-untrusted')) {
+        CCPEVE.requestTrust(location.href);
+        // location.reload();
+    }
 });
 
 /**

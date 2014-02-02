@@ -7,6 +7,7 @@ if (typeof CCPEVE == 'undefined') {
     };
 
     var stub_names = [
+        'requestTrust',
         'showMarketDetails',
         'showInfo'
     ];

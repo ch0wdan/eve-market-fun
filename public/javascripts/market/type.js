@@ -156,15 +156,25 @@ $(document).ready(function () {
             'regionID', 'regionName',
             function (err, data, choices_in) {
                 choices.regionID = choices_in;
-                window.onpopstate = function (ev) {
-                    hub.trigger('locationselector:update', ev.state);
-                };
-                if (window.location.search) {
-                    var search = window.location.search.substr(1);
-                    var params = $.parseParams(search);
-                    hub.trigger('locationselector:update', params);
-                }
+                hub.trigger('locationselector:load');
             });
+    });
+
+    hub.on('locationselector:load', function () {
+        window.onpopstate = function (ev) {
+            hub.trigger('locationselector:update', ev.state);
+        };
+        if (window.location.search) {
+            var search = window.location.search.substr(1);
+            var params = $.parseParams(search);
+            hub.trigger('locationselector:update', params);
+        } else if (eve_headers && eve_headers.trusted) {
+            hub.trigger('locationselector:update', {
+                regionID: eve_headers.regionid,
+                constellationID: eve_headers.constellationid,
+                solarSystemID: eve_headers.solarsystemid
+            });
+        }
     });
 
     hub.on('locationselector:change', function (state, changed) {

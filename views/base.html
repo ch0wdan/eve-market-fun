@@ -17,7 +17,7 @@
 <link href="/stylesheets/style.css" rel="stylesheet">
 
 </head>
-<body>
+<body class="{% if eve.trusted %}eve-trusted{% else %}eve-untrusted{% endif %}">
 
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
@@ -37,6 +37,7 @@
                         data-toggle="dropdown"><span class="fa fa-shopping-cart"></span> Market <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="/market/items">Browse Items</a></li>
+                        <li><a href="/market/lists">Item Lists</a></li>
                         <li><a href="/market/orders">Market Orders</a></li>
                         <li><a href="/market/pricecheck">Price Check</a></li>
                     </ul>
@@ -96,6 +97,11 @@
 
 <script src="/javascripts/ccpeve.js"></script>
 <script src="/javascripts/main.js"></script>
+
+<script type="text/javascript">
+window.eve_headers = {{ eve_json|safe }}
+</script>
+
 {% block js %}{% endblock %}
 </body>
 </html>
