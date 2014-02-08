@@ -275,6 +275,48 @@ $(document).ready(function () {
         hub.on('locationselector:selectHere', selectHere);
         var here_button = root_el.find('.action-here').click(selectHere);
         if (!eve_headers.trusted) { here_button.hide(); }
+
+        // Wire up the search button to toggle between search & browse
+        var search_btn = root_el.find('.action-search');
+        var search_fields = root_el.find('.search-fields');
+        var selectors = root_el.find('.selectors');
+        function showSearch () {
+            search_btn.addClass('btn-success').removeClass('btn-default');
+            search_fields.removeClass('hidden');
+            selectors.addClass('hidden');
+            root_el.find('.locationName').val('').focus();
+        }
+        function showBrowse () {
+            search_btn.removeClass('btn-success').addClass('btn-default');
+            search_fields.addClass('hidden');
+            selectors.removeClass('hidden');
+        }
+        search_btn.click(function () {
+            if (search_btn.hasClass('btn-success')) {
+                showBrowse();
+            } else {
+                showSearch();
+            }
+        });
+
+        // Wire up the typeahead search to set browser state
+        root_el.find('.locationName').typeahead({
+            autoselect: true, highlight: true, minLength: 1
+        }, {
+            name: 'locations',
+            displayKey: 'solarSystemName',
+            source: function (query, cb) {
+                $.getJSON('/data/mapSolarSystems', {q: query}, cb);
+            }            
+        }).bind('typeahead:selected', function (ev, type, name) {
+            showBrowse();
+            updateState({
+                regionID: type.regionID,
+                constellationID: type.constellationID,
+                solarSystemID: type.solarSystemID
+            });
+        });
+
     });
 
     // When the location selector is loaded, attempt to initialize location.

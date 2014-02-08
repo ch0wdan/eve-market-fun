@@ -154,6 +154,12 @@ img.character-select {
     height: 16px;
 }
 
-.locationselector .favorites, .locationselector .action-here {
+.locationselector .selectors, .locationselector .search-fields {
+    display: inline;
+}
+.locationselector .selectors.hidden, .locationselector .search-fields.hidden {
+    display: none;
+}
+.locationselector .favorites, .locationselector .action-here, .locationselector .action-search {
     margin-bottom: 10px;
 }

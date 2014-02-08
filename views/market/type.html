@@ -9,7 +9,7 @@
         <img src="http://image.eveonline.com/Type/{{ typeID }}_32.png">
         {{ type.typeName }}
     </h3>
-    
+
     <section class="locationselector">
         <button type="button" class="action-here btn btn-default">
             <i class="fa fa-crosshairs"></i>
@@ -24,9 +24,17 @@
           </button>
           <ul class="dropdown-menu" role="menu"></ul>
         </div>
-        <select class="regionID" title="Regions"></select>
-        <select class="constellationID" title="Constellations"></select>
-        <select class="solarSystemID" title="Systems"></select>
+        <button type="button" class="action-search btn btn-default">
+          <i class="fa fa-search"></i>
+        </button>
+        <section class="search-fields hidden">
+            <input accesskey="s" type="text" size="50" name="locationName" class="locationName" />
+        </section>
+        <section class="selectors">
+            <select class="regionID" title="Regions"></select>
+            <select class="constellationID" title="Constellations"></select>
+            <select class="solarSystemID" title="Systems"></select>
+        </section>
     </section>
 
     <section class="marketorders" data-typeID="{{ typeID }}">
