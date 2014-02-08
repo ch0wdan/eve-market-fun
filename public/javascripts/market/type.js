@@ -304,16 +304,25 @@ $(document).ready(function () {
             autoselect: true, highlight: true, minLength: 1
         }, {
             name: 'locations',
-            displayKey: 'solarSystemName',
             source: function (query, cb) {
-                $.getJSON('/data/mapSolarSystems', {q: query}, cb);
+                $.getJSON('/data/mapSolarSystems', {q: query}, function (systems) {
+                    cb(_.map(systems, function (system) {
+                        return _.defaults({
+                            value: [
+                                system.regionName,
+                                system.constellationName || '---',
+                                system.solarSystemName || '---'
+                            ].join(" > ")
+                        }, system);
+                    }))
+                });
             }            
-        }).bind('typeahead:selected', function (ev, type, name) {
+        }).bind('typeahead:selected', function (ev, system, name) {
             showBrowse();
             updateState({
-                regionID: type.regionID,
-                constellationID: type.constellationID,
-                solarSystemID: type.solarSystemID
+                regionID: system.regionID,
+                constellationID: system.constellationID,
+                solarSystemID: system.solarSystemID
             });
         });
 
