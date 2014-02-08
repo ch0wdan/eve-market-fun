@@ -123,7 +123,7 @@ $(document).ready(function () {
         collection: items.fullCollection,
         fields: ['typeName']
     });
-    //$('#market-filters .panel-body').prepend(filter.render().$el);
+    $('#market-filters .panel-body').prepend(filter.render().$el);
     //filter.$el.css({float: "left", margin: "20px"});
 
     items.fetch({reset: true});

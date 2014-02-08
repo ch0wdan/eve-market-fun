@@ -181,8 +181,11 @@ $(document).ready(function () {
                 el.empty();
                 _(favorites).chain().each(function (item) {
                     var link = $('<a>');
-                    // TODO: Get real names from EVE statics
-                    link.text("> " + JSON.stringify(item));
+                    link.text([
+                        item.regionName,
+                        item.constellationName || '---',
+                        item.solarSystemName || '---'
+                    ].join(" > "));
                     _.each(item, function (val, name) {
                         link.data(name.toLowerCase(), val);
                     });
@@ -212,6 +215,9 @@ $(document).ready(function () {
             _.each(location_favorites, function (favorite) {
                 var match = true;
                 _.each(state, function (val, name) {
+                    if ((name != 'regionID') && !val && !favorite[name]) {
+                        return;
+                    }
                     if (parseInt(val) != favorite[name]) {
                         match = false;
                     }
