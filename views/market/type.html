@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% block css %}
+{% endblock %}
 {% block js %}
     <script src="/javascripts/market.js"></script>
     <script src="/javascripts/market/type.js"></script>
@@ -28,7 +30,7 @@
           <i class="fa fa-search"></i>
         </button>
         <section class="search-fields hidden">
-            <input accesskey="s" type="text" size="50" name="locationName" class="locationName" />
+            <input accesskey="s" type="text" size="50" name="locationName" class="typeahead locationName" />
         </section>
         <section class="selectors">
             <select class="regionID" title="Regions"></select>
