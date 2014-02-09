@@ -72,6 +72,19 @@
         </div><!--/.nav-collapse -->
     </div>
 </div>
+
+{% if message.length %}
+<div class="container">
+    {% for m in message %}
+        {% if m.level == 'success' %}
+            <div class="alert alert-success">{{ m.message }}</div>
+        {% else %}
+            <div class="alert alert-danger">{{ m }}</div>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endif %}
+
 {% block content %}{% endblock %}
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

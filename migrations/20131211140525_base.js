@@ -5,33 +5,38 @@ exports.up = function (knex) {
     var ks = knex.schema;
     return Promise.all([
         ks.createTable('Users', function (t) {
-            t.uuid('uuid').primary();
+            t.engine('InnoDB');
+            t.increments('id').primary();
             t.timestamps();
             t.string('username').index().unique();
             t.string('password');
+            t.string('email').index().unique();
         }),
         ks.createTable('ApiKeys', function (t) {
-            t.uuid('uuid').primary();
+            t.engine('InnoDB');
+            t.increments('id').primary();
             t.timestamps();
-            t.uuid('userUuid').index();
+            t.integer('userID').unsigned().references('id').inTable('Users');
             t.string('keyID').index().unique();
             t.string('vCode');
             t.string('accessMask');
             t.string('expires');
         }),
         ks.createTable('Characters', function (t) {
-            t.uuid('uuid').primary();
-            t.string('keyUuid').index();
+            t.engine('InnoDB');
+            t.increments('id').primary();
             t.timestamps();
-            t.uuid('userUuid').index();
+            t.integer('keyID').unsigned().references('id').inTable('ApiKeys');
+            t.integer('userID').unsigned().references('id').inTable('Users');
             t.string('name');
             t.string('characterID').index();
             t.string('corporationName');
             t.string('corporationID');
         }),
         ks.createTable('MarketOrders', function (t) {
-            t.uuid('uuid').primary();
-            t.string('characterUuid').index();
+            t.engine('InnoDB');
+            t.increments('id').primary();
+            t.string('characterID').index();
             t.timestamps();
             t.bigInteger('orderID').unique();
             t.integer('orderState').index();
@@ -52,6 +57,28 @@ exports.up = function (knex) {
             t.bigInteger('minVolume');
             t.boolean('isCorp');
             t.boolean('bid').index();
+        }),
+        ks.createTable('MarketHistory', function (t) {
+            t.engine('InnoDB');
+            t.increments('id').primary();
+            t.timestamps();
+            t.bigInteger('typeID').index();
+            t.bigInteger('regionID').index();
+            t.dateTime('date').index();
+            t.integer('orders');
+            t.integer('quantity');
+            t.decimal('low', 19, 4);
+            t.decimal('high', 19, 4);
+            t.decimal('average', 19, 4);
+        }),
+        ks.createTable('LocationFavorites', function (t) {
+            t.engine('InnoDB');
+            t.increments('id').primary();
+            t.timestamps();
+            t.integer('userID').unsigned().references('id').inTable('Users');
+            t.bigInteger('regionID');
+            t.bigInteger('constellationID');
+            t.bigInteger('solarSystemID');
         })
     ]);
 };
@@ -62,6 +89,8 @@ exports.down = function (knex) {
         knex.schema.dropTable('Users'),
         knex.schema.dropTable('ApiKeys'),
         knex.schema.dropTable('Characters'),
-        knex.schema.dropTable('MarketOrders')
+        knex.schema.dropTable('MarketOrders'),
+        knex.schema.dropTable('MarketHistory'),
+        knex.schema.dropTable('LocationFavorites')
     ]);
 };
