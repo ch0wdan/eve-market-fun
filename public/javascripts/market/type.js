@@ -204,6 +204,7 @@ $(document).ready(function () {
             ]).map(function (name) {
                 return [name, data[name.toLowerCase()]];
             }).object().value());
+            saveState();
         });
 
         // Update favorite indicator on selector change
@@ -265,11 +266,12 @@ $(document).ready(function () {
         // Set up a button and event to select current location.
         var selectHere = function () {
             if (!eve_headers.trusted) { return; }
-            hub.trigger('locationselector:update', {
+            updateState({
                 regionID: eve_headers.regionid,
                 constellationID: eve_headers.constellationid,
                 solarSystemID: eve_headers.solarsystemid
             });
+            saveState();
             return false;
         }
         hub.on('locationselector:selectHere', selectHere);
@@ -324,6 +326,7 @@ $(document).ready(function () {
                 constellationID: system.constellationID,
                 solarSystemID: system.solarSystemID
             });
+            saveState();
         });
 
     });
