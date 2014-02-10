@@ -1,36 +1,82 @@
 {% extends "base.html" %}
 {% block js %}
+    <script src="/javascripts/market.js"></script>
     <script src="/javascripts/market/browser.js"></script>
 {% endblock %}
 {% block content %}
 <div class="container">
+
     <h3><span class="fa fa-shopping-cart"></span> Market: Browse Items</h3>
 
+    <section class="locationselector panel panel-default">
+        <button type="button" class="action-here btn btn-default">
+            <i class="fa fa-crosshairs"></i>
+        </button>
+        <div class="favorites btn-group">
+          <button type="button" class="action-favorite btn btn-default">
+            <i class="fa fa-star"></i>
+          </button>
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu" role="menu"></ul>
+        </div>
+        <button type="button" class="action-search btn btn-default">
+          <i class="fa fa-search"></i>
+        </button>
+        <section class="search-fields hidden">
+            <input accesskey="s" type="text" size="50" name="locationName"
+                class="typeahead locationName" />
+        </section>
+        <section class="selectors">
+            <select class="regionID" title="Regions"></select>
+            <select class="constellationID" title="Constellations"></select>
+            <select class="solarSystemID" title="Systems"></select>
+        </section>
+    </section>
+
     <div id="market-browser">
-
-        <div id="market-filters" class="panel panel-default">
+        <div class="market-filters panel panel-default">
+            <!--
             <div class="panel-heading">
-                <button id="apply-filters" type="button"
-                    class="btn btn-primary btn-sm">Apply Filters &raquo;</button>
             </div>
+            -->
             <div class="panel-body">
-
-                <h4>Categories</h4>
                 <div class="categories"></div>
-                
+                <!--
                 <h4>Meta Groups</h4>
                 <ul class="meta-groups clear"></ul>
-                
                 <h4>Meta Levels</h4>
                 <ul class="meta-levels clear"></ul>
-
+                -->
             </div>
         </div>
-            
-        <div id="market-items" class="panel panel-default">
-            <div class="items"></div>
-        </div>
+        <div class="market-items panel panel-default">
 
+            <section class="panel-heading no-selection">
+                <h3>No selection</h3>
+            </section>
+
+            <section class="panel-heading types-heading">
+                <h3>GROUP TITLE</h3>
+            </section>
+            <section class="types"></section>
+
+            <section class="panel-heading orders-heading">
+                <h3>
+                    <img src="">
+                    <span class="name"></span>
+                </h3>
+            </section>
+            <section class="orders">
+                <h4>Sellers</h4>
+                <section class="sell"></section>
+                <h4>Buyers</h4>
+                <section class="buy"></section>
+            </section>
+
+        </div>
     </div>
 
 </div>

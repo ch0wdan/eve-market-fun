@@ -87,39 +87,55 @@ p.form-error-tooltip {
     padding: 0;
     margin-top: 1em;
 }
-#market-filters {
+#market-browser .market-filters {
     float: left;
     width: 33%;
     font-size: 0.8em;
 }
-#market-filters .categories ul {
+#market-browser .market-filters .categories ul {
     overflow-x: hidden;
 }
-#market-filters ul.meta-groups, #market-filters ul.meta-levels {
+#market-browser .market-filters ul.meta-groups, #market-browser .market-filters ul.meta-levels {
     list-style-type: none;
     padding: 0;
 }
-#market-filters ul.meta-groups li { 
+#market-browser .market-filters ul.meta-groups li { 
     float: left;
     width: 32%;
 }
-#market-filters ul.meta-levels li { 
+#market-browser .market-filters ul.meta-levels li { 
     float: left;
     width: 32%;
 }
-#market-filters ul.meta-groups li label,
-#market-filters ul.meta-levels li label {
+#market-browser .market-filters ul.meta-groups li label,
+#market-browser .market-filters ul.meta-levels li label {
     font-weight: normal;
     margin: 0 0 0 0.25em;
 }
-#market-filters #apply-filters {
+#market-browser .market-filters #apply-filters {
     display: block;
     width: 100%;
 }
-#market-items {
+#market-browser .market-items {
     margin-left: 35%;
     padding: 0.75em;
 }
+
+#market-browser .market-items .no-selection { display: block; }
+
+#market-browser .market-items.show-types .no-selection,
+#market-browser .market-items.show-orders .no-selection { display: none; }
+
+#market-browser .market-items .types,
+#market-browser .market-items .types-heading,
+#market-browser .market-items .orders,
+#market-browser .market-items .orders-heading { display: none; }
+
+#market-browser .market-items.show-types .types,
+#market-browser .market-items.show-types .types-heading,
+#market-browser .market-items.show-orders .orders,
+#market-browser .market-items.show-orders .orders-heading { display: block; }
+
 table { width: 100% }
 table thead th { padding: 0.5em; text-align: center; }
 table tbody td { padding: 0.5em }
@@ -153,7 +169,9 @@ img.character-select {
     width: 16px;
     height: 16px;
 }
-
+.locationselector {
+    padding: 10px 10px 0 10px;
+}
 .locationselector .selectors, .locationselector .search-fields {
     display: inline;
 }

@@ -4,9 +4,11 @@ if (typeof CCPEVE == 'undefined') {
         mock: true
     };
 
+    /*
     CCPEVE.showMarketDetails = function (type_id) {
         window.location.href = '/market/type/' + type_id;
     };
+    */
 
     var stub_names = [
         'requestTrust',

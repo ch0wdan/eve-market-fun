@@ -1,3 +1,5 @@
+var hub = window.hub = _.extend({}, Backbone.Events);
+
 $(document).ready(function () {
 
     $(document)
@@ -5,7 +7,7 @@ $(document).ready(function () {
             var el = $(this);
             var type_id = el.data('typeid');
             CCPEVE.showMarketDetails(el.data('typeid'));
-            window.location.href = '/market/type/' + type_id;
+            // window.location.href = '/market/type/' + type_id;
             return false;
         })
         .delegate('a.showInfo', 'click', function () {
