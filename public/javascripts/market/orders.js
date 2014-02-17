@@ -2,10 +2,30 @@ $(document).ready(function () {
 
     var LAST_ORDER_CHAR = 'evemf_last_order_char';
 
-    var orders = new Market.MarketOrders();
+    var MarketOrder = Backbone.Model.extend({
+    });
+
+    var MarketOrders = Backbone.PageableCollection.extend({
+        model: MarketOrder,
+        mode: 'client',
+        comparator: 'typeName',
+        state: { pageSize: 100 }
+    });
+
+    var orders = new MarketOrders();
+
+    var columns = [
+        { name: 'price', label: 'Price', cell: 'number', editable: false },
+        { name: 'typeName', label: 'Item', editable: false,
+            cell: ShowMarketDetailsCell.extend({typeIDAttr: 'typeID'}) },
+        { name: 'volRemaining', label: 'Volume', editable: false,
+            cell: ProgressIntegerCell.extend({totalAttr: 'volEntered'}) },
+        { name: 'stationName', label: 'Station', editable: false,
+            cell: ShowInfoCell.extend({typeID: '3867', itemIDAttr: 'stationID'}) },
+    ];
 
     var grid = new Backgrid.Grid({
-        columns: Market.MarketColumns,
+        columns: columns,
         collection: orders
     });
 

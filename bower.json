@@ -29,7 +29,8 @@
     "bootstrap-select": "~1.4.3",
     "async": "~0.2.5",
     "font-awesome": "~4.0.3",
-    "typeahead.js": "~0.10.0"
+    "typeahead.js": "~0.10.0",
+    "jquery.cookie": "~1.4.0"
   },
   "resolutions": {
     "jquery": "~1.10.2"

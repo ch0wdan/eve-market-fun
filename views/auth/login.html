@@ -5,12 +5,6 @@
         <div class="col-md-offset-2 col-md-8">
             <h1><span class="fa fa-sign-in"></span> Login</h1>
 
-            <!-- show any messages that come back with authentication -->
-            {% if message.length %}
-                <div class="alert alert-info">{{ message }}</div>
-            {% endif %}
-
-            <!-- LOGIN FORM -->
             <form action="/auth/login" method="post">
                 <div class="form-group">
                     <label>Username</label>

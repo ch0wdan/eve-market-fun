@@ -78,6 +78,8 @@
     {% for m in message %}
         {% if m.level == 'success' %}
             <div class="alert alert-success">{{ m.message }}</div>
+        {% elif m.level == 'error' %}
+            <div class="alert alert-danger">{{ m.message }}</div>
         {% else %}
             <div class="alert alert-danger">{{ m }}</div>
         {% endif %}
@@ -97,7 +99,7 @@
 <script src="/bower_components/async/lib/async.js"></script>
 <script src="/bower_components/jquery/jquery.js"></script>
 <script src="/bower_components/jquery-ui/ui/jquery-ui.js"></script>
-<script src="/bower_components/jquery-cookie/jquery.cookie.js"></script>
+<script src="/bower_components/jquery.cookie/jquery.cookie.js"></script>
 <script src="/bower_components/underscore/underscore-min.js"></script>
 <script src="/bower_components/backbone/backbone-min.js"></script>
 <script src="/bower_components/lunr.js/lunr.min.js"></script>
