@@ -30,6 +30,15 @@ a.showMarketDetails img {
 ul.ui-fancytree {
     outline: 0;
 }
+ul.ui-fancytree .fancytree-title {
+    margin: 0;
+    padding: 0;
+}
+ul.ui-fancytree .fancytree-title .eveicon {
+    width: 16px;
+    height: 16px;
+    margin-right: 0.75em;
+}
 p.form-error-tooltip {
     color: #EE5F5B;
 }

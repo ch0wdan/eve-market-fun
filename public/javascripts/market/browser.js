@@ -38,7 +38,7 @@ function loadMarketGroupsTree (root_el) {
     var market_types_base_url = '/data/invTypes';
 
     root_el.find('.categories').fancytree({
-        icons: true,
+        icons: false,
         selectMode: 1,
         source: $.Deferred(function (dfd) {
             $.getJSON(market_groups_base_url, function (data) {
@@ -83,9 +83,13 @@ function loadMarketGroupsTree (root_el) {
 
 function marketGroupTreeFormat (root) {
     return _.map(root, function (item, id) {
+        var title = '<span class="name">' + item.marketGroupName + '</span>';
+        if (item.iconURL) {
+            title = '<img class="eveicon" src="' + item.iconURL + '">' + title;
+        }
         var out = {
             key: item.marketGroupID,
-            title: item.marketGroupName,
+            title: title,
             kind: 'group',
             lazy: true
         };
@@ -98,9 +102,10 @@ function marketGroupTreeFormat (root) {
 
 function marketTypesTreeFormat (data) {
     return _.map(data, function (type) {
+        var title = '<span class="name">' + type.typeName + '</span>';
         var out = {
             key: type.typeID,
-            title: type.typeName,
+            title: title,
             kind: 'item'
         };
         return out;
