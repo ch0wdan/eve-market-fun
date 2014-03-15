@@ -195,7 +195,7 @@ function setupOrders (root_el) {
         var heading = root_el.find('.market-items .orders-heading');
         heading.find('img').attr('src',
             'http://image.eveonline.com/Type/' + type_id + '_64.png');
-        heading.find('span').text('LOADE');
+        heading.find('span').text('LOADED');
 
         root_el.find('.market-items')
             .addClass('show-orders').removeClass('show-types');
