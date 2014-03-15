@@ -45,7 +45,7 @@ function loadMarketGroupsTree (root_el) {
                 dfd.resolve(marketGroupTreeFormat(data));
             });
         }),
-        lazyload: function (event, data) {
+        lazyLoad: function (event, data) {
             data.result = $.Deferred(function (dfd) {
                 var node = data.node;
                 if (node.data.has_subgroups) {
@@ -122,7 +122,10 @@ function setupTypeList (root_el) {
 
     var columns = [
         { name: 'typeName', label: 'Item', editable: false,
-            cell: ShowMarketDetailsCell.extend({typeIDAttr: 'typeID'}) },
+            cell: ShowMarketDetailsCell.extend({
+                typeIDAttr: 'typeID',
+                detailClass: 'loadMarketOrders'
+            }) },
         { name: 'groupName', label: 'Group', editable: false,
             cell: Backgrid.StringCell.extend({className: 'group-string-cell'}) },
         { name: 'metaLevel', label: 'Meta', editable: false,
@@ -143,6 +146,16 @@ function setupTypeList (root_el) {
     hub.on('marketbrowser:loadgroups', function (group_ids) {
         root_el.find('.market-items')
             .removeClass('show-orders').addClass('show-types');
+
+        var group_url = '/data/invMarketGroups?' + $.param({
+            marketGroupID: group_ids
+        }, true);
+        $.getJSON(group_url, function (data) {
+            var heading = root_el.find('.market-items .types-heading');
+            heading.find('img').attr('src', data[0].iconURL);
+            heading.find('span').text(data[0].marketGroupName);
+        });
+
         items.url = '/data/invTypes?' + $.param({
             marketGroupID: group_ids
         }, true);
@@ -192,10 +205,12 @@ function setupOrders (root_el) {
     hub.on('marketbrowser:loadorders', function (id) {
         type_id = id;
 
-        var heading = root_el.find('.market-items .orders-heading');
-        heading.find('img').attr('src',
-            'http://image.eveonline.com/Type/' + type_id + '_64.png');
-        heading.find('span').text('LOADED');
+        $.getJSON('/data/invTypes?typeID=' + type_id, function (data) {
+            var heading = root_el.find('.market-items .orders-heading');
+            heading.find('img').attr('src',
+                'http://image.eveonline.com/Type/' + type_id + '_64.png');
+            heading.find('span').text(data[0].typeName);
+        });
 
         root_el.find('.market-items')
             .addClass('show-orders').removeClass('show-types');
@@ -242,6 +257,14 @@ $(document).ready(function () {
             // If no search params, attempt to load up current location
             hub.trigger('locationselector:selectHere');
         }
+    });
+
+    $(document).delegate('a.loadMarketOrders', 'click', function () {
+        var el = $(this);
+        var type_id = el.data('typeid');
+        hub.trigger('marketbrowser:loadorders', type_id);
+        CCPEVE.showMarketDetails(el.data('typeid'));
+        return false;
     });
 
 });

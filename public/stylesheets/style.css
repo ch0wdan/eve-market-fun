@@ -6,6 +6,8 @@ body {
     .container { width: 900px }
 }
 
+.container > h3 { margin: 0.25em 0; }
+
 .clear:before,
 .clear:after {
     content: " ";
@@ -52,7 +54,8 @@ p.form-error-tooltip {
 .backgrid td a {
   text-decoration: none;
 }
-.backgrid td.showmarketdetails-cell a.showMarketDetails {
+.backgrid td.showmarketdetails-cell a.showMarketDetails,
+.backgrid td.showmarketdetails-cell a.loadMarketOrders {
   width: 37ex;
   max-width: 37ex;
   display: block;
@@ -90,7 +93,7 @@ p.form-error-tooltip {
 #market-browser .market-filters {
     float: left;
     width: 33%;
-    font-size: 0.8em;
+    font-size: 0.85em;
 }
 #market-browser .market-filters .categories ul {
     overflow-x: hidden;
@@ -118,7 +121,7 @@ p.form-error-tooltip {
 }
 #market-browser .market-items {
     margin-left: 35%;
-    padding: 0.75em;
+    padding: 0;
 }
 
 #market-browser .market-items .no-selection { display: block; }
@@ -134,7 +137,46 @@ p.form-error-tooltip {
 #market-browser .market-items.show-types .types,
 #market-browser .market-items.show-types .types-heading,
 #market-browser .market-items.show-orders .orders,
-#market-browser .market-items.show-orders .orders-heading { display: block; }
+#market-browser .market-items.show-orders .orders-heading {
+    display: block;
+    padding: 2px;
+    margin-bottom: 1em;
+}
+#market-browser .market-items.show-types .types {
+    padding: 2px 1em;
+}
+
+#market-browser .market-items.show-types .types-heading h3,
+#market-browser .market-items.show-orders .orders-heading h3 { margin: 0; }
+#market-browser .market-items.show-types .types-heading h3 img,
+#market-browser .market-items.show-orders .orders-heading h3 img { width: 64px; height: 64px; }
+
+#market-browser .market-items.show-orders .orders .group {
+    position: relative;
+    padding: 0 0 0 2em;
+}
+#market-browser .market-items.show-orders .orders .group h4 {
+    position: absolute;
+    margin: 0; padding: 0;
+    top: 0em; left: 1.25em;
+    
+    transform: rotate(90deg);
+    transform-origin: 0 0;
+
+    -webkit-transform-origin: 0 0;
+    -moz-transform-origin: 0 0;
+    -ms-transform-origin: 0 0;
+    -o-transform-origin: 0 0;
+
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+}
+#market-browser .market-items.show-orders .orders .group .sell,
+#market-browser .market-items.show-orders .orders .group .buy {
+    margin-right: 1em;
+}
 
 table { width: 100% }
 table thead th { padding: 0.5em; text-align: center; }

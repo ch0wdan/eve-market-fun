@@ -4,7 +4,7 @@
 <title>{{title}}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
-<link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
 <link href="/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 <link href="/bower_components/bootstrap-select/bootstrap-select.min.css" rel="stylesheet">
 <link href="/bower_components/backgrid/lib/backgrid.min.css" rel="stylesheet">
@@ -39,9 +39,9 @@
                         data-toggle="dropdown"><span class="fa fa-shopping-cart"></span> Market <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="/market/items">Browse Items</a></li>
-                        <li><a href="/market/lists">Item Lists</a></li>
+                        <!-- <li><a href="/market/lists">Item Lists</a></li> -->
                         <li><a href="/market/orders">Market Orders</a></li>
-                        <li><a href="/market/pricecheck">Price Check</a></li>
+                        <!-- <li><a href="/market/pricecheck">Price Check</a></li> -->
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -89,6 +89,14 @@
 
 {% block content %}{% endblock %}
 
+    <div id="footer">
+      <div class="container">
+        <p class="text-muted">
+            Assets from EVE Online ©CCP hf. All rights reserved. Used with permission.
+        </p>
+      </div>
+    </div>
+
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
@@ -124,3 +132,4 @@ window.eve_headers = {{ eve_json|safe }}
 {% block js %}{% endblock %}
 </body>
 </html>
+

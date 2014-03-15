@@ -66,6 +66,7 @@ var ShowInfoCell = Backgrid.Cell.extend({
 var ShowMarketDetailsCell = Backgrid.Cell.extend({
     className: "showmarketdetails-cell",
     typeIDAttr: 'typeID',
+    detailClass: 'showMarketDetails',
     render: function () {
         this.$el.empty();
         var rawValue = this.model.get(this.column.get("name"));
@@ -85,7 +86,7 @@ var ShowMarketDetailsCell = Backgrid.Cell.extend({
             })));
         this.$el.append(
             $("<a>", {
-                class: 'showMarketDetails',
+                class: this.detailClass,
                 href: '',
                 "data-typeID": typeID
             })
