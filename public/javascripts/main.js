@@ -129,3 +129,15 @@ var NamedIntegerCell = Backgrid.IntegerCell.extend({
         return this;
     }
 });
+
+var AgeCell = Backgrid.Cell.extend({
+    className: "age-cell",
+    render: function () {
+        this.$el.empty();
+        var rawValue = this.model.get(this.column.get('name'));
+        var out = moment(rawValue).fromNow();
+        this.$el.append($('<span>').text(out));
+        this.delegateEvents();
+        return this;
+    }
+});

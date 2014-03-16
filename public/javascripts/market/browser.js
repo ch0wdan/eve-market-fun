@@ -190,6 +190,8 @@ function setupOrders (root_el) {
                     cell: ProgressIntegerCell.extend({totalAttr: 'volEntered'}) },
                 { name: 'stationName', label: 'Station', editable: false,
                     cell: ShowInfoCell.extend({typeID: '3867', itemIDAttr: 'stationID'}) },
+                { name: 'updated_at', label: 'Age', editable: false,
+                    cell: AgeCell }
             ]
         });
         var orders_el = root_el.find('.market-items .orders .' + bid_type);
