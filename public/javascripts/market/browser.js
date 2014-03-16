@@ -185,10 +185,10 @@ function setupOrders (root_el) {
         var grid = new Backgrid.Grid({
             collection: orders,
             columns: [
-                { name: 'price', label: 'Price', cell: 'number', editable: false },
-                { name: 'volRemaining', label: 'Volume', editable: false,
+                { name: 'volRemaining', label: 'Quantity', editable: false,
                     cell: ProgressIntegerCell.extend({totalAttr: 'volEntered'}) },
-                { name: 'stationName', label: 'Station', editable: false,
+                { name: 'price', label: 'Price', cell: 'number', editable: false },
+                { name: 'stationName', label: 'Location', editable: false,
                     cell: ShowInfoCell.extend({typeID: '3867', itemIDAttr: 'stationID'}) },
                 { name: 'updated_at', label: 'Age', editable: false,
                     cell: AgeCell }
