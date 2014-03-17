@@ -136,7 +136,7 @@ var AgeCell = Backgrid.Cell.extend({
         this.$el.empty();
         var rawValue = this.model.get(this.column.get('name'));
         var out = moment(rawValue).fromNow();
-        this.$el.append($('<span>').text(out));
+        this.$el.append($('<span class="moment" title="' + rawValue + '">').text(out));
         this.delegateEvents();
         return this;
     }

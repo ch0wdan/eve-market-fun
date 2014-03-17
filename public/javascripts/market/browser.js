@@ -120,7 +120,7 @@ function setupTypeList (root_el) {
         model: InvType,
         url: "/data/invTypes?marketGroupID=1031",
         mode: 'client',
-        state: { pageSize: 10 }
+        state: { pageSize: 12 }
     });
 
     var items = new InvTypes();

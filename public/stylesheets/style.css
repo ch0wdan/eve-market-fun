@@ -2,6 +2,13 @@ body {
     margin-top: 65px;
 }
 
+#footer {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    margin-left: -25%;
+}
+
 @media(min-width:910px){
     .container { width: 900px }
 }
@@ -99,10 +106,20 @@ p.form-error-tooltip {
     padding: 0;
     margin-top: 1em;
 }
+#market-browser {
+    position: fixed;
+    top: 175px; bottom: 50px;
+    width: inherit;
+}
 #market-browser .market-filters {
-    float: left;
-    width: 33%;
+    position: absolute;
+    padding: 0; margin: 0;
+    top: 0; left: 0; right: 69%; bottom: 0;
     font-size: 0.85em;
+    overflow-y: auto;
+}
+#market-browser .market-filters .panel-body {
+    margin: 0; padding: 8px;
 }
 #market-browser .market-filters .categories ul {
     overflow-x: hidden;
@@ -129,8 +146,9 @@ p.form-error-tooltip {
     width: 100%;
 }
 #market-browser .market-items {
-    margin-left: 35%;
-    padding: 0;
+    position: absolute;
+    padding: 0; margin: 0;
+    top: 0; left: 32.5%; right: 30px; bottom: 0;
 }
 
 #market-browser .market-items .no-selection { display: block; }
@@ -152,8 +170,24 @@ p.form-error-tooltip {
     margin-bottom: 1em;
 }
 #market-browser .market-items.show-types .types {
-    padding: 2px 1em;
+    position: absolute;
+    left: 0; right: 0;
+    top: 70px; bottom: 0;
+    overflow-y: auto;
 }
+/*
+#market-browser .market-items.show-types .types .backgrid-paginator {
+    position: absolute;
+    left: 0; right: 0;
+    bottom: -15px;
+}
+#market-browser .market-items.show-types .types .backgrid tbody {
+    position: absolute;
+    top: 35px; bottom: 30px;
+    left: 1.125em; right: 1em;
+    overflow-y: auto;
+}
+*/
 
 #market-browser .market-items.show-types .types-heading h3,
 #market-browser .market-items.show-orders .orders-heading h3 { margin: 0; }

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block js %}
+    <script src="/javascripts/market.js"></script>
+    <script src="/javascripts/market/transactions.js"></script>
+{% endblock %}
+{% block content %}
+<div class="container">
+
+    <h3>
+        <i class="fa fa-shopping-cart"></i> Market: Transactions
+        &ndash;
+        <select id="characters" data-show-subtext="true"></select>
+    </h3>
+    <section id="transactions"></section>
+
+</div>
+{% endblock %}
