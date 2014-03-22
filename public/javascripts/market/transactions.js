@@ -47,6 +47,9 @@ $(document).ready(function () {
             if ('typeID' in params) {
                 transactions.url += '&typeID=' + params.typeID;
             }
+            if ('typeName' in params) {
+                transactions.url += '&typeName=' + params.typeName;
+            }
         }
         transactions.fetch({reset: true});
     }
