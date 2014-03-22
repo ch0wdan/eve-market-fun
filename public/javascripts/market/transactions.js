@@ -17,8 +17,10 @@ $(document).ready(function () {
             cell: ShowMarketDetailsCell.extend({
                 typeIDAttr: 'typeID'
             }) },
-        { name: 'price', label: 'Price', editable: false, cell: 'string' },
-        { name: 'quantity', label: 'Quantity', editable: false, cell: 'string' },
+        { name: 'transactionType', label: 'Buy/Sell', editable: false, cell: 'string' },
+        { name: 'quantity', label: 'Quantity', editable: false, cell: 'integer' },
+        { name: 'price', label: 'Price', editable: false, cell: 'number' },
+        { name: 'credit', label: 'Credit', editable: false, cell: 'number' },
         { name: 'clientName', label: 'Client', editable: false, cell: 'string' },
         { name: 'stationName', label: 'Where', editable: false, cell: 'string' }
     ];
@@ -39,6 +41,13 @@ $(document).ready(function () {
     var loadTransactions = function (characterID) {
         if (!characterID) return;
         transactions.url = "/data/market/transactions?character=" + characterID;
+        if (window.location.search) {
+            var search = window.location.search.substr(1);
+            var params = $.parseParams(search);
+            if ('typeID' in params) {
+                transactions.url += '&typeID=' + params.typeID;
+            }
+        }
         transactions.fetch({reset: true});
     }
 
