@@ -15,13 +15,13 @@ exports.up = function(knex) {
         t.bigInteger('fromSolarSystemID').index();
         t.bigInteger('fromStationID').index();
         t.boolean('fromBid').index();
-        t.integer('fromTopOrder').unsigned().references('id').inTable('MarketOrders');
+        t.bigInteger('fromTopOrderID');
 
         t.bigInteger('toRegionID').index();
         t.bigInteger('toSolarSystemID').index();
         t.bigInteger('toStationID').index();
         t.boolean('toBid').index();
-        t.integer('toTopOrder').unsigned().references('id').inTable('MarketOrders');
+        t.bigInteger('toTopOrderID');
 
         t.decimal('baseMargin', 19, 4);
         t.decimal('baseMarginPercent', 19, 4);
