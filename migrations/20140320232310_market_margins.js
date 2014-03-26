@@ -29,5 +29,5 @@ exports.up = function(knex) {
 
 exports.down = function(knex) {
     var ks = knex.schema;
-    return ks.dropTable('WalletJournal');
+    return ks.dropTable('MarketMargins');
 };
