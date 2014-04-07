@@ -5,7 +5,7 @@ $(document).ready(function () {
         model: Trade,
         url: '/data/market/trades',
         mode: 'client',
-        state: { pageSize: 100 }
+        state: { pageSize: 50 }
     });
     var trades = new Trades();
 
