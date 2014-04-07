@@ -9,3 +9,4 @@ config/local.json
 cache/neow/*
 populate.sh
 npm-debug.log
+bower_components
