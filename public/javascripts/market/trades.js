@@ -11,8 +11,6 @@ $(document).ready(function () {
 
     var columns = [
 
-        { name: 'updated_at', label: 'When', editable: false, cell: AgeCell },
-
         { name: 'typeName', label: 'Type', editable: false,
             cell: ShowMarketDetailsCell.extend({
                 typeIDAttr: 'typeID'
@@ -24,13 +22,15 @@ $(document).ready(function () {
         //    cell: ShowInfoCell.extend({typeID: '3867', itemIDAttr: 'fromStationID'}) },
         { name: 'fromSolarSystemName', label: 'From', editable: false,
             cell: ShowInfoCell.extend({typeID: '5', itemIDAttr: 'fromSolarSystemID'}) },
-        { name: 'fromPrice', label: 'From Price', editable: false, cell: 'number' },
+        { name: 'fromPrice', label: 'Price', editable: false, cell: 'number' },
+        { name: 'fromUpdatedAt', label: 'When', editable: false, cell: AgeCell },
         
         //{ name: 'toStationName', label: 'Station', editable: false,
         //    cell: ShowInfoCell.extend({typeID: '3867', itemIDAttr: 'toStationID'}) },
         { name: 'toSolarSystemName', label: 'To', editable: false,
             cell: ShowInfoCell.extend({typeID: '5', itemIDAttr: 'toSolarSystemID'}) },
-        { name: 'toPrice', label: 'To Price', editable: false, cell: 'number' },
+        { name: 'toPrice', label: 'Price', editable: false, cell: 'number' },
+        { name: 'toUpdatedAt', label: 'When', editable: false, cell: AgeCell },
 
         { name: 'baseMargin', label: 'Margin', editable: false, cell: 'number' },
 
