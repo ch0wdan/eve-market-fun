@@ -36,7 +36,7 @@ exports.up = function (knex) {
         ks.createTable('MarketOrders', function (t) {
             t.engine('InnoDB');
             t.increments('id').primary();
-            t.string('characterID').index();
+            t.integer('characterID').unsigned().references('id').inTable('Characters');
             t.timestamps();
             t.bigInteger('orderID').unique();
             t.integer('orderState').index();
@@ -66,7 +66,7 @@ exports.up = function (knex) {
             t.bigInteger('regionID').index();
             t.dateTime('date').index();
             t.integer('orders');
-            t.integer('quantity');
+            t.bigInteger('quantity');
             t.decimal('low', 19, 4);
             t.decimal('high', 19, 4);
             t.decimal('average', 19, 4);

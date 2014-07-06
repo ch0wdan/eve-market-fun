@@ -5,7 +5,7 @@ tmp
 node_modules
 marketlogs
 eve-cache
-config/local.json
+config/*
 cache/neow/*
 populate.sh
 npm-debug.log

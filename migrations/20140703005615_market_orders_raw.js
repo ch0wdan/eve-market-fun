@@ -3,22 +3,19 @@ var Promise = require('bluebird');
 
 exports.up = function(knex) {
     var ks = knex.schema;
-    return ks.createTable('MarketMargins', function (t) {
+    return ks.createTable('MarketDataRaw', function (t) {
         t.engine('InnoDB');
         t.increments('id').primary();
         t.timestamps();
         t.bigInteger('typeID').index();
         t.bigInteger('regionID').index();
-        t.bigInteger('stationID').index();
-        t.bigInteger('solarSystemID');
-        t.decimal('maxBuyPrice', 19, 4);
-        t.decimal('minSellPrice', 19, 4);
-        t.decimal('baseMargin', 19, 4);
-        t.decimal('baseMarginPercent', 19, 4);
-    });
+        t.dateTime('generatedAt').index();
+        t.string('resultType').index();
+        t.text('rowset');
+    })
 };
 
 exports.down = function(knex) {
     var ks = knex.schema;
-    return ks.dropTable('MarketMargins');
+    return ks.dropTable('MarketDataRaw');
 };

@@ -9,8 +9,8 @@
   },
   "scripts": {
     "start": "./node_modules/.bin/supervisor -e 'js|html|css' -- ./bin/evemf serve",
-    "test": "./node_modules/.bin/mocha -R spec -u tdd",
-    "testwatch": "./node_modules/.bin/mocha -w -R spec -u tdd"
+    "test": "./node_modules/.bin/mocha -R spec",
+    "testwatch": "./node_modules/.bin/mocha -w -R spec"
   },
   "dependencies": {
     "express": "3.4.6",
@@ -20,15 +20,12 @@
     "bookshelf": "~0.6.1",
     "knex": "~0.5.0",
     "supervisor": "~0.5.6",
-    "chai": "~1.8.1",
-    "mocha": "~1.15.1",
-    "sinon": "~1.7.3",
     "connect-livereload": "~0.3.0",
     "socket.io": "~0.9.16",
     "csv": "~0.3.6",
     "async": "~0.2.9",
     "underscore": "~1.5.2",
-    "neow": "git://github.com/lmorchard/NEOW.git#f0571d5fab67a09535749ef0f77bf27fbe81c187",
+    "neow": "1.0.0",
     "passport": "~0.1.17",
     "winston": "~0.7.2",
     "convict": "~0.4.1",
@@ -41,15 +38,18 @@
     "passport-local": "~0.1.6",
     "express-validator": "~1.0.1",
     "node-validator": "~0.1.1",
-    "forms": "~0.3.0"
+    "forms": "~0.3.0",
+    "zmq": "~2.5.1"
   },
   "optionalDependencies": {
-    "zmq": "~2.5.1",
     "mysql": "~2.0.0-rc2"
   },
   "devDependencies": {
     "bower": "~1.2.8",
     "grunt": "~0.4.2",
-    "validator": "~2.0.0"
+    "validator": "~2.0.0",
+    "sinon": "~1.7.3",
+    "chai": "~1.8.1",
+    "mocha": "~1.15.1"
   }
 }

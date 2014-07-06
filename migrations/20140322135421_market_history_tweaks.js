@@ -6,9 +6,6 @@ exports.up = function (knex) {
     return Promise.all([
         ks.table('MarketHistoryAggregates', function (t) {
             t.text('history', 'longtext');
-            t.dropColumn('profitByVolume');
-            t.dropColumn('profitByVolumeForMonth');
-            t.dropColumn('profitByVolumeForWeek');
         }),
         ks.dropTable('MarketHistory')
     ]);

@@ -4,6 +4,8 @@ var Promise = require('bluebird');
 exports.up = function(knex) {
     var ks = knex.schema;
     return ks.createTable('WalletTransactions', function (t) {
+        t.increments('id').primary();
+        t.timestamps();
         t.dateTime('transactionDateTime').index();
         t.bigInteger('transactionID').unsigned().index();
         t.integer('quantity');

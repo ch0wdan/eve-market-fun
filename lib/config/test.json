@@ -1,0 +1,16 @@
+{
+    "database": {
+        "client": "sqlite",
+        "debug": false,
+        "connection": {
+            "filename": "data/tests.sqlite"
+        }
+    },
+    "database_eve_static": {
+        "client": "sqlite",
+        "debug": false,
+        "connection": {
+            "filename": "data/sqlite-latest.sqlite"
+        }
+    }
+}
