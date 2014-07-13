@@ -269,24 +269,23 @@ describe("Models", function () {
         });
 
         it('should yield the expected leads updated in a single scan', function (done) {
-            var expected = { 
-                '60004588:1:60003760:1': { baseMargin: 1500, baseMarginPercent: 75 },
-                '60004588:1:60003760:0': { baseMargin: 1000, baseMarginPercent: 50 },
-                '60004588:0:60003760:1': { baseMargin: 2500, baseMarginPercent: 83.33333333333334 },
-                '60004588:0:60003760:0': { baseMargin: 2000, baseMarginPercent: 66.66666666666666 },
-                '60011866:1:60003760:1': { baseMargin: 1100, baseMarginPercent: 68.75 },
-                '60011866:1:60003760:0': { baseMargin: 600, baseMarginPercent: 37.5 },
-                '60011866:0:60003760:1': { baseMargin: 1300, baseMarginPercent: 72.22222222222221 },
-                '60011866:0:60003760:0': { baseMargin: 800, baseMarginPercent: 44.44444444444444 },
-                '60003760:1:60005686:1': { baseMargin: 200, baseMarginPercent: 40 },
-                '60003760:0:60005686:1': { baseMargin: 700, baseMarginPercent: 70 },
-                '60005686:0:60003760:1': { baseMargin: 100, baseMarginPercent: 16.666666666666664 },
-                '60003760:0:60005686:0': { baseMargin: 400, baseMarginPercent: 40 },
-                '60008494:1:60003760:1': { baseMargin: 300, baseMarginPercent: 37.5 },
-                '60003760:0:60008494:1': { baseMargin: 200, baseMarginPercent: 20 },
-                '60008494:0:60003760:1': { baseMargin: 1000, baseMarginPercent: 66.66666666666666 },
-                '60008494:0:60003760:0': { baseMargin: 500, baseMarginPercent: 33.33333333333333 }
-            };
+            var expected = 
+                { '60003760:1:60004588:1': { baseMargin: 1500, baseMarginPercent: 75 },
+                  '60003760:1:60004588:0': { baseMargin: 2500, baseMarginPercent: 83.33333333333334 },
+                  '60003760:0:60004588:1': { baseMargin: 1000, baseMarginPercent: 50 },
+                  '60003760:0:60004588:0': { baseMargin: 2000, baseMarginPercent: 66.66666666666666 },
+                  '60003760:1:60011866:1': { baseMargin: 1100, baseMarginPercent: 68.75 },
+                  '60003760:1:60011866:0': { baseMargin: 1300, baseMarginPercent: 72.22222222222221 },
+                  '60003760:0:60011866:1': { baseMargin: 600, baseMarginPercent: 37.5 },
+                  '60003760:0:60011866:0': { baseMargin: 800, baseMarginPercent: 44.44444444444444 },
+                  '60005686:1:60003760:1': { baseMargin: 200, baseMarginPercent: 40 },
+                  '60003760:1:60005686:0': { baseMargin: 100, baseMarginPercent: 16.666666666666664 },
+                  '60005686:1:60003760:0': { baseMargin: 700, baseMarginPercent: 70 },
+                  '60005686:0:60003760:0': { baseMargin: 400, baseMarginPercent: 40 },
+                  '60003760:1:60008494:1': { baseMargin: 300, baseMarginPercent: 37.5 },
+                  '60003760:1:60008494:0': { baseMargin: 1000, baseMarginPercent: 66.66666666666666 },
+                  '60008494:1:60003760:0': { baseMargin: 200, baseMarginPercent: 20 },
+                  '60003760:0:60008494:0': { baseMargin: 500, baseMarginPercent: 33.33333333333333 } };
             var rowset = emdr_orders_hubs.rowsets[0];
             MarketTradeLeads
                 .updateFromMarketData(rowset.typeID, rowset.regionID)
@@ -316,59 +315,42 @@ describe("Models", function () {
 
         it('should find expected leads for sell/buy query', function (done) {
             var expected_leads =
-                { Rens: 
-                   { Jita: 
-                      [ { toSolarSystemName: 'Jita',
-                          baseMargin: 2500,
-                          baseMarginPercent: 83.33333333333334 } ],
+                { Jita: 
+                   { Rens: 
+                      [ { toSolarSystemName: 'Rens',
+                          baseMargin: 1000,
+                          baseMarginPercent: 50 } ],
                      Dodixie: 
                       [ { toSolarSystemName: 'Dodixie',
-                          baseMargin: 1400,
-                          baseMarginPercent: 46.666666666666664 } ],
-                     Hek: 
-                      [ { toSolarSystemName: 'Hek',
-                          baseMargin: 2700,
-                          baseMarginPercent: 90 } ],
-                     Amarr: 
-                      [ { toSolarSystemName: 'Amarr',
-                          baseMargin: 2200,
-                          baseMarginPercent: 73.33333333333333 } ] },
+                          baseMargin: 600,
+                          baseMarginPercent: 37.5 } ] },
                   Dodixie: 
-                   { Jita: 
-                      [ { toSolarSystemName: 'Jita',
-                          baseMargin: 1300,
-                          baseMarginPercent: 72.22222222222221 } ],
-                     Hek: 
-                      [ { toSolarSystemName: 'Hek',
-                          baseMargin: 1500,
-                          baseMarginPercent: 83.33333333333334 } ],
-                     Amarr: 
-                      [ { toSolarSystemName: 'Amarr',
-                          baseMargin: 1000,
-                          baseMarginPercent: 55.55555555555556 } ] },
-                  Jita: 
-                   { Hek: 
-                      [ { toSolarSystemName: 'Hek',
-                          baseMargin: 700,
+                   { Rens: 
+                      [ { toSolarSystemName: 'Rens',
+                          baseMargin: 200,
+                          baseMarginPercent: 10 } ] },
+                  Hek: 
+                   { Rens: 
+                      [ { toSolarSystemName: 'Rens',
+                          baseMargin: 1400,
                           baseMarginPercent: 70 } ],
+                     Dodixie: 
+                      [ { toSolarSystemName: 'Dodixie',
+                          baseMargin: 1000,
+                          baseMarginPercent: 62.5 } ],
                      Amarr: 
                       [ { toSolarSystemName: 'Amarr',
                           baseMargin: 200,
-                          baseMarginPercent: 20 } ] },
-                  Hek: 
-                   { Jita: 
-                      [ { toSolarSystemName: 'Jita',
-                          baseMargin: 100,
-                          baseMarginPercent: 16.666666666666664 } ] },
+                          baseMarginPercent: 25 } ] },
                   Amarr: 
-                   { Jita: 
-                      [ { toSolarSystemName: 'Jita',
-                          baseMargin: 1000,
-                          baseMarginPercent: 66.66666666666666 } ],
-                     Hek: 
-                      [ { toSolarSystemName: 'Hek',
-                          baseMargin: 1200,
-                          baseMarginPercent: 80 } ] } };
+                   { Rens: 
+                      [ { toSolarSystemName: 'Rens',
+                          baseMargin: 500,
+                          baseMarginPercent: 25 } ],
+                     Dodixie: 
+                      [ { toSolarSystemName: 'Dodixie',
+                          baseMargin: 100,
+                          baseMarginPercent: 6.25 } ] } };
         
             MarketTradeLeads.query(function (qb) {
                 // Buy from sell orders at origin, sell to buy orders at destination
@@ -384,10 +366,14 @@ describe("Models", function () {
                     .map(function (leads, from_system) {
                         leads = _.map(leads, function (lead) {
                             return _.pick(lead, [
-                                'toSolarSystemName', 'baseMargin', 'baseMarginPercent'
+                                'toSolarSystemName', 'baseMargin',
+                                'baseMarginPercent'
                             ]);
                         });
-                        return [from_system, _.groupBy(leads, 'toSolarSystemName')];
+                        return [
+                            from_system,
+                            _.groupBy(leads, 'toSolarSystemName')
+                        ];
                     }).object().value();
                 
                 _.each(leads, function (to_system_leads, from_system) {
