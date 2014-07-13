@@ -1,6 +1,8 @@
 process.env.NODE_ENV = 'test';
 
 var util = require('util');
+var fs = require('fs');
+
 var _ = require('underscore');
 var async = require('async');
 var expect = require('chai').expect;
@@ -39,6 +41,85 @@ describe("Models", function () {
                 return MarketDataRaws.updateFromEMDR(emdr_history);
             })
             .finally(done);
+        });
+
+        it('should update regional orders from in-game CSV export', function (done) {
+            var fixture_fn = fixtures_path + 'Placid-Prototype Sensor Booster-2014.07.13.txt';
+            var expected =
+                [ { orderID: '3655075685',
+                    typeID: '6158',
+                    regionID: '10000048',
+                    stationID: '60011893',
+                    solarSystemID: '30003794',
+                    issueDate: new Date('Thu Jul 10 2014 23:45:05 GMT-0400 (EDT)'),
+                    duration: '30',
+                    price: '339999.99',
+                    range: '32767',
+                    volEntered: '7',
+                    volRemaining: '2.0',
+                    minVolume: '1',
+                    bid: false },
+                  { orderID: '3603322664',
+                    typeID: '6158',
+                    regionID: '10000048',
+                    stationID: '60011824',
+                    solarSystemID: '30003830',
+                    issueDate: new Date('Tue Jun 17 2014 15:55:57 GMT-0400 (EDT)'),
+                    duration: '90',
+                    price: '344000.0',
+                    range: '32767',
+                    volEntered: '1384',
+                    volRemaining: '1305.0',
+                    minVolume: '1',
+                    bid: false },
+                  { orderID: '3620758551',
+                    typeID: '6158',
+                    regionID: '10000048',
+                    stationID: '60011824',
+                    solarSystemID: '30003830',
+                    issueDate: new Date('Sun Jun 15 2014 10:36:30 GMT-0400 (EDT)'),
+                    duration: '90',
+                    price: '345000.0',
+                    range: '32767',
+                    volEntered: '5',
+                    volRemaining: '1.0',
+                    minVolume: '1',
+                    bid: false },
+                  { orderID: '3610396964',
+                    typeID: '6158',
+                    regionID: '10000048',
+                    stationID: '60011824',
+                    solarSystemID: '30003830',
+                    issueDate: new Date('Sun Jun 08 2014 16:47:10 GMT-0400 (EDT)'),
+                    duration: '90',
+                    price: '350000.0',
+                    range: '32767',
+                    volEntered: '1',
+                    volRemaining: '1.0',
+                    minVolume: '1',
+                    bid: false },
+                  { orderID: '3655076333',
+                    typeID: '6158',
+                    regionID: '10000048',
+                    stationID: '60011893',
+                    solarSystemID: '30003794',
+                    issueDate: new Date('Tue Jul 08 2014 02:19:10 GMT-0400 (EDT)'),
+                    duration: '30',
+                    price: '100000.0',
+                    range: '-1',
+                    volEntered: '20',
+                    volRemaining: '15.0',
+                    minVolume: '1',
+                    bid: true } ];
+
+            var fin = fs.createReadStream(fixture_fn);
+
+            MarketDataRaws.updateFromCSV(fin).then(function (updates) {
+                expect(updates.length).to.equal(1);
+                var result = updates[0].rows();
+                expect(result).deep.equal(expected);
+                return done();
+            });
         });
 
         it('should update regional orders from EMUU data',
