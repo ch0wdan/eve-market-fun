@@ -28,7 +28,7 @@ describe("Models", function () {
         testUtils.migrateDB().finally(done);
     });
 
-    if (true) describe("MarketDataRaws", function () {
+    describe("MarketDataRaws", function () {
 
         var MarketDataRaws;
 
@@ -213,7 +213,7 @@ describe("Models", function () {
 
     });
 
-    if (true) describe("MarketMargins", function () {
+    describe("MarketMargins", function () {
 
         var MarketMargins, MarketDataRaws;
 
@@ -272,7 +272,7 @@ describe("Models", function () {
         });
     });
 
-    if (true) describe('MarketHistoryAggregates', function () {
+    describe('MarketHistoryAggregates', function () {
 
         var MarketHistoryAggregates, MarketDataRaws;
 
@@ -317,7 +317,7 @@ describe("Models", function () {
 
     });
 
-    if (true) describe('MarketTradeLeads', function () {
+    describe('MarketTradeLeads', function () {
         var emdr_orders_hubs = require(fixtures_path + 'emdr-orders-hubs.json');
 
         var MarketTradeLeads, MarketDataRaws, MarketMargins;
@@ -328,6 +328,10 @@ describe("Models", function () {
             MarketMargins = models.MarketMargins.forge();
 
             conf.db_Main('MarketTradeLeads').truncate().then(function () {
+                return conf.db_Main('MarketMargins').truncate();
+            }).then(function () {
+                return conf.db_Main('MarketDataRaw').truncate();
+            }).then(function () {
                 // Populate the raw market data
                 return MarketDataRaws.updateFromEMDR(emdr_orders_hubs);
             }).then(function (updates) {
@@ -486,6 +490,43 @@ describe("Models", function () {
             });
         });
 
+        it('should discover the matching orders between source and destination', function (done) {
+            // var from_fn = fixtures_path + 'The Forge-Photonic Metamaterials-2014.07.16 024246.txt'
+            // var to_fn = fixtures_path + 'Sinq Laison-Photonic Metamaterials-2014.07.16 022702.txt';
+
+            var from_fn = fixtures_path + 'The Forge-Zydrine-2014.07.16 024303.txt'
+            var to_fn = fixtures_path + 'Sinq Laison-Zydrine-2014.07.16 023130.txt';
+
+            var from_fin = fs.createReadStream(from_fn);
+            var to_fin = fs.createReadStream(to_fn);
+
+            var from_raw, to_raw;
+            conf.db_Main('MarketTradeLeads').truncate().then(function () {
+                return conf.db_Main('MarketMargins').truncate();
+            }).then(function () {
+                return conf.db_Main('MarketDataRaw').truncate();
+            }).then(function () {
+                return MarketDataRaws.updateFromCSV(from_fin);
+            }).then(function (updates) {
+                from_raw = updates[0];
+                return MarketMargins.updateFromMarketData(
+                    from_raw.get('typeID'), from_raw.get('regionID'));
+            }).then(function (margins) {
+                return MarketDataRaws.updateFromCSV(to_fin);
+            }).then(function (updates) {
+                to_raw = updates[0];
+                return MarketMargins.updateFromMarketData(
+                    to_raw.get('typeID'), to_raw.get('regionID'));
+            }).then(function () {
+                MarketTradeLeads.updateFromMarketData(
+                    from_raw.get('typeID'),
+                    from_raw.get('regionID')
+                ).then(function (leads) {
+                    util.debug("\n"+util.inspect(_.invoke(leads, 'toJSON')));
+                    return done();
+                });
+            });
+        });
     });
 
 });
