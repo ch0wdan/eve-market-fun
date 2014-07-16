@@ -327,11 +327,11 @@ describe("Models", function () {
             MarketDataRaws = models.MarketDataRaws.forge();
             MarketMargins = models.MarketMargins.forge();
 
-            conf.db_Main('MarketTradeLeads').truncate().then(function () {
-                return conf.db_Main('MarketMargins').truncate();
-            }).then(function () {
-                return conf.db_Main('MarketDataRaw').truncate();
-            }).then(function () {
+            Promise.all([
+                conf.db_Main('MarketTradeLeads').truncate(),
+                conf.db_Main('MarketMargins').truncate(),
+                conf.db_Main('MarketDataRaw').truncate()
+            ]).then(function () {
                 // Populate the raw market data
                 return MarketDataRaws.updateFromEMDR(emdr_orders_hubs);
             }).then(function (updates) {
@@ -489,44 +489,65 @@ describe("Models", function () {
                 return done();
             });
         });
+    });
+
+    describe('MarketTradeLeads2', function () {
+        var MarketTradeLeads, MarketDataRaws, MarketMargins;
+
+        before(function (done) {
+            MarketTradeLeads = models.MarketTradeLeads.forge();
+            MarketDataRaws = models.MarketDataRaws.forge();
+            MarketMargins = models.MarketMargins.forge();
+            Promise.all([
+                conf.db_Main('MarketTradeLeads').truncate(),
+                conf.db_Main('MarketMargins').truncate(),
+                conf.db_Main('MarketDataRaw').truncate()
+            ]).then(function () {
+                return done();
+            });
+        });
 
         it('should discover the matching orders between source and destination', function (done) {
-            // var from_fn = fixtures_path + 'The Forge-Photonic Metamaterials-2014.07.16 024246.txt'
-            // var to_fn = fixtures_path + 'Sinq Laison-Photonic Metamaterials-2014.07.16 022702.txt';
+            var from_fn = fixtures_path + 'The Forge-Photonic Metamaterials-2014.07.16 024246.txt'
+            var to_fn = fixtures_path + 'Sinq Laison-Photonic Metamaterials-2014.07.16 022702.txt';
 
-            var from_fn = fixtures_path + 'The Forge-Zydrine-2014.07.16 024303.txt'
-            var to_fn = fixtures_path + 'Sinq Laison-Zydrine-2014.07.16 023130.txt';
+            //var from_fn = fixtures_path + 'The Forge-Zydrine-2014.07.16 024303.txt'
+            //var to_fn = fixtures_path + 'Sinq Laison-Zydrine-2014.07.16 023130.txt';
 
             var from_fin = fs.createReadStream(from_fn);
             var to_fin = fs.createReadStream(to_fn);
 
             var from_raw, to_raw;
-            conf.db_Main('MarketTradeLeads').truncate().then(function () {
-                return conf.db_Main('MarketMargins').truncate();
-            }).then(function () {
-                return conf.db_Main('MarketDataRaw').truncate();
-            }).then(function () {
-                return MarketDataRaws.updateFromCSV(from_fin);
-            }).then(function (updates) {
-                from_raw = updates[0];
-                return MarketMargins.updateFromMarketData(
-                    from_raw.get('typeID'), from_raw.get('regionID'));
-            }).then(function (margins) {
-                return MarketDataRaws.updateFromCSV(to_fin);
-            }).then(function (updates) {
-                to_raw = updates[0];
-                return MarketMargins.updateFromMarketData(
-                    to_raw.get('typeID'), to_raw.get('regionID'));
-            }).then(function () {
-                MarketTradeLeads.updateFromMarketData(
+
+            Promise.all([
+                MarketDataRaws.updateFromCSV(from_fin),
+                MarketDataRaws.updateFromCSV(to_fin)
+            ]).spread(function (from_updates, to_updates) {
+                from_raw = from_updates[0];
+                to_raw = to_updates[0];
+                return Promise.all([
+                    MarketMargins.updateFromMarketData(
+                        from_raw.get('typeID'),
+                        from_raw.get('regionID')
+                    ),
+                    MarketMargins.updateFromMarketData(
+                        to_raw.get('typeID'),
+                        to_raw.get('regionID')
+                    )
+                ]);
+            }).spread(function (from_margins, to_margins) {
+                return MarketTradeLeads.updateFromMarketData(
                     from_raw.get('typeID'),
                     from_raw.get('regionID')
-                ).then(function (leads) {
-                    util.debug("\n"+util.inspect(_.invoke(leads, 'toJSON')));
-                    return done();
+                );
+            }).then(function (leads) {
+                leads.forEach(function (lead) {
+                    util.debug(util.inspect(lead.toJSON()));
                 });
+                return done();
             });
         });
+
     });
 
 });
