@@ -53,10 +53,10 @@ describe("Models", function () {
                     solarSystemID: '30003794',
                     issueDate: new Date('Thu Jul 10 2014 23:45:05 GMT-0400 (EDT)'),
                     duration: '30',
-                    price: '339999.99',
+                    price: 339999.99,
                     range: '32767',
-                    volEntered: '7',
-                    volRemaining: '2.0',
+                    volEntered: 7,
+                    volRemaining: 2,
                     minVolume: '1',
                     bid: false },
                   { orderID: '3603322664',
@@ -66,10 +66,10 @@ describe("Models", function () {
                     solarSystemID: '30003830',
                     issueDate: new Date('Tue Jun 17 2014 15:55:57 GMT-0400 (EDT)'),
                     duration: '90',
-                    price: '344000.0',
+                    price: 344000,
                     range: '32767',
-                    volEntered: '1384',
-                    volRemaining: '1305.0',
+                    volEntered: 1384,
+                    volRemaining: 1305,
                     minVolume: '1',
                     bid: false },
                   { orderID: '3620758551',
@@ -79,10 +79,10 @@ describe("Models", function () {
                     solarSystemID: '30003830',
                     issueDate: new Date('Sun Jun 15 2014 10:36:30 GMT-0400 (EDT)'),
                     duration: '90',
-                    price: '345000.0',
+                    price: 345000,
                     range: '32767',
-                    volEntered: '5',
-                    volRemaining: '1.0',
+                    volEntered: 5,
+                    volRemaining: 1,
                     minVolume: '1',
                     bid: false },
                   { orderID: '3610396964',
@@ -92,10 +92,10 @@ describe("Models", function () {
                     solarSystemID: '30003830',
                     issueDate: new Date('Sun Jun 08 2014 16:47:10 GMT-0400 (EDT)'),
                     duration: '90',
-                    price: '350000.0',
+                    price: 350000,
                     range: '32767',
-                    volEntered: '1',
-                    volRemaining: '1.0',
+                    volEntered: 1,
+                    volRemaining: 1,
                     minVolume: '1',
                     bid: false },
                   { orderID: '3655076333',
@@ -105,10 +105,10 @@ describe("Models", function () {
                     solarSystemID: '30003794',
                     issueDate: new Date('Tue Jul 08 2014 02:19:10 GMT-0400 (EDT)'),
                     duration: '30',
-                    price: '100000.0',
+                    price: 100000,
                     range: '-1',
-                    volEntered: '20',
-                    volRemaining: '15.0',
+                    volEntered: 20,
+                    volRemaining: 15,
                     minVolume: '1',
                     bid: true } ];
 
@@ -318,236 +318,275 @@ describe("Models", function () {
     });
 
     describe('MarketTradeLeads', function () {
-        var emdr_orders_hubs = require(fixtures_path + 'emdr-orders-hubs.json');
-
         var MarketTradeLeads, MarketDataRaws, MarketMargins;
 
         before(function (done) {
             MarketTradeLeads = models.MarketTradeLeads.forge();
             MarketDataRaws = models.MarketDataRaws.forge();
             MarketMargins = models.MarketMargins.forge();
-
-            Promise.all([
-                conf.db_Main('MarketTradeLeads').truncate(),
-                conf.db_Main('MarketMargins').truncate(),
-                conf.db_Main('MarketDataRaw').truncate()
-            ]).then(function () {
-                // Populate the raw market data
-                return MarketDataRaws.updateFromEMDR(emdr_orders_hubs);
-            }).then(function (updates) {
-                // Generate the market margins
-                return Promise.all(updates.map(function (update) {
-                    return MarketMargins.updateFromMarketData(
-                        update.get('typeID'), update.get('regionID'));
-                }));
-            }).then(function () {
-                // Use a queue to scan for trade leads from the rowsets
-                // Forcing serial scans prevents duplicates vs Promise.all()
-                var queue = async.queue(function (task, next) {
-                    MarketTradeLeads
-                        .updateFromMarketData(task.typeID, task.regionID)
-                        .then(function (results) { next(); });
-                }, 1);
-                queue.push(emdr_orders_hubs.rowsets);
-                queue.drain = done;
-            }); 
+            return done();
         });
 
-        it('should yield the expected leads updated in a single scan', function (done) {
-            var expected = 
-                { '60003760:1:60004588:1': { baseMargin: 1500, baseMarginPercent: 75 },
-                  '60003760:1:60004588:0': { baseMargin: 2500, baseMarginPercent: 83.33333333333334 },
-                  '60003760:0:60004588:1': { baseMargin: 1000, baseMarginPercent: 50 },
-                  '60003760:0:60004588:0': { baseMargin: 2000, baseMarginPercent: 66.66666666666666 },
-                  '60003760:1:60011866:1': { baseMargin: 1100, baseMarginPercent: 68.75 },
-                  '60003760:1:60011866:0': { baseMargin: 1300, baseMarginPercent: 72.22222222222221 },
-                  '60003760:0:60011866:1': { baseMargin: 600, baseMarginPercent: 37.5 },
-                  '60003760:0:60011866:0': { baseMargin: 800, baseMarginPercent: 44.44444444444444 },
-                  '60005686:1:60003760:1': { baseMargin: 200, baseMarginPercent: 40 },
-                  '60003760:1:60005686:0': { baseMargin: 100, baseMarginPercent: 16.666666666666664 },
-                  '60005686:1:60003760:0': { baseMargin: 700, baseMarginPercent: 70 },
-                  '60005686:0:60003760:0': { baseMargin: 400, baseMarginPercent: 40 },
-                  '60003760:1:60008494:1': { baseMargin: 300, baseMarginPercent: 37.5 },
-                  '60003760:1:60008494:0': { baseMargin: 1000, baseMarginPercent: 66.66666666666666 },
-                  '60008494:1:60003760:0': { baseMargin: 200, baseMarginPercent: 20 },
-                  '60003760:0:60008494:0': { baseMargin: 500, baseMarginPercent: 33.33333333333333 } };
-            var rowset = emdr_orders_hubs.rowsets[0];
-            MarketTradeLeads
-                .updateFromMarketData(rowset.typeID, rowset.regionID)
-                .then(function (leads) {
-                    // Reduce the set of leads down to something easy to verify
-                    var result = _.chain(leads).map(function (lead_model) {
-                        var lead = lead_model.toJSON();
-                        return [
-                            _.chain(lead)
-                                .pick(['fromStationID', 'fromBid', 'toStationID', 'toBid'])
-                                .values().join(':').value(),
-                            _.pick(lead, ['baseMargin', 'baseMarginPercent'])
-                        ];
-                    }).object().value();
-                    expect(result).deep.equal(expected);
+        describe('artificial data', function () {
+            var emdr_orders_hubs = require(fixtures_path + 'emdr-orders-hubs.json');
+
+            beforeEach(function (done) {
+                Promise.all([
+                    conf.db_Main('MarketTradeLeads').truncate(),
+                    conf.db_Main('MarketMargins').truncate(),
+                    conf.db_Main('MarketDataRaw').truncate()
+                ]).then(function () {
+                    return MarketDataRaws.updateFromEMDR(emdr_orders_hubs);
+                }).then(function (updates) {
+                    // Generate the market margins
+                    return Promise.all(updates.map(function (update) {
+                        return MarketMargins.updateFromMarketData(
+                            update.get('typeID'),
+                            update.get('regionID')
+                        );
+                    }));
+                }).then(function () {
+                    // Use a queue to scan for trade leads from the rowsets
+                    // Forcing serial scans prevents duplicates vs Promise.all()
+                    var queue = async.queue(function (task, next) {
+                        MarketTradeLeads
+                            .updateFromMarketData(task.typeID, task.regionID)
+                            .then(function (results) { next(); });
+                    }, 1);
+                    queue.push(emdr_orders_hubs.rowsets);
+                    queue.drain = done;
+                }); 
+            });
+
+            it('should find the expected number of total leads', function (done) {
+                conf.db_Main('MarketTradeLeads').count('id').then(function (ct) {
+                    // TODO: Lots of results, maybe need minimized test fixture
+                    expect(ct[0]['count("id")']).to.equal(40);
                     return done();
                 });
-        });
+            });
 
-        it('should find the expected number of total leads', function (done) {
-            conf.db_Main('MarketTradeLeads').count('id').then(function (ct) {
-                // TODO: Lots of results, maybe need minimized test fixture
-                expect(ct[0]['count("id")']).to.equal(40);
-                return done();
+            it('should yield the expected leads updated in a single scan', function (done) {
+                var expected = 
+                    { '60003760:true:60004588:true': { baseMargin: 1500, baseMarginPercent: 75 },
+                      '60003760:true:60004588:false': { baseMargin: 2500, baseMarginPercent: 83.33 },
+                      '60003760:false:60004588:true': { baseMargin: 1000, baseMarginPercent: 50 },
+                      '60003760:false:60004588:false': { baseMargin: 2000, baseMarginPercent: 66.67 },
+                      '60003760:true:60011866:true': { baseMargin: 1100, baseMarginPercent: 68.75 },
+                      '60003760:true:60011866:false': { baseMargin: 1300, baseMarginPercent: 72.22 },
+                      '60003760:false:60011866:true': { baseMargin: 600, baseMarginPercent: 37.5 },
+                      '60003760:false:60011866:false': { baseMargin: 800, baseMarginPercent: 44.44 },
+                      '60005686:true:60003760:true': { baseMargin: 200, baseMarginPercent: 40 },
+                      '60003760:true:60005686:false': { baseMargin: 100, baseMarginPercent: 16.67 },
+                      '60005686:true:60003760:false': { baseMargin: 700, baseMarginPercent: 70 },
+                      '60005686:false:60003760:false': { baseMargin: 400, baseMarginPercent: 40 },
+                      '60003760:true:60008494:true': { baseMargin: 300, baseMarginPercent: 37.5 },
+                      '60003760:true:60008494:false': { baseMargin: 1000, baseMarginPercent: 66.67 },
+                      '60008494:true:60003760:false': { baseMargin: 200, baseMarginPercent: 20 },
+                      '60003760:false:60008494:false': { baseMargin: 500, baseMarginPercent: 33.33 } }
+
+                var rowset = emdr_orders_hubs.rowsets[0];
+                MarketTradeLeads
+                    .updateFromMarketData(rowset.typeID, rowset.regionID)
+                    .then(function (leads) {
+                        // Reduce the set of leads down to something easy to verify
+                        var result = _.chain(leads).map(function (lead_model) {
+                            var lead = lead_model.toJSON();
+                            return [
+                                _.chain(lead)
+                                    .pick(['fromStationID', 'fromBid', 'toStationID', 'toBid'])
+                                    .values().join(':').value(),
+                                _.pick(lead, ['baseMargin', 'baseMarginPercent'])
+                            ];
+                        }).object().value();
+                        expect(result).deep.equal(expected);
+                        return done();
+                    });
+            });
+
+            it('should find expected leads for sell/buy query', function (done) {
+                var expected_leads =
+                    { Jita: 
+                       { Rens: 
+                          [ { toSolarSystemName: 'Rens',
+                              baseMargin: 1000,
+                              baseMarginPercent: 50 } ],
+                         Dodixie: 
+                          [ { toSolarSystemName: 'Dodixie',
+                              baseMargin: 600,
+                              baseMarginPercent: 37.5 } ] },
+                      Dodixie: 
+                       { Rens: 
+                          [ { toSolarSystemName: 'Rens',
+                              baseMargin: 200,
+                              baseMarginPercent: 10 } ] },
+                      Hek: 
+                       { Rens: 
+                          [ { toSolarSystemName: 'Rens',
+                              baseMargin: 1400,
+                              baseMarginPercent: 70 } ],
+                         Dodixie: 
+                          [ { toSolarSystemName: 'Dodixie',
+                              baseMargin: 1000,
+                              baseMarginPercent: 62.5 } ],
+                         Amarr: 
+                          [ { toSolarSystemName: 'Amarr',
+                              baseMargin: 200,
+                              baseMarginPercent: 25 } ] },
+                      Amarr: 
+                       { Rens: 
+                          [ { toSolarSystemName: 'Rens',
+                              baseMargin: 500,
+                              baseMarginPercent: 25 } ],
+                         Dodixie: 
+                          [ { toSolarSystemName: 'Dodixie',
+                              baseMargin: 100,
+                              baseMarginPercent: 6.25 } ] } };
+
+                MarketTradeLeads.query(function (qb) {
+                    // Buy from sell orders at origin, sell to buy orders at destination
+                    qb.where({fromBid: false, toBid: true})
+                }).fetch().then(function (leads) {
+                    // This should also exercise the static IDs in trade leads...
+                    return leads.joinFromStatic();
+                }).then(function (lead_models) {
+
+                    // Collate leads into a two-level object indexed by from and to
+                    var lead_models_json = lead_models.toJSON();
+                    var leads = _.chain(lead_models_json)
+                        .groupBy('fromSolarSystemName')
+                        .map(function (leads, from_system) {
+                            leads = _.map(leads, function (lead) {
+                                return _.pick(lead, [
+                                    'toSolarSystemName', 'baseMargin', 'baseMarginPercent'
+                                ]);
+                            });
+                            return [
+                                from_system,
+                                _.groupBy(leads, 'toSolarSystemName')
+                            ];
+                        }).object().value();
+                    
+                    _.each(leads, function (to_system_leads, from_system) {
+                        // Neither of these systems are default hubs...
+                        expect(from_system).to.not.equal('Barleguet');
+                        expect(from_system).to.not.equal('Sendaya');
+
+                        _.each(to_system_leads, function (leads, to_system) {
+                            // Neither of these systems are default hubs...
+                            expect(to_system).to.not.equal('Barleguet');
+                            expect(to_system).to.not.equal('Sendaya');
+
+                            // This lead should be expected.
+                            var expected = expected_leads[from_system][to_system][0];
+                            expect(expected).to.exist;
+
+                            // There should be no duplicate trade leads.
+                            expect(leads.length).to.equal(1);
+                            var result = leads[0];
+                            
+                            // Ensure the lead has expected values.
+                            _.each(expected, function (val, key) {
+                                expect(result[key]).to.equal(val);
+                            });
+                        })
+                    });
+
+                    return done();
+                });
             });
         });
 
-        it('should find expected leads for sell/buy query', function (done) {
-            var expected_leads =
-                { Jita: 
-                   { Rens: 
-                      [ { toSolarSystemName: 'Rens',
-                          baseMargin: 1000,
-                          baseMarginPercent: 50 } ],
-                     Dodixie: 
-                      [ { toSolarSystemName: 'Dodixie',
-                          baseMargin: 600,
-                          baseMarginPercent: 37.5 } ] },
-                  Dodixie: 
-                   { Rens: 
-                      [ { toSolarSystemName: 'Rens',
-                          baseMargin: 200,
-                          baseMarginPercent: 10 } ] },
-                  Hek: 
-                   { Rens: 
-                      [ { toSolarSystemName: 'Rens',
-                          baseMargin: 1400,
-                          baseMarginPercent: 70 } ],
-                     Dodixie: 
-                      [ { toSolarSystemName: 'Dodixie',
-                          baseMargin: 1000,
-                          baseMarginPercent: 62.5 } ],
-                     Amarr: 
-                      [ { toSolarSystemName: 'Amarr',
-                          baseMargin: 200,
-                          baseMarginPercent: 25 } ] },
-                  Amarr: 
-                   { Rens: 
-                      [ { toSolarSystemName: 'Rens',
-                          baseMargin: 500,
-                          baseMarginPercent: 25 } ],
-                     Dodixie: 
-                      [ { toSolarSystemName: 'Dodixie',
-                          baseMargin: 100,
-                          baseMarginPercent: 6.25 } ] } };
-        
-            MarketTradeLeads.query(function (qb) {
-                // Buy from sell orders at origin, sell to buy orders at destination
-                qb.where({fromBid: false, toBid: true})
-            }).fetch().then(function (leads) {
-                // This should also exercise the static IDs in trade leads...
-                return leads.joinFromStatic();
-            }).then(function (lead_models) {
+        describe('natural data', function () {
 
-                // Collate leads into a two-level object indexed by from and to
-                var leads = _.chain(lead_models.toJSON())
-                    .groupBy('fromSolarSystemName')
-                    .map(function (leads, from_system) {
-                        leads = _.map(leads, function (lead) {
-                            return _.pick(lead, [
-                                'toSolarSystemName', 'baseMargin',
-                                'baseMarginPercent'
+            beforeEach(function (done) {
+                Promise.all([
+                    conf.db_Main('MarketTradeLeads').truncate(),
+                    conf.db_Main('MarketMargins').truncate(),
+                    conf.db_Main('MarketDataRaw').truncate()
+                ]).then(function () {
+                    return done();
+                });
+            });
+
+            function ensureLeads(from_fn, to_fn, expected) {
+                return function (done) {
+                    var from_fin = fs.createReadStream(fixtures_path + from_fn);
+                    var to_fin = fs.createReadStream(fixtures_path + to_fn);
+
+                    var from_raw, to_raw;
+
+                    Promise.all([
+                        MarketDataRaws.updateFromCSV(from_fin),
+                        MarketDataRaws.updateFromCSV(to_fin)
+                    ]).spread(function (from_updates, to_updates) {
+                        from_raw = from_updates[0];
+                        to_raw = to_updates[0];
+                        return Promise.all([
+                            MarketMargins.updateFromMarketData(
+                                from_raw.get('typeID'), from_raw.get('regionID')),
+                            MarketMargins.updateFromMarketData(
+                                to_raw.get('typeID'), to_raw.get('regionID'))
+                        ]);
+                    }).spread(function (from_margins, to_margins) {
+                        return MarketTradeLeads.updateFromMarketData(
+                            from_raw.get('typeID'), from_raw.get('regionID'));
+                    }).then(function (leads) {
+                        var results = _.map(leads, function (lead) {
+                            return _.pick(lead.toJSON(), [
+                                'fromBid', 'fromPrice', 'toBid', 'toPrice',
+                                'iskPerM3', 'baseMargin', 'baseMarginPercent'
                             ]);
                         });
-                        return [
-                            from_system,
-                            _.groupBy(leads, 'toSolarSystemName')
-                        ];
-                    }).object().value();
-                
-                _.each(leads, function (to_system_leads, from_system) {
-                    // Neither of these systems are default hubs...
-                    expect(from_system).to.not.equal('Barleguet');
-                    expect(from_system).to.not.equal('Sendaya');
+                        expect(results).to.deep.equal(expected);
+                        return done();
+                    });
+                };
+            }
 
-                    _.each(to_system_leads, function (leads, to_system) {
-                        // Neither of these systems are default hubs...
-                        expect(to_system).to.not.equal('Barleguet');
-                        expect(to_system).to.not.equal('Sendaya');
+            it('should discover the matching orders for Photonic Metamaterials', ensureLeads(
+                'The Forge-Photonic Metamaterials-2014.07.16 024246.txt',
+                'Sinq Laison-Photonic Metamaterials-2014.07.16 022702.txt',
+                [ { fromBid: true, fromPrice: 11420.01,
+                    toBid: true, toPrice: 12534.08,
+                    iskPerM3: 985.49,
+                    baseMargin: 1114.07, baseMarginPercent: 8.89 },
+                  { fromBid: true, fromPrice: 11420.01,
+                    toBid: false, toPrice: 15995.38,
+                    iskPerM3: 4575.37,
+                    baseMargin: 4575.37, baseMarginPercent: 28.6 },
+                  { fromBid: false, fromPrice: 11756.82,
+                    toBid: true, toPrice: 12534.08,
+                    iskPerM3: 648.68,
+                    baseMargin: 777.26, baseMarginPercent: 6.2 },
+                  { fromBid: false, fromPrice: 11756.82,
+                    toBid: false, toPrice: 15995.38,
+                    iskPerM3: 3517.21,
+                    baseMargin: 4238.56, baseMarginPercent: 26.5 } ]
+            ));
 
-                        // This lead should be expected.
-                        var expected = expected_leads[from_system][to_system][0];
-                        expect(expected).to.exist;
+            it('should discover the matching orders for Zydrine', ensureLeads(
+                'The Forge-Zydrine-2014.07.16 024303.txt',
+                'Sinq Laison-Zydrine-2014.07.16 023130.txt',
+                [ { fromBid: true, fromPrice: 586.1,
+                    toBid: true, toPrice: 611.12,
+                    iskPerM3: 1917.57,
+                    baseMargin: 25.02, baseMarginPercent: 4.09 },
+                  { fromBid: true, fromPrice: 586.1,
+                    toBid: false, toPrice: 619.95,
+                    iskPerM3: 3385,
+                    baseMargin: 33.85, baseMarginPercent: 5.46 },
+                  { fromBid: false, fromPrice: 595.99,
+                    toBid: true, toPrice: 611.12,
+                    iskPerM3: 1449.05,
+                    baseMargin: 15.13, baseMarginPercent: 2.48 },
+                  { fromBid: false, fromPrice: 595.99,
+                    toBid: false, toPrice: 619.95,
+                    iskPerM3: 1662.49,
+                    baseMargin: 23.96, baseMarginPercent: 3.86 } ]
+            ));
 
-                        // There should be no duplicate trade leads.
-                        expect(leads.length).to.equal(1);
-                        var result = leads[0];
-                        
-                        // Ensure the lead has expected values.
-                        _.each(expected, function (val, key) {
-                            expect(result[key]).to.equal(val);
-                        });
-                    })
-                });
-
-                return done();
-            });
         });
-    });
-
-    describe('MarketTradeLeads2', function () {
-        var MarketTradeLeads, MarketDataRaws, MarketMargins;
-
-        before(function (done) {
-            MarketTradeLeads = models.MarketTradeLeads.forge();
-            MarketDataRaws = models.MarketDataRaws.forge();
-            MarketMargins = models.MarketMargins.forge();
-            Promise.all([
-                conf.db_Main('MarketTradeLeads').truncate(),
-                conf.db_Main('MarketMargins').truncate(),
-                conf.db_Main('MarketDataRaw').truncate()
-            ]).then(function () {
-                return done();
-            });
-        });
-
-        it('should discover the matching orders between source and destination', function (done) {
-            var from_fn = fixtures_path + 'The Forge-Photonic Metamaterials-2014.07.16 024246.txt'
-            var to_fn = fixtures_path + 'Sinq Laison-Photonic Metamaterials-2014.07.16 022702.txt';
-
-            //var from_fn = fixtures_path + 'The Forge-Zydrine-2014.07.16 024303.txt'
-            //var to_fn = fixtures_path + 'Sinq Laison-Zydrine-2014.07.16 023130.txt';
-
-            var from_fin = fs.createReadStream(from_fn);
-            var to_fin = fs.createReadStream(to_fn);
-
-            var from_raw, to_raw;
-
-            Promise.all([
-                MarketDataRaws.updateFromCSV(from_fin),
-                MarketDataRaws.updateFromCSV(to_fin)
-            ]).spread(function (from_updates, to_updates) {
-                from_raw = from_updates[0];
-                to_raw = to_updates[0];
-                return Promise.all([
-                    MarketMargins.updateFromMarketData(
-                        from_raw.get('typeID'),
-                        from_raw.get('regionID')
-                    ),
-                    MarketMargins.updateFromMarketData(
-                        to_raw.get('typeID'),
-                        to_raw.get('regionID')
-                    )
-                ]);
-            }).spread(function (from_margins, to_margins) {
-                return MarketTradeLeads.updateFromMarketData(
-                    from_raw.get('typeID'),
-                    from_raw.get('regionID')
-                );
-            }).then(function (leads) {
-                leads.forEach(function (lead) {
-                    util.debug(util.inspect(lead.toJSON()));
-                });
-                return done();
-            });
-        });
-
     });
 
 });
