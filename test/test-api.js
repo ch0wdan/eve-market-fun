@@ -123,6 +123,11 @@ describe('HTTP API', function () {
                 });
             });
 
+            it('should join static data with orders from raw market data', function (done) {
+                expect(false).to.be.true;
+                return done();
+            });
+
             it('should list orders from a character', function (done) {
                 var expected =
                     [ { orderID: 3662398179,
@@ -255,28 +260,50 @@ describe('HTTP API', function () {
 
         });
 
-        describe('/data/market/emuu', function () {
-            // TODO
+        describe('/data/market/orders', function () {
+            it('should offer all market orders for a character', function (done) {
+                expect(false).to.be.true;
+                return done();
+            });
         });
 
         describe('/data/market/history', function () {
-            // TODO
+            it('should offer market history for an item', function (done) {
+                expect(false).to.be.true;
+                return done();
+            });
         });
 
         describe('/data/market/transactions', function () {
-            // TODO
+            it('should offer transaction history for a character', function (done) {
+                expect(false).to.be.true;
+                return done();
+            });
+            it('should offer transaction history for a character by item', function (done) {
+                expect(false).to.be.true;
+                return done();
+            });
         });
 
-        describe('/data/market/orders', function () {
-            // TODO
+        describe('/data/market/emuu', function () {
+            it('should accept POSTed updates in EMUU format', function (done) {
+                expect(false).to.be.true;
+                return done();
+            });
         });
 
         describe('/data/market/margins', function () {
-            // TODO
+            it('should offer station trading margin suggestions', function (done) {
+                expect(false).to.be.true;
+                return done();
+            });
         });
 
         describe('/data/market/trades', function () {
-            // TODO
+            it('should offer trading leads between hubs', function (done) {
+                expect(false).to.be.true;
+                return done();
+            });
         });
 
     });

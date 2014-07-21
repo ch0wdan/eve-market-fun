@@ -14,17 +14,6 @@ exports.migrateDB = function () {
         directory: __dirname + '/../../migrations',
         database: conf.db_Main
     });
-    /*
-    spread(function (batchNo, log) {
-        if (log.length === 0) {
-            util.debug('Already up to date'.cyan);
-        } else {
-            util.debug(('Batch ' + batchNo + ' run: ' + 
-                    log.length + ' migrations \n').green +
-                log.join('\n').cyan);
-        }
-    });
-    */
 }
 
 exports.USERS = _.map([
