@@ -28,6 +28,64 @@ describe("Models", function () {
         testUtils.migrateDB().finally(done);
     });
 
+    describe("MarketOrders", function () {
+
+        var MarketOrders;
+
+        beforeEach(function (done) {
+            conf.db_Main('MarketOrders').truncate().then(function () {
+                MarketOrders = models.MarketOrders.forge();
+            })
+            .finally(done);
+        });
+
+        it('should update character orders from CSV export', function (done) {
+            var fixture_fn = fixtures_path + 'My Orders-2014.07.20 1732.txt';
+            var expected_typeid = 9451;
+            var expected =
+                [ { orderID: 3662398179,
+                    charID: 8675309,
+                    stationID: 60011866,
+                    issueDate: '2014-07-19 04:43:03.000',
+                    price: 2500002.11,
+                    volEntered: 50,
+                    volRemaining: 48,
+                    bid: true },
+                  { orderID: 3671812676,
+                    charID: 8675309,
+                    stationID: 60011866,
+                    issueDate: '2014-07-20 04:56:22.000',
+                    price: 5699988.7,
+                    volEntered: 1,
+                    volRemaining: 1,
+                    bid: false } ];
+
+            var fin = fs.createReadStream(fixture_fn);
+
+            MarketOrders.updateFromCSV(fin).then(function (updates) {
+                expect(updates.length).to.equal(124);
+                return models.MarketOrders.forge().query(function (qb) {
+                    qb.where('typeID', '=', expected_typeid);
+                }).fetch();
+            }).then(function (orders) {
+                expect(orders.length).to.equal(2);
+                var result = orders.toJSON().map(function (order) {
+                    return _.pick(order, [
+                        'orderID', 'charID', 'stationID', 'issueDate', 'price',
+                        'volEntered', 'volRemaining', 'bid'
+                    ]);
+                });
+                expect(result).to.deep.equal(expected);
+                return done();
+            });
+        });
+    
+        describe("MarketOrder", function () {
+
+        });
+    
+    });
+
     describe("MarketDataRaws", function () {
 
         var MarketDataRaws;
@@ -43,7 +101,7 @@ describe("Models", function () {
             .finally(done);
         });
 
-        it('should update regional orders from in-game CSV export', function (done) {
+        it('should update regional orders from CSV export', function (done) {
             var fixture_fn = fixtures_path + 'Placid-Prototype Sensor Booster-2014.07.13.txt';
             var expected =
                 [ { orderID: '3655075685',
@@ -161,6 +219,12 @@ describe("Models", function () {
                 });
             };
         }
+
+        // TODO
+        it('should not accept an update with a generatedAt older than existing data', function (done) {
+            expect(false).to.be.true;
+            return done();
+        });
 
         describe('MarketDataRaw', function () {
 
@@ -360,7 +424,6 @@ describe("Models", function () {
 
             it('should find the expected number of total leads', function (done) {
                 conf.db_Main('MarketTradeLeads').count('id').then(function (ct) {
-                    // TODO: Lots of results, maybe need minimized test fixture
                     expect(ct[0]['count("id")']).to.equal(40);
                     return done();
                 });

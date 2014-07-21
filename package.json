@@ -39,7 +39,9 @@
     "express-validator": "~1.0.1",
     "node-validator": "~0.1.1",
     "forms": "~0.3.0",
-    "zmq": "~2.5.1"
+    "zmq": "~2.5.1",
+    "request": "~2.37.0",
+    "moment": "~2.7.0"
   },
   "optionalDependencies": {
     "mysql": "~2.0.0-rc2"
