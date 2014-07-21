@@ -1,6 +1,10 @@
 # EVE Market Fun
 
-[![Build Status](https://secure.travis-ci.org/lmorchard/eve-market-fun.png)](http://travis-ci.org/lmorchard/eve-market-fun)
+[![Build](https://secure.travis-ci.org/lmorchard/eve-market-fun.png)](http://travis-ci.org/lmorchard/eve-market-fun)
+[![Coverage](https://coveralls.io/repos/lmorchard/eve-market-fun/badge.png)](https://coveralls.io/r/lmorchard/eve-market-fun)
+[![Quality](https://codeclimate.com/github/lmorchard/eve-market-fun.png)](https://codeclimate.com/github/lmorchard/eve-market-fun)
+[![Dependencies](https://david-dm.org/lmorchard/eve-market-fun.png)](https://david-dm.org/lmorchard/eve-market-fun)
+[![Tips](http://img.shields.io/gittip/lmorchard.png)](https://www.gittip.com/lmorchard/)
 
 A poorly-named project for playing with EVE Online market data from node.js
 
