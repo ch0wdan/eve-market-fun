@@ -7,7 +7,8 @@ var _ = require('underscore');
 var async = require('async');
 var expect = require('chai').expect;
 var Promise = require('bluebird');
-var request = Promise.promisify(require('request'));
+var requestReal = require('request');
+var request = Promise.promisify(requestReal);
 
 var logger = require('winston');
 
@@ -28,17 +29,34 @@ var emdr_history = require(fixtures_path + 'emdr-history.json');
 describe('HTTP API', function () {
     this.timeout(5000);
 
+    var cookie_jar = requestReal.jar();
     var server = null;
+
     before(function (done) {
-        testUtils.migrateDB().finally(function () {
-            server = appServer({port: TEST_PORT});
+        testUtils.migrateDB().then(function () {
+            return testUtils.setupUsers();
+        }).then(function (user) {
+            return appServer({port: TEST_PORT});
+        }).then(function (server_in) {
+            server = server_in;
+            return request({
+                method: 'POST',
+                url: BASE_URL + '/auth/login',
+                form: {
+                    username: 'traderjoe',
+                    password: 'traderjoe'
+                }
+            });
+        }).spread(function (resp, body) {
+            var auth_session = resp.headers['set-cookie'][0];
+            var auth_cookie = requestReal.cookie(auth_session);
+            cookie_jar.setCookie(auth_cookie, BASE_URL);
             return done();
         });
     });
 
     after(function (done) {
         server.close(function () {
-            logger.info('Express server closed');
             return done();
         });
     });
@@ -83,7 +101,8 @@ describe('HTTP API', function () {
                 request_opts = {
                     url: BASE_URL + '/data/market/type/' + expected_typeid,
                     qs: { regionID: expected_regionid },
-                    json: true
+                    json: true,
+                    jar: cookie_jar
                 };
                 Promise.all([
                     conf.db_Main('MarketOrders').truncate(),
