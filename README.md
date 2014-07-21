@@ -1,5 +1,7 @@
 # EVE Market Fun
 
+[![Build Status](https://secure.travis-ci.org/lmorchard/eve-market-fun.png)](http://travis-ci.org/lmorchard/eve-market-fun)
+
 A poorly-named project for playing with EVE Online market data from node.js
 
 ## TODO
