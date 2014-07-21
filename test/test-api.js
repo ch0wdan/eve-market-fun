@@ -29,28 +29,19 @@ var emdr_history = require(fixtures_path + 'emdr-history.json');
 describe('HTTP API', function () {
     this.timeout(5000);
 
-    var cookie_jar = requestReal.jar();
+    var auth_jars = {};
     var server = null;
 
     before(function (done) {
         testUtils.migrateDB().then(function () {
-            return testUtils.setupUsers();
-        }).then(function (user) {
             return appServer({port: TEST_PORT});
         }).then(function (server_in) {
             server = server_in;
-            return request({
-                method: 'POST',
-                url: BASE_URL + '/auth/login',
-                form: {
-                    username: 'traderjoe',
-                    password: 'traderjoe'
-                }
-            });
-        }).spread(function (resp, body) {
-            var auth_session = resp.headers['set-cookie'][0];
-            var auth_cookie = requestReal.cookie(auth_session);
-            cookie_jar.setCookie(auth_cookie, BASE_URL);
+            return testUtils.setupUsers();
+        }).then(function (users) {
+            return testUtils.loginUsers(BASE_URL);
+        }).then(function (jars) {
+            auth_jars = jars;
             return done();
         });
     });
@@ -100,9 +91,9 @@ describe('HTTP API', function () {
             beforeEach(function (done) {
                 request_opts = {
                     url: BASE_URL + '/data/market/type/' + expected_typeid,
-                    qs: { regionID: expected_regionid },
                     json: true,
-                    jar: cookie_jar
+                    jar: auth_jars['traderjoe'],
+                    qs: { regionID: expected_regionid }
                 };
                 Promise.all([
                     conf.db_Main('MarketOrders').truncate(),
@@ -110,6 +101,26 @@ describe('HTTP API', function () {
                 ]).then(function () {
                     return done();
                 })
+            });
+
+            it('should list orders from raw market data', function (done) {
+                var expected = [];
+                var fin = fs.createReadStream(fixture2_fn);
+
+                models.MarketDataRaws.forge().updateFromCSV(fin)
+                .then(function (updates) {
+                    return request(request_opts);
+                }).spread(function (resp, orders) {
+                    expect(orders.length).to.equal(63);
+                    var ids = orders.map(function (order) {
+                        return parseInt(order.orderID);
+                    });
+                    expect(ids).to.include.members(anon_orders);
+                    orders.forEach(function (order) {
+                        expect(order.charID).to.be.undefined;
+                    });
+                    return done();
+                });
             });
 
             it('should list orders from a character', function (done) {
@@ -149,20 +160,9 @@ describe('HTTP API', function () {
                 })
             });
 
-            it('should list orders from raw market data', function (done) {
-                var expected = [];
-                var fin = fs.createReadStream(fixture2_fn);
-
-                models.MarketDataRaws.forge().updateFromCSV(fin)
-                .then(function (updates) {
-                    return request(request_opts);
-                }).spread(function (resp, orders) {
-                    expect(orders.length).to.equal(63);
-                    orders.forEach(function (order) {
-                        expect(order.charID).to.be.undefined;
-                    });
-                    return done();
-                });
+            it('should only list orders from characters belonging to the authd user', function (done) {
+                expect(false).to.be.true;
+                return done();
             });
 
             describe('Combined orders from character and market', function () {
