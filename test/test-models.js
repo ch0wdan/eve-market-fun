@@ -19,7 +19,7 @@ var fixtures_path = __dirname + '/fixtures/';
 var models = require('../lib/models');
 
 describe("Models", function () {
-    this.timeout(5000);
+    this.timeout(10000);
 
     var emdr_orders = require(fixtures_path + 'emdr-orders.json');
     var emdr_history = require(fixtures_path + 'emdr-history.json');
