@@ -11,4 +11,4 @@ notifications:
 
 before_install:
     - sudo apt-get update -qq
-    - sudo apt-get install build-essential libzmq-dev nodejs-legacy
+    - sudo apt-get install build-essential libzmq-dev
