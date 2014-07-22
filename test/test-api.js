@@ -124,8 +124,28 @@ describe('HTTP API', function () {
             });
 
             it('should join static data with orders from raw market data', function (done) {
-                expect(false).to.be.true;
-                return done();
+                var fin = fs.createReadStream(fixture2_fn);
+
+                models.MarketDataRaws.forge().updateFromCSV(fin)
+                .then(function (updates) {
+                    return request(request_opts);
+                }).spread(function (resp, orders) {
+                    expect(orders.length).to.equal(63);
+                    orders.forEach(function (order) {
+                        expect(order.typeName)
+                            .to.equal('720mm \'Scout\' Artillery I');
+                        expect(order.regionName)
+                            .to.equal('Sinq Laison');
+                        if (order.stationID == 60011866) {
+                            expect(order.stationName)
+                                .to.equal('Dodixie IX - Moon 20 - Federation Navy Assembly Plant');
+                        } else if (order.stationID == 60011032) {
+                            expect(order.stationName)
+                                .to.equal('Stegette V - Moon 3 - FedMart Warehouse');
+                        }
+                    });
+                    return done();
+                });
             });
 
             it('should list orders from a character', function (done) {

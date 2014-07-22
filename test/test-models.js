@@ -79,8 +79,35 @@ describe("Models", function () {
                 return done();
             });
         });
-    
-        describe("MarketOrder", function () {
+
+        describe("queryWithRaw", function () {
+
+            it('should join static data with orders from raw market data', function (done) {
+                var fixture2_fn = fixtures_path +
+                    'Sinq Laison-720mm Scout Artillery I-2014.07.20 174402.txt';
+                var fin = fs.createReadStream(fixture2_fn);
+                var query_opts = { typeID: 9451, regionID: 10000032 };
+
+                models.MarketDataRaws.forge().updateFromCSV(fin).then(function (updates) {
+                    models.MarketOrders.forge().queryWithRaw(query_opts).then(function (orders) {
+                        expect(orders.length).to.equal(63);
+                        orders.forEach(function (order) {
+                            expect(order.typeName)
+                                .to.equal('720mm \'Scout\' Artillery I');
+                            expect(order.regionName)
+                                .to.equal('Sinq Laison');
+                            if (order.stationID == 60011866) {
+                                expect(order.stationName)
+                                    .to.equal('Dodixie IX - Moon 20 - Federation Navy Assembly Plant');
+                            } else if (order.stationID == 60011032) {
+                                expect(order.stationName)
+                                    .to.equal('Stegette V - Moon 3 - FedMart Warehouse');
+                            }
+                        });
+                        return done();
+                    });
+                });
+            });
 
         });
     
