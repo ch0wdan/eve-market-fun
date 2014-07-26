@@ -7,6 +7,7 @@ marketlogs
 eve-cache
 config/*
 cache/neow/*
+public/Icons
 populate.sh
 npm-debug.log
 bower_components
