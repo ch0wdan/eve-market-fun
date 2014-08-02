@@ -376,14 +376,13 @@ describe("Models", function () {
         });
 
         it('should update market aggregates from raw market data', function (done) {
-            var expected = {
-                avgDailyVolume: 23.35929648241206,
-                avgDailyVolumeForMonth: 19,
-                avgDailyVolumeForWeek: 31.571428571428573,
-                volatility: 38.56297146782043,
-                volatilityForMonth: 29.370102015168747,
-                volatilityForWeek: 30.186398809636888
-            };
+            var expected = 
+                { avgDailyVolume: 23.35929648241206,
+                  avgDailyVolumeForMonth: 22.033333333333335,
+                  avgDailyVolumeForWeek: 22.142857142857142,
+                  volatility: 38.56297146782045,
+                  volatilityForMonth: 17.872383434022243,
+                  volatilityForWeek: 16.028445291933917 };
 
             var rowset = emdr_history.rowsets[0];
             var type_id = rowset.typeID;
@@ -394,16 +393,13 @@ describe("Models", function () {
                 return MarketHistoryAggregates.query(function (qb) {
                     qb.where({typeID: type_id, regionID: region_id});
                 }).fetch();
-            })
-            .then(function (objs) {
+            }).then(function (objs) {
                 expect(objs.length).to.equal(1);
-                var result = objs.first();
-                _.each(expected, function (val, key) {
-                    expect(result.get(key)).to.equal(val);
-                });
+                var result = objs.first().pick(_.keys(expected));
+                expect(result).deep.equal(expected);
+                return done();
             });
 
-            return done();
         });
 
     });
