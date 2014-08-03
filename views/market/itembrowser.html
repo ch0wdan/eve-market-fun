@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block css %}
+<style type="text/css">
+    .eveTypeBrowser {
+        white-space: nowrap;
+        height: 250px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 0.25em 0 0.25em 0;
+    }
+    .eveTypeBrowser .column {
+        display: inline-block;
+        border: 1px solid #999;
+        margin: 0 0.25em 0 0;
+        border-radius: 6px;
+        width: 32%; 
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    .eveTypeBrowser ol {
+        list-style-type: none;
+        margin: 0;
+        padding: 0.0125em;
+        width: 100%;
+    }
+    .eveTypeBrowser ol li {
+        font-size: 0.85em;
+        padding: 0.0125em;
+        margin: 0.25em;
+    }
+    .eveTypeBrowser ol li.hasChildren span:after {
+        content: "\25B6";
+        padding-left: 0.75em;
+    }
+    .eveTypeBrowser ol li img {
+        width: 16px; height: 16px;
+        margin:0 0.25em 0 0.25em;
+    }
+    .eveTypeBrowser ol li.ui-selecting { background: #FECA40; }
+    .eveTypeBrowser ol li.ui-selected { background: #F39814; color: white; }
+
+    #typeResults { height: 300px; overflow: auto; }
+</style>
+{% endblock %}
+{% block js %}
+    <script src="/javascripts/market/itembrowser.js"></script>
+{% endblock %}
+{% block content %}
+<div class="container">
+
+    <h3><span class="fa fa-shopping-cart"></span> Market: Browse Items</h3>
+
+    <div id="typeBrowser" class="eveTypeBrowser"></div>
+    <ul id="typeResults"></ul>
+
+</div>
+{% endblock %}
