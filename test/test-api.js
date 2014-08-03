@@ -26,11 +26,14 @@ var BASE_URL = 'http://localhost:' + TEST_PORT;
 var emdr_orders = require(fixtures_path + 'emdr-orders.json');
 var emdr_history = require(fixtures_path + 'emdr-history.json');
 
+var margins_frigs = require(fixtures_path + 'margins-incursus-rifter-punisher.json');
+
 describe('HTTP API', function () {
     this.timeout(25000);
 
     var auth_jars = {};
     var server = null;
+    var DEFAULT_USER = 'traderjoe';
 
     before(function (done) {
         testUtils.migrateDB().then(function () {
@@ -73,6 +76,167 @@ describe('HTTP API', function () {
 
     describe('Market', function () {
 
+        describe('/data/market/margins', function () {
+
+            var request_opts;
+
+            beforeEach(function (done) {
+                request_opts = {
+                    url: BASE_URL + '/data/market/margins',
+                    json: true,
+                    jar: auth_jars[DEFAULT_USER]
+                };
+
+                conf.db_Main('MarketMargins').truncate().then(function () {
+                    return Promise.all(_.map(margins_frigs, function (r) {
+                        return conf.db_Main('MarketMargins').insert(r);
+                    }));
+                }).then(function () {
+                    return done();
+                });
+            });
+
+            it('should be an error to query without at least a type or region filter', function (done) {
+                request(request_opts).spread(function (resp, margins) {
+                    expect(resp.statusCode).to.equal(400);
+                    return done();
+                });
+            });
+
+            it('should filter by a single type', function (done) {
+                var expected_typeid = 587;
+                var expected_typename = 'Rifter';
+                var expected_rows = _.where(margins_frigs, {
+                    typeID: expected_typeid
+                });
+                var expected_length = expected_rows.length;
+
+                request_opts.qs = {
+                    typeID: expected_typeid
+                };
+                
+                request(request_opts).spread(function (resp, margins) {
+                    expect(margins.length).to.equal(expected_length);
+                    _.each(margins, function (margin) {
+                        expect(margin.typeID).to.equal(expected_typeid);
+                        expect(margin.typeName).to.equal(expected_typename);
+                    });
+                    return done();
+                });
+            });
+
+            it('should filter by region', function (done) {
+                var expected_regionid = 10000064;
+                var expected_regionname = 'Essence';
+                var expected_rows = _.where(margins_frigs, {
+                    regionID: expected_regionid
+                });
+                var expected_length = expected_rows.length;
+
+                request_opts.qs = {
+                    regionID: expected_regionid
+                };
+                
+                request(request_opts).spread(function (resp, margins) {
+                    expect(margins.length).to.equal(expected_length);
+                    _.each(margins, function (margin) {
+                        expect(margin.regionID).to.equal(expected_regionid);
+                        expect(margin.regionName).to.equal(expected_regionname);
+                    });
+                    return done();
+                });
+            });
+
+            it('should filter by station', function (done) {
+                var expected_stationid = 60011866;
+                var expected_stationname = 'Dodixie IX - Moon 20 - Federation Navy Assembly Plant';
+                var expected_rows = _.where(margins_frigs, {
+                    stationID: expected_stationid
+                });
+                var expected_length = expected_rows.length;
+
+                request_opts.qs = {
+                    stationID: expected_stationid
+                };
+                
+                request(request_opts).spread(function (resp, margins) {
+                    expect(margins.length).to.equal(expected_length);
+                    _.each(margins, function (margin) {
+                        expect(margin.stationID).to.equal(expected_stationid);
+                        expect(margin.stationName).to.equal(expected_stationname);
+                    });
+                    return done();
+                });
+            });
+
+            it('should filter by solar system', function (done) {
+                var expected_systemid = 30002659;
+                var expected_systemname = 'Dodixie';
+                var expected_rows = _.where(margins_frigs, {
+                    solarSystemID: expected_systemid
+                });
+                var expected_length = expected_rows.length;
+
+                request_opts.qs = {
+                    solarSystemID: expected_systemid
+                };
+                
+                request(request_opts).spread(function (resp, margins) {
+                    expect(margins.length).to.equal(expected_length);
+                    _.each(margins, function (margin) {
+                        expect(margin.solarSystemID).to.equal(expected_systemid);
+                        expect(margin.solarSystemName).to.equal(expected_systemname);
+                    });
+                    return done();
+                });
+            });
+
+            it('should filter for multiple types', function (done) {
+                var expected_typeids = [587, 594];
+                var expected_typenames = ['Rifter', 'Incursus'];
+                var expected_rows = _.filter(margins_frigs, function (r) {
+                    return expected_typeids.indexOf(r.typeID) !== -1;
+                });
+                var expected_length = expected_rows.length;
+
+                request_opts.qs = {
+                    typeID: expected_typeids
+                };
+                
+                request(request_opts).spread(function (resp, margins) {
+                    expect(margins.length).to.equal(expected_length);
+                    _.each(margins, function (margin) {
+                        expect(expected_typeids).to.include(margin.typeID);
+                        expect(expected_typenames).to.include(margin.typeName);
+                    });
+                    return done();
+                });
+            });
+
+            it('should filter for multiple regions', function (done) {
+                var expected_regionids = [10000064, 10000032];
+                var expected_regionnames = ['Essence', 'Sinq Laison'];
+                var expected_rows = _.filter(margins_frigs, function (r) {
+                    return expected_regionids.indexOf(r.regionID) !== -1;
+                });
+                var expected_length = expected_rows.length;
+
+                request_opts.qs = {
+                    regionID: expected_regionids
+                };
+                
+                request(request_opts).spread(function (resp, margins) {
+                    expect(margins.length).to.equal(expected_length);
+                    _.each(margins, function (margin) {
+                        expect(expected_regionids).to.include(margin.regionID);
+                        expect(expected_regionnames).to.include(margin.regionName);
+                    });
+                    return done();
+                });
+            });
+
+        });
+
         describe('/data/market/type/:typeID', function () {
 
             var fixture1_fn = fixtures_path +
@@ -92,7 +256,7 @@ describe('HTTP API', function () {
                 request_opts = {
                     url: BASE_URL + '/data/market/type/' + expected_typeid,
                     json: true,
-                    jar: auth_jars['traderjoe'],
+                    jar: auth_jars[DEFAULT_USER],
                     qs: { regionID: expected_regionid }
                 };
                 Promise.all([
@@ -282,13 +446,6 @@ describe('HTTP API', function () {
 
         describe('/data/market/emuu', function () {
             it('should accept POSTed updates in EMUU format', function (done) {
-                expect(false).to.be.true;
-                return done();
-            });
-        });
-
-        describe('/data/market/margins', function () {
-            it('should offer station trading margin suggestions', function (done) {
                 expect(false).to.be.true;
                 return done();
             });
