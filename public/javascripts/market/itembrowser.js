@@ -1,13 +1,56 @@
 $(document).ready(function () {
+
     var selected_group_ids = {};
+    var q = null;
+    var category = null;
     var tech_level = null;
     var meta_level = null;
     var meta_group = null;
+
+    // Wire up the typeahead search to set browser state
+    $('#typeSearch').typeahead({
+        highlight: true,
+        minLength: 2
+    }, {
+        name: 'types',
+        source: function (query, cb) {
+            $.getJSON('/data/invTypes', {q: query}, function (types) {
+                cb(_.map(types, function (type) {
+                    return _.defaults({
+                        value: type.typeName + ' (' + type.categoryName + ')'
+                    }, type);
+                }))
+            });
+        } 
+    }).bind('typeahead:selected', function (ev, type, name) {
+        q = type.typeName;
+        updateTypes();
+    }).bind('change', function (ev) {
+        q = $(ev.target).val();
+        updateTypes();
+    });
 
     var tech_level_el = $('#techLevels');
     tech_level_el.selectpicker().on('change', function () {
         tech_level = tech_level_el.val();
         updateTypes();
+    });
+
+    var category_el = $('#invCategories');
+    category_el.selectpicker().on('change', function () {
+        category = category_el.val();
+        updateTypes();
+    });
+    $.getJSON('/data/invCategories', function (data) {
+        _.each(data, function (r) {
+            category_el.append($('<option>', {
+                id: 'metaLevel-' + r.metaLevel,
+                value: r.categoryID,
+                // "data-subtext": r.invTypesCount
+                "data-content": '<img class="small-icon" src="'+ r.iconURL +'"> ' + r.categoryName
+            }).text(r.categoryName));
+        });
+        category_el.selectpicker('refresh');
     });
 
     var meta_level_el = $('#metaLevels');
@@ -54,10 +97,12 @@ $(document).ready(function () {
         var type_list = $('#typeResults');
         type_list.empty();
         var params = {
+            q: q,
             marketGroupID: selected_group_ids,
             techLevel: tech_level,
             metaGroupID: meta_group,
-            metaLevel: meta_level
+            metaLevel: meta_level,
+            categoryID: category
         };
         $.getJSON('/data/invTypes?' + $.param(params), function (data) {
             _.each(data, function (type) {
@@ -214,11 +259,10 @@ Market.ItemBrowser = { };
                 self.list.empty();
                 var items = data;
                 _.each(self.groups, function (group, groupID) {
-                    var iconURL = group.iconURL || '/blank.gif';
                     var li = $('<li>');
                     li.data('group', group);
                     li.data('groupID', groupID);
-                    li.append('<img src="' + iconURL + '">');
+                    li.append('<img src="' + group.iconURL + '">');
                     li.append($('<span>').html(group.marketGroupName));
                     if (group.children) {
                         li.addClass('hasChildren');

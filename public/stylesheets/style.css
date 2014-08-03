@@ -270,6 +270,9 @@ img.character-select {
     margin-bottom: 10px;
 }
 
+img.small-icon { width: 16px; height: 16px; }
+
+/*
 .typeahead,
 .tt-query,
 .tt-hint {
@@ -334,3 +337,4 @@ img.character-select {
 .tt-suggestion p {
   margin: 0;
 }
+*/
