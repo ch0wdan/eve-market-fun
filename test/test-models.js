@@ -361,6 +361,15 @@ describe("Models", function () {
                 return done();
             });
         });
+
+        it('should generate records even where there are only buy or sell orders', function (done) {
+            // TODO: Even if there are only sell or only buy orders, we should
+            // still get a margin record that has the respective minSellPrice
+            // or maxBuyPrice. There's technically no margin there, but the
+            // pricing info is handy.
+            expect(false).to.be.true;
+            return done();
+        });
     });
 
     describe('MarketHistoryAggregates', function () {
