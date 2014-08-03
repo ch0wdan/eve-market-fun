@@ -4,16 +4,16 @@
     .eveTypeBrowser {
         white-space: nowrap;
         height: 250px;
+        border: 1px solid #999;
+        border-radius: 6px;
         overflow-x: auto;
         overflow-y: hidden;
-        padding: 0.25em 0 0.25em 0;
     }
     .eveTypeBrowser .column {
         display: inline-block;
-        border: 1px solid #999;
+        border-right: 1px solid #666;
         margin: 0 0.25em 0 0;
-        border-radius: 6px;
-        width: 32%; 
+        width: 25%; 
         height: 100%;
         overflow-x: hidden;
         overflow-y: auto;
@@ -37,10 +37,14 @@
         width: 16px; height: 16px;
         margin:0 0.25em 0 0.25em;
     }
-    .eveTypeBrowser ol li.ui-selecting { background: #FECA40; }
-    .eveTypeBrowser ol li.ui-selected { background: #F39814; color: white; }
+    .eveTypeBrowser ol li.ui-selecting { background: #7a8288; }
+    .eveTypeBrowser ol li.ui-selected { 
+        background: #5d6368; 
+        text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+    }
 
     #typeResults { height: 300px; overflow: auto; }
+    #typeFilters { padding: 0.75em; }
 </style>
 {% endblock %}
 {% block js %}
@@ -52,6 +56,44 @@
     <h3><span class="fa fa-shopping-cart"></span> Market: Browse Items</h3>
 
     <div id="typeBrowser" class="eveTypeBrowser"></div>
+
+    <form id="typeFilters" class="form-inline">
+        <div class="row">
+            <section class="col-md-6">
+                <section class="input-group">
+                    <label class="sr-only" for="typeSearch">Type Search</label>
+                    <span class="input-group-addon">
+                        <i class="fa fa-search"></i>
+                    </span>
+                    <input type="text" id="typeSearch" class="form-control">
+                </section>
+            </section>
+            <section class="col-md-6">
+                <section class="form-group">
+                    <label class="sr-only" for="techLevels">Tech Levels</label>
+                    <select id="techLevels" data-show-subtext="true" data-width="auto">
+                        <option value="">- Tech Level -</option>
+                        <option value="1">Tech I</option>
+                        <option value="2">Tech II</option>
+                        <option value="3">Tech III</option>
+                    </select>
+                </section>
+                <section class="form-group">
+                    <label class="sr-only" for="metaGroups">Meta Groups</label>
+                    <select id="metaGroups" data-show-subtext="true" data-width="auto">
+                        <option value="">- Meta Group -</option>
+                    </select>
+                </section>
+                <section class="form-group">
+                    <label class="sr-only" for="metaLevels">Meta Levels</label>
+                    <select id="metaLevels" data-show-subtext="true" data-width="auto">
+                        <option value="">- Meta Level -</option>
+                    </select>
+                </section>
+            </section>
+        </div>
+    </form>
+
     <ul id="typeResults"></ul>
 
 </div>

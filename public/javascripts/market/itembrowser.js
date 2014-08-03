@@ -1,5 +1,48 @@
 $(document).ready(function () {
     var selected_group_ids = {};
+    var tech_level = null;
+    var meta_level = null;
+    var meta_group = null;
+
+    var tech_level_el = $('#techLevels');
+    tech_level_el.selectpicker().on('change', function () {
+        tech_level = tech_level_el.val();
+        updateTypes();
+    });
+
+    var meta_level_el = $('#metaLevels');
+    meta_level_el.selectpicker().on('change', function () {
+        meta_level = meta_level_el.val();
+        updateTypes();
+    });
+    $.getJSON('/data/invMetaLevels', function (data) {
+        _.each(data, function (r) {
+            if (!r.metaLevel) { return; }
+            meta_level_el.append($('<option>', {
+                id: 'metaLevel-' + r.metaLevel,
+                value: r.metaLevel,
+                // "data-subtext": r.invTypesCount
+            }).text('Meta ' + r.metaLevel));
+        });
+        meta_level_el.selectpicker('refresh');
+    });
+
+    var meta_group_el = $('#metaGroups');
+    meta_group_el.selectpicker().on('change', function () {
+        meta_group = meta_group_el.val();
+        updateTypes();
+    });
+    $.getJSON('/data/invMetaGroups', function (data) {
+        _.each(data, function (r) {
+            meta_group_el.append($('<option>', {
+                id: 'metaGroup-' + r.metaGroupID,
+                value: r.metaGroupID,
+                // "data-subtext": r.invTypesCount
+                // "data-content": '<img src="'+ img_src +'" class="character-select"> ' +
+            }).text(r.metaGroupName));
+        });
+        meta_group_el.selectpicker('refresh');
+    });
     
     var browser = new Market.ItemBrowser.TypeBrowser($('#typeBrowser'));
     browser.on('selected', function (selected_groups) {
@@ -11,7 +54,10 @@ $(document).ready(function () {
         var type_list = $('#typeResults');
         type_list.empty();
         var params = {
-            marketGroupID: selected_group_ids
+            marketGroupID: selected_group_ids,
+            techLevel: tech_level,
+            metaGroupID: meta_group,
+            metaLevel: meta_level
         };
         $.getJSON('/data/invTypes?' + $.param(params), function (data) {
             _.each(data, function (type) {
