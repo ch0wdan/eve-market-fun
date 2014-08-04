@@ -1,50 +1,13 @@
 {% extends "base.html" %}
-{% block css %}
-{% endblock %}
 {% block js %}
-    <script src="/javascripts/market.js"></script>
     <script src="/javascripts/market/type.js"></script>
 {% endblock %}
 {% block content %}
-<div class="container">
-    <h3><i class="fa fa-shopping-cart"></i> Market orders:
-        <img src="http://image.eveonline.com/Type/{{ typeID }}_32.png">
-        {{ type.typeName }}
-    </h3>
-
-    <section class="locationselector">
-        <button type="button" class="action-here btn btn-default">
-            <i class="fa fa-crosshairs"></i>
-        </button>
-        <div class="favorites btn-group">
-          <button type="button" class="action-favorite btn btn-default">
-            <i class="fa fa-star"></i>
-          </button>
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            <span class="caret"></span>
-            <span class="sr-only">Toggle Dropdown</span>
-          </button>
-          <ul class="dropdown-menu" role="menu"></ul>
-        </div>
-        <button type="button" class="action-search btn btn-default">
-          <i class="fa fa-search"></i>
-        </button>
-        <section class="search-fields hidden">
-            <input accesskey="s" type="text" size="50" name="locationName"
-                class="typeahead locationName" />
-        </section>
-        <section class="selectors">
-            <select class="regionID" title="Regions"></select>
-            <select class="constellationID" title="Constellations"></select>
-            <select class="solarSystemID" title="Systems"></select>
-        </section>
-    </section>
-
-    <section class="marketorders" data-typeID="{{ typeID }}">
-        <h4>Sellers</h4>
-        <section class="sell"></section>
-        <h4>Buyers</h4>
-        <section class="buy"></section>
-    </section>
-</div>
+    <div class="container">
+        <h3><i class="fa fa-shopping-cart"></i> Market orders:
+            <a href="#" class="showInfo" data-typeID="{{ typeID }}"><img src="http://image.eveonline.com/Type/{{ typeID }}_32.png"></a>
+            <a href="#" class="showMarketDetails" data-typeID="{{ typeID }}">{{ type.typeName }}</a>
+        </h3>
+        <section class="margins" data-typeID="{{ typeID }}"></section>
+    </div>
 {% endblock %}

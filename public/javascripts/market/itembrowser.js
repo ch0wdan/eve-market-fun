@@ -107,7 +107,8 @@ $(document).ready(function () {
         $.getJSON('/data/invTypes?' + $.param(params), function (data) {
             _.each(data, function (type) {
                 var li = $('<li>');
-                li.html(type.typeName);
+                li.append($('<a>', {href: '/market/type/' + type.typeID})
+                    .text(type.typeName));
                 type_list.append(li);
             });
         });
@@ -273,6 +274,5 @@ Market.ItemBrowser = { };
         }
 
     });
-
 
 })(Market.ItemBrowser);
