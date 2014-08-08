@@ -19,9 +19,10 @@ $(document).ready(function () {
             cell: ShowMarketDetailsCell.extend({typeIDAttr: 'typeID'}) },
         { name: 'maxBuyPrice', label: 'Buy', cell: 'number', editable: false },
         { name: 'minSellPrice', label: 'Sell', cell: 'number', editable: false },
-        { name: 'baseMargin', label: 'Margin', cell: 'number', editable: false },
         { name: 'baseMarginPercent', label: 'Margin %', cell: 'number', editable: false },
+        { name: 'baseMargin', label: 'Margin', cell: 'number', editable: false },
         { name: 'avgDailyVolumeForMonth', label: 'Volume', cell: 'number', editable: false },
+        { name: 'marginByVolume', label: 'MxV', cell: 'number', editable: false },
         { name: 'volatilityForMonth', label: 'Volatility', cell: 'number', editable: false }
     ];
 
