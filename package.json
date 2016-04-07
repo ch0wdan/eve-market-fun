@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "./bin/evemf server",
-    "dev": "./node_modules/.bin/supervisor -w lib,public,views,config.js,webpack.config.js -- bin/evemf --debug server",
-    "test": "mocha --compilers js:babel-core/register"
+    "dev": "supervisor -w lib,public,views,config.js,webpack.config.js -- bin/evemf --debug server",
+    "test": "mocha --compilers js:babel-core/register",
+    "migrate": "knex --env mainDB --knexfile config.js migrate:latest",
+    "knex": "knex --env mainDB --knexfile config.js"
   },
   "repository": {
     "type": "git",

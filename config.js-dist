@@ -1,0 +1,31 @@
+// TODO: Configure most of this from env vars / local config
+
+module.exports = {
+  port: 9001,
+  secret: "YOUR SECRET HERE",
+  sso: {
+    clientID: "CLIENT ID HERE",
+    clientSecret: "CLIENT SECRET HERE",
+    callbackURL: "http://localhost:9001/auth/eveonline/callback",
+    scope: [
+      "publicData", "characterContactsRead", "characterContactsWrite",
+      "characterFittingsRead", "characterFittingsWrite",
+      "characterLocationRead", "characterNavigationWrite"
+    ].join(" ")
+  },
+  eveDB: {
+    client: 'sqlite3',
+    useNullAsDefault: true,
+    connection: {
+      filename: './data/sqlite-latest.sqlite'
+    }
+  },
+  mainDB: {
+    client: "sqlite",
+    useNullAsDefault: true,
+    connection: {
+      filename: "./data/evemf.sqlite",
+    }
+  }
+};
+
