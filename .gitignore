@@ -1,4 +1,5 @@
 tmp/
+cache/
 config.js
 config.json
 *.sw?
