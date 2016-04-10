@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/lmorchard/eve-market-fun#readme",
   "dependencies": {
+    "async": "^1.5.2",
     "babel-polyfill": "^6.7.4",
     "babel-register": "^6.7.2",
     "bluebird": "^3.3.4",
@@ -49,6 +50,7 @@
     "react-dom": "^0.14.8",
     "react-redux": "^4.4.1",
     "redux": "^3.3.1",
+    "request": "^2.70.0",
     "require-dir": "^0.3.0",
     "serve-static": "^1.10.2",
     "socket.io": "^1.4.5",
@@ -70,5 +72,8 @@
     "webpack": "^1.12.14",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-dev-server": "^1.14.1"
+  },
+  "optionalDependencies": {
+    "pg": "^4.5.3"
   }
 }
