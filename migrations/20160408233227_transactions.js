@@ -35,7 +35,7 @@ exports.up = function(knex) {
     t.decimal('balance', 19, 4);
     t.string('reason');
     t.bigInteger('taxReceiverID');
-    t.decimal('taxAmount', 19, 4)
+    t.decimal('taxAmount', 19, 4);
     t.bigInteger('owner1TypeID');
     t.bigInteger('owner2TypeID');
   });
